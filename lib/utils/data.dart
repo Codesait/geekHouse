@@ -28,4 +28,34 @@ class DataClass {
       "color": Colors.purple
     },
   ];
+
+
+
+  List<Map> talks = [
+    {
+      "title": "Startup club",
+      "subTitle": "Pitch your start up ideas to VCs & top Entrepreneurs",
+      "visitors": "347",
+      "speaking": "7"
+    },
+    {
+      "title": "Dating Games + shoot shots",
+      "subTitle": "Speaking of dates",
+      "visitors": "347",
+      "speaking": "7"
+    },
+    {
+      "title": "Mobile Devs",
+      "subTitle": "Design patterns in flutter/mobile development",
+      "visitors": "347",
+      "speaking": "7"
+    },
+    {
+      "title": "Startup club",
+      "subTitle": "Pitch your start up ideas to VCs & top Entrepreneurs",
+      "visitors": "347",
+      "speaking": "7"
+    },
+
+  ];
 }
