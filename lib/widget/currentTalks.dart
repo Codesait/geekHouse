@@ -65,11 +65,11 @@ class CurrentTablet extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  height: 40,
+                  height: 37,
                   width: 105,
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17),
+                    borderRadius: BorderRadius.circular(15),
                     color: Colors.deepPurple.shade300
                   ),
                   child: Row(
