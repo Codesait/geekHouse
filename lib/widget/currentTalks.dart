@@ -70,19 +70,19 @@ class CurrentTablet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Colors.deepPurple.shade300
+                    color: Colors.blueGrey.shade50
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.person,color: Colors.white,size: 16,),
+                          Icon(Icons.person,color: Colors.black,size: 16,),
                           Text(
                             visitors,
                             style: TextStyle(
                                 fontFamily: 'Galano',
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14
                             ),
@@ -91,12 +91,12 @@ class CurrentTablet extends StatelessWidget {
                       SizedBox(width: 5),
                       Row(
                           children: [
-                            Icon(Icons.mic,color: Colors.white,size: 16,),
+                            Icon(Icons.mic,color: Colors.black,size: 16,),
                             Text(
                               visitors,
                               style: TextStyle(
                                   fontFamily: 'Galano',
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14
                               ),
