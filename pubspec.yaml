@@ -39,10 +39,31 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/images/
+
+
+  fonts:
+    - family: Galano
+      fonts:
+        - asset: assets/fonts/Galano-Regular.otf
+        - asset: assets/fonts/Galano-ExtraBold.otf
+          weight: 700
+        - asset: assets/fonts/Galano-Bold.otf
+          weight: 600
+        - asset: assets/fonts/Galano-SemiBold.otf
+          weight: 500
+        - asset: assets/fonts/Galano-Medium.otf
+          weight: 400
+        - asset: assets/fonts/Galano-Light.otf
+          weight: 300
+        - asset: assets/fonts/Galano-ExtraLight.otf
+          weight: 200
+        - asset: assets/fonts/Galano-Thin.otf
+          weight: 100
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
