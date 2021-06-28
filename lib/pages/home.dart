@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:projects/pages/space.dart';
 import 'package:projects/utils/data.dart';
 import 'package:projects/utils/size.dart';
 import 'package:projects/widget/BottomNav.dart';
 import 'package:projects/widget/currentTalks.dart';
 import 'package:projects/widget/home_custom_appbar.dart';
+import 'package:projects/widget/modal.dart';
 import 'package:projects/widget/tab_pill.dart';
 import 'package:projects/widget/upComingTablet.dart';
 
@@ -66,11 +68,12 @@ class _HomeState extends State<Home> {
               Expanded(
                 flex: 4,
                   child: Container(
+
                     width: fullWidth(context),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
                     ),
-                    padding:  EdgeInsets.symmetric(horizontal: horizontalPad),
+                    padding:  EdgeInsets.only(right: horizontalPad,left: horizontalPad, top: 15),
                     child: SingleChildScrollView(child: body()),
                   )),
             ],
@@ -83,6 +86,8 @@ class _HomeState extends State<Home> {
 
 
   Widget body(){
+    Modal modal = Modal();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -91,7 +96,7 @@ class _HomeState extends State<Home> {
         Text(
           'Upcoming',
           style: TextStyle(
-            fontSize: 17,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             fontFamily: "Galano"
           ),
@@ -105,7 +110,7 @@ class _HomeState extends State<Home> {
         Text(
           'Happening now',
           style: TextStyle(
-              fontSize: 17,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               fontFamily: "Galano"
           ),
@@ -117,7 +122,11 @@ class _HomeState extends State<Home> {
                 title: e['title'],
                 speaking: e['speaking'],
                 subtitle: e['subTitle'],
-                visitors: e['visitors']
+                visitors: e['visitors'],
+                onTap: (){
+                  modal.modalSheet(context,child: Space(title:e['title'],
+                  ));
+                },
               )
           ).toList(),
         )

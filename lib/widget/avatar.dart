@@ -4,11 +4,13 @@ class Avatar extends StatelessWidget {
     Key? key,
     required this.radius,
     required this.backgroundColor,
-    required this.child
+    required this.child,
+    this.padding
   }) : super(key: key);
   final double radius;
   final Color backgroundColor;
   final Widget child;
+  final double? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class Avatar extends StatelessWidget {
       radius: radius,
       backgroundColor: backgroundColor,
       child: Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding:  EdgeInsets.all(padding ?? 5.0),
         child: child,
       ),
     );
