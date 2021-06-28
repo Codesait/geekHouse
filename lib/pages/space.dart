@@ -24,10 +24,13 @@ class _SpaceState extends State<Space> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
+                    splashRadius: 23,
                     iconSize: 28,
                       color: Colors.grey,
                       icon: Icon(Icons.keyboard_arrow_down_outlined),
-                      onPressed: (){}),
+                      onPressed: (){
+                      Navigator.pop(context);
+                      }),
                   Container(
                     alignment: Alignment.center,
                     width: 250,
@@ -78,6 +81,8 @@ class _SpaceState extends State<Space> {
     );
   }
 
+
+  // bottom sheet
   Widget bottomSheet(){
     return Container(
       height: 150,
@@ -91,10 +96,45 @@ class _SpaceState extends State<Space> {
       child: Column(
         children: [
           Expanded(
-            child: Row(
-              children: [
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Center(
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                        margin: const EdgeInsets.all(10),
+                        height: 40,
+                        width: 300,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white.withOpacity(0.3)
+                        ),
+                        child: Text(
+                            'Type your thought here...',
+                            style: TextStyle(
+                              fontFamily: "Galano",
+                              color: Colors.white70
+                            ),
+                          ),
+                        ),
+                      ),
 
-              ],
+                    Avatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 7.0),
+                          child: Image.asset(
+                              'assets/images/dm.png',
+                            height: 24,
+                            width: 24,
+                          ),
+                        ))
+                  ],
+                ),
+              ),
             )
           ),
 
