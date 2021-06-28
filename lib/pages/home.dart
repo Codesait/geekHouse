@@ -46,6 +46,7 @@ class _HomeState extends State<Home> {
                         SizedBox(height: 25),
                         Container(
                           height: 45,
+                          padding: const EdgeInsets.only(bottom: 5),
                           width: fullWidth(context),
                           child: ListView(
                               scrollDirection: Axis.horizontal,

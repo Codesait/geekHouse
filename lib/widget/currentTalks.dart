@@ -93,7 +93,7 @@ class CurrentTablet extends StatelessWidget {
                           children: [
                             Icon(Icons.mic,color: Colors.black,size: 16,),
                             Text(
-                              visitors,
+                              speaking,
                               style: TextStyle(
                                   fontFamily: 'Galano',
                                   color: Colors.black,
