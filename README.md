@@ -1,6 +1,8 @@
-# projects
+# ClubHouse
 
 A new Flutter project.
+
+Clubhouse redesigned
 
 ## Getting Started
 
