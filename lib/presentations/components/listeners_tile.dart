@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:projects/widget/avatar.dart';
+import 'package:projects/presentations/components/avatar.dart';
 
 class ListenerAvatar extends StatelessWidget {
   const ListenerAvatar({
-    Key? key,
     required this.avatar,
     required this.name,
     required this.color,
     required this.reaction,
     required this.verified,
-    required this.speaking
-  }) : super(key: key);
+    required this.speaking,
+    super.key,
+  });
   final Color color;
   final String avatar;
   final String name;
@@ -20,7 +20,7 @@ class ListenerAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 70,
       width: 90,
       child: Stack(
@@ -29,15 +29,16 @@ class ListenerAvatar extends StatelessWidget {
             radius: 50,
             backgroundColor: color.withOpacity(0.3),
             child: Image.asset(
-                "assets/images/"+avatar,
+              'assets/images/$avatar',
               height: 80,
               width: 80,
-            )),
+            ),
+          ),
           Positioned(
             bottom: 10,
             left: 10,
             child: desc(),
-          )
+          ),
         ],
       ),
     );
@@ -45,9 +46,8 @@ class ListenerAvatar extends StatelessWidget {
 
   Widget desc() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
+        SizedBox(
           width: 85,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,49 +58,49 @@ class ListenerAvatar extends StatelessWidget {
                 backgroundColor: Colors.white,
                 child: Text(
                   reaction,
-                  style: TextStyle(
-                    fontSize: 15
+                  style: const TextStyle(
+                    fontSize: 15,
                   ),
-                )),
+                ),
+              ),
               Visibility(
                 visible: !(speaking == 'true'),
-                child: Avatar(
-                    radius: 14,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.mic_off,
-                      color: Colors.black87,
-                      size: 15,
-                    )),
-              )
+                child: const Avatar(
+                  radius: 14,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.mic_off,
+                    color: Colors.black87,
+                    size: 15,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        SizedBox(height: 18),
-        Container(
-          child: Row(
-            children: [
-              Avatar(
-                radius: 10,
-                padding: 3,
-                backgroundColor: Colors.deepPurple.shade300,
-                child: Image.asset("assets/images/frost.png")
+        const SizedBox(height: 18),
+        Row(
+          children: [
+            Avatar(
+              radius: 10,
+              padding: 3,
+              backgroundColor: Colors.deepPurple.shade300,
+              child: Image.asset('assets/images/frost.png'),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              name,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Galano',
               ),
-              SizedBox(width: 5,),
-              Text(
-                name,
-               style: TextStyle(
-                 fontSize: 15,
-                 fontWeight: FontWeight.w500,
-                 fontFamily: "Galano",
-
-               ),
-              )
-              ],
-          ),
-        )
+            ),
+          ],
+        ),
       ],
     );
   }
-
 }

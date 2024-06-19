@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+
 class Avatar extends StatelessWidget {
   const Avatar({
-    Key? key,
     required this.radius,
     required this.backgroundColor,
     required this.child,
-    this.padding
-  }) : super(key: key);
+    super.key,
+    this.padding,
+  });
   final double radius;
   final Color backgroundColor;
   final Widget child;
@@ -18,7 +19,7 @@ class Avatar extends StatelessWidget {
       radius: radius,
       backgroundColor: backgroundColor,
       child: Padding(
-        padding:  EdgeInsets.all(padding ?? 5.0),
+        padding: EdgeInsets.all(padding ?? 5.0),
         child: child,
       ),
     );
