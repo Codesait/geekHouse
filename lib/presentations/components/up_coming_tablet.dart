@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projects/utils/size.dart';
+import 'package:projects/utils/mediaquery.dart';
 
 class UpComings extends StatelessWidget {
   const UpComings({super.key});

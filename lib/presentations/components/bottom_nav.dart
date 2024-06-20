@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projects/utils/size.dart';
+import 'package:projects/utils/mediaquery.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key});

@@ -7,7 +7,7 @@ import 'package:projects/presentations/components/tab_pill.dart';
 import 'package:projects/presentations/components/up_coming_tablet.dart';
 import 'package:projects/presentations/screens/home/space.dart';
 import 'package:projects/utils/data.dart';
-import 'package:projects/utils/size.dart';
+import 'package:projects/utils/mediaquery.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
