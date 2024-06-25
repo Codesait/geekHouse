@@ -21,12 +21,12 @@ CustomTransitionPage<T> buildPageWithDefaultTransition<T>({
   );
 }
 
-//final _shellKey = GlobalKey<NavigatorState>();
+final _shellKey = GlobalKey<NavigatorState>();
 
 class AppRouterConfig {
   static final GoRouter router = GoRouter(
     navigatorKey: appNavigatorKey,
-    initialLocation: '/login',
+    initialLocation: '/splash',
     errorBuilder: (context, state) => const SizedBox(
       child: Scaffold(
         body: Center(
@@ -47,62 +47,63 @@ class AppRouterConfig {
           );
         },
       ),
-
       GoRoute(
-        path: '/login',
-        name: Constants.loginPath,
+        parentNavigatorKey: appNavigatorKey,
+        path: '/splash',
+        name: Constants.splashPath,
         pageBuilder: (context, state) {
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
-            child: const SizedBox(),
+            child: const SplashScreen(),
           );
         },
       ),
-      GoRoute(
-        path: '/sign-up',
-        name: Constants.signUpPath,
-        pageBuilder: (context, state) {
-          return buildPageWithDefaultTransition(
-            context: context,
-            state: state,
-            child: const SizedBox(),
+      ShellRoute(
+        navigatorKey: _shellKey,
+        pageBuilder: (context, state, child) {
+          return NoTransitionPage(
+            child: child,
           );
         },
+        routes: [
+          GoRoute(
+            path: '/auth',
+            name: Constants.authPath,
+            pageBuilder: (context, state) {
+              return buildPageWithDefaultTransition(
+                context: context,
+                state: state,
+                child: const WelcomeScreen(),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'login',
+                name: Constants.loginPath,
+                pageBuilder: (context, state) {
+                  return buildPageWithDefaultTransition(
+                    context: context,
+                    state: state,
+                    child: const LoginScreen(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'registration',
+                name: Constants.regPath,
+                pageBuilder: (context, state) {
+                  return buildPageWithDefaultTransition(
+                    context: context,
+                    state: state,
+                    child: const RegistrationScreen(),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
       ),
-      // GoRoute(
-      //   path: 'org-onboard',
-      //   name: Constants.orgOnboardPath,
-      //   pageBuilder: (context, state) {
-      //     return buildPageWithDefaultTransition(
-      //       context: context,
-      //       state: state,
-      //       child: const OrgOnboardScreen(),
-      //     );
-      //   },
-      // ),
-      // ShellRoute(
-      //   navigatorKey: _shellKey,
-      //   pageBuilder: (context, state, child) {
-      //     return NoTransitionPage(
-      //       child: child,
-      //     );
-      //   },
-      //   routes: [
-      //     GoRoute(
-      //       path: '/auth',
-      //       name: Constants.authPath,
-      //       pageBuilder: (context, state) {
-      //         return const NoTransitionPage(
-      //           child: SizedBox(),
-      //         );
-      //       },
-      //       routes: [
-              
-      //       ],
-      //     ),
-      //   ],
-      // ),
     ],
     debugLogDiagnostics: true,
   );

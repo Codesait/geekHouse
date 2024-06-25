@@ -18,8 +18,11 @@ class BottomNav extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             box(
-                child: Icon(Icons.calendar_today_outlined,
-                    color: Colors.deepPurple.shade300,),),
+              child: Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.deepPurple.shade300,
+              ),
+            ),
             SizedBox(
               height: 50,
               child: ElevatedButton(
@@ -41,8 +44,11 @@ class BottomNav extends StatelessWidget {
               ),
             ),
             box(
-                child: Icon(Icons.person_outline_outlined,
-                    color: Colors.deepPurple.shade300,),),
+              child: Icon(
+                Icons.person_outline_outlined,
+                color: Colors.deepPurple.shade300,
+              ),
+            ),
           ],
         ),
       ),

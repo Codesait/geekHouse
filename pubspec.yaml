@@ -26,6 +26,8 @@ dependencies:
 
   cupertino_icons: ^1.0.6
 
+  google_fonts: ^6.2.1
+
   # router
   go_router: ^14.1.4
 
