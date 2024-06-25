@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/src/config.dart';
 import 'package:projects/src/utils.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,26 +16,44 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(
-      const Duration(seconds: 3),
-      () => context.pushReplacementNamed(Constants.authPath),
-    );
+    // Timer(
+    //   const Duration(seconds: 3),
+    //   () => context.pushReplacementNamed(Constants.authPath),
+    // );
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Text.rich(
           TextSpan(
             text: 'Geek',
             children: [
               TextSpan(
-                text: 'Chatt',
+                text: ' !Chatt',
+                style: GoogleFonts.outfit(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.kBlack,
+                ),
+              ),
+              TextSpan(
+                text: '\nnerdy....',
+                style: GoogleFonts.outfit(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.kBlack,
+                ),
               ),
             ],
+            style: GoogleFonts.outfit(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: AppColors.kPrimary,
+            ),
           ),
         ),
       ),
