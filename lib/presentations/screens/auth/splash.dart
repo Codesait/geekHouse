@@ -16,10 +16,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // Timer(
-    //   const Duration(seconds: 3),
-    //   () => context.pushReplacementNamed(Constants.authPath),
-    // );
+    Timer(
+      const Duration(seconds: 4),
+      () => context.pushReplacementNamed(Constants.authPath),
+    );
 
     super.initState();
   }

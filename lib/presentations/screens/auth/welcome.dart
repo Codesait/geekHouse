@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/config/app_assets.dart';
-import 'package:projects/presentations/components/auth_titlebar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
+import 'package:projects/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -46,6 +45,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       width: fullWidth(context) * .4,
                       borderColor: AppColors.kWhite,
                       text: 'Login',
+                      onPressed: () => context.pushNamed(Constants.loginPath),
                     ),
                     DefaultButton(
                       borderRadius: 40,
@@ -53,6 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       color: AppColors.kWhite,
                       textColor: AppColors.kBlack,
                       text: 'Signup',
+                      onPressed: () => context.pushNamed(Constants.loginPath),
                     ),
                   ],
                 ),
