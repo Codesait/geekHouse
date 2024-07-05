@@ -13,15 +13,15 @@ class AuthTitlebar extends StatelessWidget {
         text: title,
         children: [
           TextSpan(
-            text:  subTitle,
+            text: subTitle,
             style: GoogleFonts.outfit(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
           ),
         ],
         style: GoogleFonts.outfit(
-          fontSize: 25,
+          fontSize: 35,
           fontWeight: FontWeight.bold,
         ),
       ),

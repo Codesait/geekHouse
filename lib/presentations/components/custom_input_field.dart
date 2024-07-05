@@ -152,11 +152,15 @@ class _PwsTextFieldState extends State<CustomInputField> {
                   ),
                   prefixIcon: widget.prefixIcon != null
                       ? Padding(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(14),
                           child: SvgPicture.asset(
                             widget.prefixIcon!,
-                            width: 20,
-                            height: 20,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.kBlack,
+                              BlendMode.srcIn,
+                            ),
+                            width: 10,
+                            height: 10,
                           ),
                         )
                       : null,
@@ -226,7 +230,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                       'Forgot password?',
                       style: theme.textTheme.labelLarge!.copyWith(
                         color: AppColors.kPrimary,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w700,
                         fontSize: 12,
                       ),
                     ),

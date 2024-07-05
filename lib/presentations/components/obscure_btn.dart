@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projects/src/config.dart';
 
-
 class ObscureBtn extends StatefulWidget {
   const ObscureBtn({
     required this.onTap,
     this.inputObscured = false,
     this.height,
     this.width,
-    this.iconColor = AppColors.kGrey,
+    this.iconColor = AppColors.kBlack,
     super.key,
   });
   final bool inputObscured;
@@ -31,7 +30,9 @@ class _ObscureBtnState extends State<ObscureBtn> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: SvgPicture.asset(
-          widget.inputObscured ? AppAsset.unhidePassIcon : AppAsset.hidePassIcon,
+          widget.inputObscured
+              ? AppAsset.unhidePassIcon
+              : AppAsset.hidePassIcon,
           colorFilter: ColorFilter.mode(
             widget.iconColor,
             BlendMode.srcIn,

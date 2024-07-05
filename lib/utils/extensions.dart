@@ -5,7 +5,7 @@ extension StringExtenstions on String {
 
   String get jpg => 'assets/jpg_files/$this.jpg';
 
-  String get svg => 'assets/svg_files/$this.svg';
+  String get svg => 'assets/images/$this.svg';
 
   String get rawBal => replaceAll(',', '');
 

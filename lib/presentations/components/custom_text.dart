@@ -39,7 +39,7 @@ class TextView extends StatelessWidget {
         text,
         key: key,
         style: textStyle ??
-            GoogleFonts.poppins(
+            GoogleFonts.outfit(
               fontSize: fontSize != null ? fontSize! : 14,
               fontWeight: fontWeight ?? FontWeight.w400,
               color: color ?? AppColors.kBlack,

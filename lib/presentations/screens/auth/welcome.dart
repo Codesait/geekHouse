@@ -53,7 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       color: AppColors.kWhite,
                       textColor: AppColors.kBlack,
                       text: 'Signup',
-                      onPressed: () => context.pushNamed(Constants.loginPath),
+                      onPressed: () => context.pushNamed(Constants.regPath),
                     ),
                   ],
                 ),

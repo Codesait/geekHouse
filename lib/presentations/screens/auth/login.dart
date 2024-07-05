@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
+import 'package:projects/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -36,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: fullHeigth(context) / 1.4,
                   width: fullWidth(context),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                   decoration: const BoxDecoration(
                     color: AppColors.kWhite,
                     borderRadius: BorderRadius.horizontal(
@@ -44,7 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       right: Radius.circular(40),
                     ),
                   ),
-                  child: const _LoginForm(),
+                  child: const _LoginForm(
+                    key: Key('login_form'),
+                  ),
                 ),
               ),
             ],
@@ -65,7 +70,8 @@ class _LoginForm extends StatefulWidget {
 class __LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
           child: Form(
@@ -75,6 +81,7 @@ class __LoginFormState extends State<_LoginForm> {
                 CustomInputField(
                   fieldLabel: 'Email address',
                   hint: 'enter email',
+                  prefixIcon: AppAsset.mailIcon,
                   // controller: emailController,
                   // readOnly: stateLoading,
                   keyboardType: TextInputType.emailAddress,
@@ -83,6 +90,7 @@ class __LoginFormState extends State<_LoginForm> {
                 CustomInputField(
                   fieldLabel: 'Password',
                   hint: 'enter password',
+                  prefixIcon: AppAsset.lockIcon,
                   // controller: passwordController,
                   // readOnly: stateLoading,
                   password: true,
@@ -94,8 +102,67 @@ class __LoginFormState extends State<_LoginForm> {
             ),
           ),
         ),
-        Gap(25),
+        const Gap(25),
+        const SizedBox(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: DefaultButton(
+                  text: 'Login',
+                  borderRadius: 100,
+                  color: AppColors.kBlack,
+                ),
+              ),
+              Gap(10),
+              _NotRegisteredWidget(),
+              Gap(10),
+            ],
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class _NotRegisteredWidget extends StatelessWidget {
+  const _NotRegisteredWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          const TextSpan(
+            text: 'New user?',
+          ),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: InkWell(
+              onTap: () => context.pushNamed(Constants.regPath),
+              borderRadius: BorderRadius.circular(5),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  'Signup',
+                  style: GoogleFonts.poppins(
+                    color: AppColors.kPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      textAlign: TextAlign.center,
+      style: GoogleFonts.poppins(
+        letterSpacing: 1.5,
+        color: AppColors.kGrey,
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+      ),
     );
   }
 }
