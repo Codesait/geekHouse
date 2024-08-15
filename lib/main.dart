@@ -8,8 +8,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 final GlobalKey<NavigatorState> appNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 
-const anonKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6d29md3Z6bG1zeWFqbml3eGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM3NDU4MzQsImV4cCI6MjAzOTMyMTgzNH0.2ckGkkjEVfm3mbYsmIzuPfFKYmrCm9tuJY8rwQV5rgQ';
 
 Future<void> main() async {
   await dotenv.load(fileName: 'auth_secrets.env');
