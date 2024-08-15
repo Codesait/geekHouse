@@ -32,6 +32,10 @@ dependencies:
   go_router: ^14.1.4
   flutter_svg: ^2.0.10+1
 
+  # database
+  supabase_flutter: ^2.6.0
+  flutter_dotenv: ^5.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -48,6 +52,7 @@ flutter:
 
   assets:
     - assets/images/
+    - auth_secrets.env
 
 
   fonts:
