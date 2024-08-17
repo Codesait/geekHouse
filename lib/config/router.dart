@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/main.dart';
@@ -27,6 +28,7 @@ class AppRouterConfig {
   static final GoRouter router = GoRouter(
     navigatorKey: appNavigatorKey,
     initialLocation: '/splash',
+    observers: [BotToastNavigatorObserver()],
     errorBuilder: (context, state) => const SizedBox(
       child: Scaffold(
         body: Center(

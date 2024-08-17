@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/providers/auth_provider.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
 import 'package:projects/src/utils.dart';
@@ -26,11 +28,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           padding: const EdgeInsets.only(top: 30),
           child: Stack(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: AuthTitlebar(
-                  title: 'Signup\n',
-                  subTitle: 'Best way to discuss smart\nideas',
+              const Positioned(
+                top: 20,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: AuthTitlebar(
+                    title: 'Signup\n',
+                    subTitle: 'Best way to discuss smart\nideas',
+                  ),
                 ),
               ),
               Positioned(
@@ -38,8 +43,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Container(
                   height: fullHeigth(context) / 1.4,
                   width: fullWidth(context),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 25,
+                  ),
                   decoration: const BoxDecoration(
                     color: AppColors.kWhite,
                     borderRadius: BorderRadius.horizontal(
@@ -68,89 +75,121 @@ class _SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<_SignUpForm> {
+  final regFormKey = GlobalKey<FormState>();
+
+  TextEditingController? userNameController;
+  TextEditingController? emailController;
+  TextEditingController? phoneController;
+  TextEditingController? passwordController;
+  TextEditingController? confirmPasswordController;
+
+  @override
+  void initState() {
+    userNameController = TextEditingController();
+    emailController = TextEditingController();
+    phoneController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          height: fullHeigth(context) / 2,
-          child: Form(
-            //key: loginFormKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CustomInputField(
-                    fieldLabel: 'Full name',
-                    hint: 'John Deo',
-                    prefixIcon: AppAsset.personIcon,
-                    // controller: emailController,
-                    // readOnly: stateLoading,
-                    keyboardType: TextInputType.name,
-                    // validator: (v) => Validators().validateEmail(v),
-                  ),
-                  CustomInputField(
-                    fieldLabel: 'Email address',
-                    hint: 'enter email',
-                    prefixIcon: AppAsset.mailIcon,
-                    // controller: emailController,
-                    // readOnly: stateLoading,
-                    keyboardType: TextInputType.emailAddress,
-                    // validator: (v) => Validators().validateEmail(v),
-                  ),
-                  CustomInputField(
-                    fieldLabel: 'Phone number',
-                    hint: '123-456-344',
-                    prefixIcon: AppAsset.dialpadIcon,
-                    // controller: emailController,
-                    // readOnly: stateLoading,
-                    keyboardType: TextInputType.phone,
-                    // validator: (v) => Validators().validateEmail(v),
-                  ),
-                  CustomInputField(
-                    fieldLabel: 'Password',
-                    hint: 'enter password',
-                    prefixIcon: AppAsset.lockIcon,
-                    // controller: passwordController,
-                    // readOnly: stateLoading,
-                    password: true,
-                    keyboardType: TextInputType.visiblePassword,
-                    // validator: (v) => Validators().validatePassword(v),
-                  ),
-                  CustomInputField(
-                    fieldLabel: 'Confirm password',
-                    hint: 'enter password again',
-                    prefixIcon: AppAsset.lockIcon,
-                    // controller: passwordController,
-                    // readOnly: stateLoading,
-                    password: true,
-                    keyboardType: TextInputType.visiblePassword,
-                    // validator: (v) => Validators().validatePassword(v),
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            height: fullHeigth(context) / 1.9,
+            child: Form(
+              key: regFormKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CustomInputField(
+                      fieldLabel: 'Username',
+                      hint: 'Gojo4',
+                      prefixIcon: AppAsset.personIcon,
+                      controller: userNameController,
+                      keyboardType: TextInputType.name,
+                      validator: (v) => Validators().validateUserName(v),
+                    ),
+                    CustomInputField(
+                      fieldLabel: 'Email address',
+                      hint: 'enter email',
+                      prefixIcon: AppAsset.mailIcon,
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (v) => Validators().validateEmail(v),
+                    ),
+                    CustomInputField(
+                      fieldLabel: 'Phone number',
+                      hint: '123-456-344',
+                      prefixIcon: AppAsset.dialpadIcon,
+                      controller: phoneController,
+                      keyboardType: TextInputType.phone,
+                      validator: (v) => Validators().validatePhoneNumber(v),
+                    ),
+                    CustomInputField(
+                      fieldLabel: 'Password',
+                      hint: 'enter password',
+                      prefixIcon: AppAsset.lockIcon,
+                      controller: passwordController,
+                      password: true,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (v) => Validators().validatePassword(v),
+                    ),
+                    CustomInputField(
+                      fieldLabel: 'Confirm password',
+                      hint: 'enter password again',
+                      prefixIcon: AppAsset.lockIcon,
+                      controller: confirmPasswordController,
+                      password: true,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (v) => Validators()
+                          .validateConfirmPassword(v, passwordController!.text),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        const Gap(25),
-        const SizedBox(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: DefaultButton(
-                  text: 'Login',
-                  borderRadius: 100,
-                  color: AppColors.kBlack,
-                ),
-              ),
-              Gap(10),
-              _RegisteredWidget(),
-              Gap(10),
-            ],
+          const Gap(10),
+          SizedBox(
+            child: Consumer(
+              builder: (context, ref, _) {
+                //? acessing auth provider
+                final provider = ref.read(authProvider);
+
+                return Column(
+                  children: [
+                    DefaultButton(
+                      text: 'Sign Up',
+                      borderRadius: 100,
+                      color: AppColors.kBlack,
+                      onPressed: () {
+                        if (regFormKey.currentState!.validate()) {
+                          provider.registerNewUser(
+                            email: emailController!.text.trim(),
+                            password: passwordController!.text.trim(),
+                            moreData: {
+                              'userName': userNameController!.text.trim(),
+                              'phoneNumber': phoneController!.text.trim(),
+                            },
+                          );
+                        }
+                      },
+                    ),
+                    const Gap(10),
+                    const _RegisteredWidget(),
+                    const Gap(10),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
