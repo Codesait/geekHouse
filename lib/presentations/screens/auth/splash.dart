@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/providers/auth_provider.dart';
 import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
-    Timer(
-      const Duration(seconds: 4),
-      () => context.pushReplacementNamed(Constants.authPath),
-    );
+    // Timer(
+    //   const Duration(seconds: 4),
+    //   () => ref.read(authProvider).listenToAuthStateChange(),
+    // );
 
     super.initState();
   }

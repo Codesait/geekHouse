@@ -159,7 +159,7 @@ class _SignUpFormState extends State<_SignUpForm> {
             child: Consumer(
               builder: (context, ref, _) {
                 //? acessing auth provider
-                final provider = ref.read(authProvider);
+                final provider = ref.read(authViemodelProvider.notifier);
 
                 return Column(
                   children: [
@@ -169,7 +169,8 @@ class _SignUpFormState extends State<_SignUpForm> {
                       color: AppColors.kBlack,
                       onPressed: () {
                         if (regFormKey.currentState!.validate()) {
-                          provider.registerNewUser(
+                          provider.signUp(
+                            context,
                             email: emailController!.text.trim(),
                             password: passwordController!.text.trim(),
                             moreData: {

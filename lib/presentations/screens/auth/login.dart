@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/providers/auth_provider.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
 import 'package:projects/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +65,18 @@ class _LoginForm extends StatefulWidget {
 }
 
 class __LoginFormState extends State<_LoginForm> {
+  final loginFormKey = GlobalKey<FormState>();
+
+  TextEditingController? emailController;
+  TextEditingController? passwordController;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -75,27 +84,25 @@ class __LoginFormState extends State<_LoginForm> {
       children: [
         SizedBox(
           child: Form(
-            //key: loginFormKey,
+            key: loginFormKey,
             child: Column(
               children: [
                 CustomInputField(
                   fieldLabel: 'Email address',
                   hint: 'enter email',
                   prefixIcon: AppAsset.mailIcon,
-                  // controller: emailController,
-                  // readOnly: stateLoading,
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  // validator: (v) => Validators().validateEmail(v),
+                  validator: (v) => Validators().validateEmail(v),
                 ),
                 CustomInputField(
                   fieldLabel: 'Password',
                   hint: 'enter password',
                   prefixIcon: AppAsset.lockIcon,
-                  // controller: passwordController,
-                  // readOnly: stateLoading,
+                  controller: passwordController,
                   password: true,
                   keyboardType: TextInputType.visiblePassword,
-                  // validator: (v) => Validators().validatePassword(v),
+                  validator: (v) => Validators().validatePassword(v),
                   useForgotPass: true,
                 ),
               ],
@@ -103,20 +110,34 @@ class __LoginFormState extends State<_LoginForm> {
           ),
         ),
         const Gap(25),
-        const SizedBox(
+        SizedBox(
           child: Column(
             children: [
               Align(
                 alignment: Alignment.bottomCenter,
-                child: DefaultButton(
-                  text: 'Login',
-                  borderRadius: 100,
-                  color: AppColors.kBlack,
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final provider = ref.read(authViemodelProvider.notifier);
+                    return DefaultButton(
+                      text: 'Login',
+                      borderRadius: 100,
+                      color: AppColors.kBlack,
+                      onPressed: () {
+                        if (loginFormKey.currentState!.validate()) {
+                          provider.login(
+                            context,
+                            email: emailController!.text.trim(),
+                            password: passwordController!.text.trim(),
+                          );
+                        }
+                      },
+                    );
+                  },
                 ),
               ),
-              Gap(10),
-              _NotRegisteredWidget(),
-              Gap(10),
+              const Gap(10),
+              const _NotRegisteredWidget(),
+              const Gap(10),
             ],
           ),
         ),

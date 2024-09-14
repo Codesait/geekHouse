@@ -4,37 +4,114 @@ import 'dart:developer';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:projects/main.dart';
 import 'package:projects/src/services.dart';
+import 'package:projects/src/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+part 'auth_provider.g.dart';
 
-final authProvider = ChangeNotifierProvider((_) => AuthProvider());
+@riverpod
+class AuthViemodel extends _$AuthViemodel {
+  @override
+  FutureOr<dynamic> build() {
+    return null;
+  }
 
-class AuthProvider extends ChangeNotifier {
-  final authService = AuthService();
-
-  late StreamSubscription<AuthState> authSubscription;
-
-  Future<void> registerNewUser({
+  Future<void> signUp(
+    BuildContext context, {
     required String email,
     required String password,
     Map<String, dynamic>? moreData,
   }) async {
-    listToAuthStateChange();
-    try {
-      //* start loader
+    final provider = ref.read(authRepo);
+
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      /**
+       * *START LOADER
+       */
       BotToast.showLoading();
 
-      await authService.signUp(email, password, moreData).then((value) {
+      await provider
+          .registerNewUser(email: email, password: password)
+          .then((value) {
+        /**
+         * ? go to login after user sign up
+         */
         if (value != null) {
-          debugPrint('SIGN UP RESPONSE ${value.user!.email}');
+          showToast(msg: 'Please Sign in');
+
+          /**
+           ** GO TO LOGIN AFTER SIGNUP
+          */
+          Future.delayed(
+            const Duration(milliseconds: 1500),
+            () => context.pushReplacementNamed(Constants.loginPath),
+          );
         }
       }).whenComplete(BotToast.closeAllLoading);
-    } catch (e) {
-      debugPrint('REGISTRATION ERROR: $e');
-    }
+    });
   }
 
-  void listToAuthStateChange() {
+  Future<void> login(
+    BuildContext context, {
+    required String email,
+    required String password,
+    Map<String, dynamic>? moreData,
+  }) async {
+    final provider = ref.read(authRepo);
+
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      /**
+       ** START LOADER
+       */
+      BotToast.showLoading();
+
+      await provider.userSignIn(email: email, password: password).then((value) {
+        if (value != null) {
+          showToast(msg: 'Please login');
+
+          /**
+           ** GO TO HOME AFTER LOGIN
+          */
+          Future.delayed(
+            const Duration(milliseconds: 1500),
+            () => context.pushReplacementNamed(Constants.homePath),
+          );
+        }
+      }).whenComplete(BotToast.closeAllLoading);
+    });
+  }
+}
+
+final authRepo = ChangeNotifierProvider((_) => AuthRepo());
+
+class AuthRepo extends ChangeNotifier {
+  final authService = AuthService();
+
+  Future<AuthResponse?> registerNewUser({
+    required String email,
+    required String password,
+    Map<String, dynamic>? moreData,
+  }) async {
+    return authService.signUp(email, password, moreData);
+  }
+
+  Future<AuthResponse?> userSignIn({
+    required String email,
+    required String password,
+  }) async {
+    return authService.signIn(email, password);
+  }
+
+/**
+ * ? 
+ */
+  late StreamSubscription<AuthState> authSubscription;
+  void listenToAuthStateChange() {
     authSubscription =
         authService.supabase.auth.onAuthStateChange.listen((data) {
       final event = data.event;
@@ -44,19 +121,44 @@ class AuthProvider extends ChangeNotifier {
 
       switch (event) {
         case AuthChangeEvent.initialSession:
+
+          /**
+           *? This code block is checking if the `session` object is not null. If the `session` is not
+           *? null, it means that the user is authenticated and has an active session. In this case, it
+           *? will navigate the user to the home screen by pushing the replacement route named
+           *? `Constants.homePath`.
+           */
+          if (session != null) {
+            appNavigatorKey.currentContext!
+                .pushReplacementNamed(Constants.homePath);
+          } else {
+            appNavigatorKey.currentContext!
+                .pushReplacementNamed(Constants.authPath);
+          }
+
           log('INITIAL SESSION');
+
         case AuthChangeEvent.signedIn:
-          log('USER SIGNED IN');
+          showToast(msg: 'Signed In Successfully');
+          debugPrint('USER: ${session!.user}');
+
         case AuthChangeEvent.signedOut:
-          log('USER SIGNED OUT');
+          showToast(msg: 'Signed out Successfully');
+
         case AuthChangeEvent.passwordRecovery:
         // handle password recovery
+
         case AuthChangeEvent.tokenRefreshed:
-        // handle token refreshed
+          showToast(msg: 'Token refreshed Successfully');
+          debugPrint('TOKEN: ${session!.accessToken}');
+
         case AuthChangeEvent.userUpdated:
-        // handle user updated
+          showToast(msg: 'User updated Successfully');
+          debugPrint('USER: ${session!.user}');
+
         case AuthChangeEvent.userDeleted:
-        // handle user deleted
+          showToast(msg: 'User deleted Successfully');
+
         case AuthChangeEvent.mfaChallengeVerified:
         // handle mfa challenge verified
       }
