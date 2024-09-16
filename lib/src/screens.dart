@@ -1,6 +1,7 @@
-export '../presentations/screens/auth/login.dart';
-export '../presentations/screens/auth/registration.dart';
-export '../presentations/screens/auth/splash.dart';
-export '../presentations/screens/auth/welcome.dart';
-export '../presentations/screens/home/home.dart';
-export '../presentations/screens/home/space.dart';
+export '../presentations/features/auth/login.dart';
+export '../presentations/features/auth/registration.dart';
+export '../presentations/features/auth/splash.dart';
+export '../presentations/features/auth/welcome.dart';
+export '../presentations/features/home/home.dart';
+export '../presentations/features/home/space.dart';
+export '../presentations/features/profile/profile_screen.dart';

@@ -85,35 +85,14 @@ class AuthViemodel extends _$AuthViemodel {
       }).whenComplete(BotToast.closeAllLoading);
     });
   }
-}
 
-final authRepo = ChangeNotifierProvider((_) => AuthRepo());
-
-class AuthRepo extends ChangeNotifier {
-  final authService = AuthService();
-
-  Future<AuthResponse?> registerNewUser({
-    required String email,
-    required String password,
-    Map<String, dynamic>? moreData,
-  }) async {
-    return authService.signUp(email, password, moreData);
-  }
-
-  Future<AuthResponse?> userSignIn({
-    required String email,
-    required String password,
-  }) async {
-    return authService.signIn(email, password);
-  }
-
-/**
+  /**
  * ? 
  */
   late StreamSubscription<AuthState> authSubscription;
   void listenToAuthStateChange() {
     authSubscription =
-        authService.supabase.auth.onAuthStateChange.listen((data) {
+        AuthService().supabase.auth.onAuthStateChange.listen((data) {
       final event = data.event;
       final session = data.session;
 
@@ -168,5 +147,26 @@ class AuthRepo extends ChangeNotifier {
   ///* This Dart function cancels a subscription to authentication changes.
   void cancelAuthChangeSub() {
     authSubscription.cancel();
+  }
+}
+
+final authRepo = ChangeNotifierProvider((_) => AuthRepo());
+
+class AuthRepo extends ChangeNotifier {
+  final authService = AuthService();
+
+  Future<AuthResponse?> registerNewUser({
+    required String email,
+    required String password,
+    Map<String, dynamic>? moreData,
+  }) async {
+    return authService.signUp(email, password, moreData);
+  }
+
+  Future<AuthResponse?> userSignIn({
+    required String email,
+    required String password,
+  }) async {
+    return authService.signIn(email, password);
   }
 }

@@ -5,7 +5,7 @@ import 'package:projects/presentations/components/home_custom_appbar.dart';
 import 'package:projects/presentations/components/modal.dart';
 import 'package:projects/presentations/components/tab_pill.dart';
 import 'package:projects/presentations/components/up_coming_tablet.dart';
-import 'package:projects/presentations/screens/home/space.dart';
+import 'package:projects/presentations/features/home/space.dart';
 import 'package:projects/utils/data.dart';
 import 'package:projects/utils/mediaquery.dart';
 
@@ -74,7 +74,9 @@ class _HomeState extends State<Home> {
                     left: horizontalPad,
                     top: 15,
                   ),
-                  child: SingleChildScrollView(child: body()),
+                  child: _Events(
+                    data: data,
+                  ),
                 ),
               ),
             ],
@@ -84,56 +86,68 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: const BottomNav(),
     );
   }
+}
 
-  Widget body() {
+class _Events extends StatelessWidget {
+  const _Events({this.data});
+  final DataClass? data;
+
+  @override
+  Widget build(BuildContext context) {
     final modal = Modal();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        //upComings
-        const Text(
-          'Upcoming',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Galano',
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          /**
+           ** UPCOMMING EVENTS
+           */
+          const Text(
+            'Upcoming',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Galano',
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        const UpComings(),
+          const SizedBox(height: 10),
+          const UpComings(),
 
-        // happening now
-        const SizedBox(height: 15),
-        const Text(
-          'Happening now',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Galano',
+          /**
+           ** HAPPENING NOW
+           */
+          const SizedBox(height: 15),
+          const Text(
+            'Happening now',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Galano',
+            ),
           ),
-        ),
-        Column(
-          children: data.talks
-              .map(
-                (e) => CurrentTablet(
-                  title: e['title'] as String,
-                  speaking: e['speaking'] as String,
-                  subtitle: e['subTitle'] as String,
-                  visitors: e['visitors'] as String,
-                  onTap: () {
-                    modal.modalSheet(
-                      context,
-                      child: Space(
-                        title: e['title'] as String,
-                      ),
-                    );
-                  },
-                ),
-              )
-              .toList(),
-        ),
-      ],
+          Column(
+            children: data!.talks
+                .map(
+                  (e) => CurrentTablet(
+                    title: e['title'] as String,
+                    speaking: e['speaking'] as String,
+                    subtitle: e['subTitle'] as String,
+                    visitors: e['visitors'] as String,
+                    onTap: () {
+                      modal.modalSheet(
+                        context,
+                        child: Space(
+                          title: e['title'] as String,
+                        ),
+                      );
+                    },
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
     );
   }
 }

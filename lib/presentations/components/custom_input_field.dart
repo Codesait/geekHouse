@@ -29,7 +29,7 @@ class CustomInputField extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.obscureInput = false,
-    this.borderRadius = 30,
+    this.borderRadius = 10,
     this.maxLength,
     this.enabled = true,
     this.useForgotPass = false,
@@ -202,6 +202,9 @@ class _PwsTextFieldState extends State<CustomInputField> {
                       : InputBorder.none,
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
+                    borderSide: BorderSide(
+                      color: widget.borderColor ?? AppColors.kLightAsh,
+                    ),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -209,7 +212,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
                   ),
-                  errorStyle: const TextStyle(color: AppColors.kBlack),
+                  errorStyle: const TextStyle(color: Colors.redAccent),
                   errorMaxLines: 4,
                 ),
               ),

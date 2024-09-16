@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:projects/presentations/components/avatar.dart';
+import 'package:projects/src/components.dart';
+import 'package:projects/src/utils.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -9,12 +12,12 @@ class CustomAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'Good Morning,\nBernice',
-          style: TextStyle(
+        const Hero(
+          tag: 'user-name',
+          child: TextView(
+            text: 'Hey Greg,',
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            fontFamily: 'Galano',
           ),
         ),
         Row(
@@ -28,6 +31,7 @@ class CustomAppBar extends StatelessWidget {
               radius: 20,
               backgroundColor: Colors.deepPurple.shade300,
               child: Image.asset('assets/images/yello.png'),
+              onTap: () => context.pushNamed(Constants.profilePath),
             ),
           ],
         ),

@@ -16,10 +16,10 @@ class SplashScreen extends ConsumerStatefulWidget {
 class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
-    // Timer(
-    //   const Duration(seconds: 4),
-    //   () => ref.read(authProvider).listenToAuthStateChange(),
-    // );
+    Timer(
+      const Duration(seconds: 4),
+      () => ref.read(authViemodelProvider.notifier).listenToAuthStateChange(),
+    );
 
     super.initState();
   }

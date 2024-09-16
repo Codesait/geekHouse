@@ -27,7 +27,7 @@ final _shellKey = GlobalKey<NavigatorState>();
 class AppRouterConfig {
   static final GoRouter router = GoRouter(
     navigatorKey: appNavigatorKey,
-    initialLocation: '/splash',
+    initialLocation: '/',
     observers: [BotToastNavigatorObserver()],
     errorBuilder: (context, state) => const SizedBox(
       child: Scaffold(
@@ -37,6 +37,18 @@ class AppRouterConfig {
       ),
     ),
     routes: <RouteBase>[
+      GoRoute(
+        parentNavigatorKey: appNavigatorKey,
+        path: '/',
+        name: Constants.splashPath,
+        pageBuilder: (context, state) {
+          return buildPageWithDefaultTransition(
+            context: context,
+            state: state,
+            child: const SplashScreen(),
+          );
+        },
+      ),
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
         path: '/home',
@@ -51,13 +63,13 @@ class AppRouterConfig {
       ),
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
-        path: '/splash',
-        name: Constants.splashPath,
+        path: '/profile',
+        name: Constants.profilePath,
         pageBuilder: (context, state) {
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
-            child: const SplashScreen(),
+            child: const UserProfile(),
           );
         },
       ),
