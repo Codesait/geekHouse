@@ -129,6 +129,7 @@ class AuthViemodel extends _$AuthViemodel {
 
         case AuthChangeEvent.tokenRefreshed:
           showToast(msg: 'Token refreshed Successfully');
+
           debugPrint('TOKEN: ${session!.accessToken}');
 
         case AuthChangeEvent.userUpdated:
