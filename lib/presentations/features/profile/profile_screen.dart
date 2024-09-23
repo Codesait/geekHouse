@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_view.dart';
+import 'package:projects/providers/auth/auth_provider.dart';
+import 'package:projects/providers/profile/profile_viewmodel.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
+import 'package:projects/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class UserProfile extends StatefulWidget {
+class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  UserProfileState createState() => UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class UserProfileState extends ConsumerState<UserProfile> {
+  late User userData;
+
+  @override
+  void initState() {
+    /**
+     ** Retrieving the user data from the
+     ** authentication provider using Riverpod's `ref.watch` method.
+     */
+    Future.microtask(() {
+      ref.read(profileViewmodelProvider.notifier).getUserProfile();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provider = ref.read(profileViewmodelProvider.notifier);
+
     return ContentView(
       key: UniqueKey(),
       pageTitle: 'Profile',
@@ -22,26 +43,42 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const _AboutUser(key: ValueKey('about-user')),
+            const _AboutUser(
+              key: ValueKey('about-user'),
+              userName: '',
+              email: '',
+              photo: '',
+            ),
             const Gap(25),
             const Divider(),
-            const _ActionWidgets(
+            _ActionWidgets(
               icon: Icons.settings,
               title: 'Settings',
+              onTap: () {},
             ),
-            const _ActionWidgets(
+            _ActionWidgets(
               icon: Icons.question_mark_rounded,
               title: 'How it works',
+              onTap: () {},
             ),
             const Divider(),
-            const _ActionWidgets(
+            _ActionWidgets(
               icon: Icons.report,
               title: 'Report',
+              onTap: () {},
             ),
-            const _ActionWidgets(
+            _ActionWidgets(
               icon: Icons.exit_to_app,
               title: 'Log Out',
               logout: true,
+              onTap: () {
+                logOutAlertDialog(
+                  context,
+                  title: 'Log Out',
+                  content: 'Are you sure you want to log out ?',
+                  onAccept: provider.logOut,
+                );
+              },
             ),
             const Gap(40),
             TextView(
@@ -56,7 +93,15 @@ class _UserProfileState extends State<UserProfile> {
 }
 
 class _AboutUser extends StatelessWidget {
-  const _AboutUser({super.key});
+  const _AboutUser({
+    required this.userName,
+    required this.email,
+    required this.photo,
+    super.key,
+  });
+  final String userName;
+  final String email;
+  final String photo;
 
   @override
   Widget build(BuildContext context) {
@@ -134,50 +179,55 @@ class _ActionWidgets extends StatelessWidget {
   const _ActionWidgets({
     required this.icon,
     required this.title,
+    required this.onTap,
     this.logout = false,
   });
   final IconData icon;
   final String title;
   final bool logout;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
       width: fullWidth(context),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppColors.kPrimary.withOpacity(.4),
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.kPrimary.withOpacity(.4),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 16,
+                  ),
                 ),
-                child: Icon(
-                  icon,
-                  size: 16,
+                const Gap(10),
+                TextView(
+                  text: title,
+                  color: logout ? Colors.red : null,
                 ),
-              ),
-              const Gap(10),
-              TextView(
-                text: title,
+              ],
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Icon(
+                Icons.arrow_forward_ios,
+                size: 15,
                 color: logout ? Colors.red : null,
               ),
-            ],
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Icon(
-              Icons.arrow_forward_ios,
-              size: 15,
-              color: logout ? Colors.red : null,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/providers/auth_provider.dart';
+import 'package:projects/providers/auth/auth_provider.dart';
 import 'package:projects/src/config.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:projects/presentations/components/custom_text.dart';
 import 'package:projects/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 import '../presentations/components/gap.dart';
-
-
 
 void showToast({
   required String msg,
@@ -166,41 +166,6 @@ void showAttachedToast({
   );
 }
 
-void transferBottomSheet(
-  BuildContext context, {
-  required Widget child,
-}) {
-  showModalBottomSheet<dynamic>(
-    context: context,
-    builder: (ctx) => Container(
-      height: fullHeigth(context) * 0.9,
-      decoration: const BoxDecoration(
-        color: AppColors.kWhite,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: child,
-    ),
-    backgroundColor: AppColors.kWhite,
-    elevation: 8,
-    isScrollControlled: true,
-    isDismissible: false,
-    enableDrag: false,
-    constraints: const BoxConstraints(
-      maxHeight: 500,
-      minHeight: 500,
-    ),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(30),
-        topRight: Radius.circular(30),
-      ),
-    ),
-  );
-}
-
 void authAlertDialog(
   BuildContext context, {
   required String title,
@@ -209,7 +174,7 @@ void authAlertDialog(
 }) {
   showAdaptiveDialog<dynamic>(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (ctx) => AlertDialog.adaptive(
       surfaceTintColor: Colors.white,
       backgroundColor: Colors.white,
@@ -237,10 +202,50 @@ void authAlertDialog(
   );
 }
 
+void logOutAlertDialog(
+  BuildContext context, {
+  required String title,
+  required String content,
+  required void Function() onAccept,
+}) {
+  showAdaptiveDialog<dynamic>(
+    context: context,
+    barrierDismissible: true,
+    builder: (ctx) => AlertDialog.adaptive(
+      surfaceTintColor: Colors.white,
+      backgroundColor: Colors.white,
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      content: Text(
+        content,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 12,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => context.pop(),
+          child: const TextView(text: 'Cancel'),
+        ),
+        TextButton(
+          onPressed: onAccept,
+          child: const TextView(text: 'Continue'),
+        ),
+      ],
+    ),
+  );
+}
+
 void alertSheet(
-    BuildContext context, {
-      required Widget child,
-    }) {
+  BuildContext context, {
+  required Widget child,
+}) {
   showModalBottomSheet<dynamic>(
     context: context,
     builder: (ctx) => SizedBox(
@@ -252,7 +257,6 @@ void alertSheet(
         },
       ),
     ),
-
     backgroundColor: AppColors.kBlack.withOpacity(0.01),
     elevation: 8,
     isScrollControlled: true,

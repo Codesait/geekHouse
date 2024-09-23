@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/providers/auth_provider.dart';
+import 'package:projects/providers/auth/auth_provider.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
 import 'package:projects/src/utils.dart';
@@ -77,7 +77,6 @@ class _SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<_SignUpForm> {
   final regFormKey = GlobalKey<FormState>();
 
-  TextEditingController? userNameController;
   TextEditingController? emailController;
   TextEditingController? phoneController;
   TextEditingController? passwordController;
@@ -85,7 +84,6 @@ class _SignUpFormState extends State<_SignUpForm> {
 
   @override
   void initState() {
-    userNameController = TextEditingController();
     emailController = TextEditingController();
     phoneController = TextEditingController();
     passwordController = TextEditingController();
@@ -106,14 +104,7 @@ class _SignUpFormState extends State<_SignUpForm> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    CustomInputField(
-                      fieldLabel: 'Username',
-                      hint: 'Gojo4',
-                      prefixIcon: AppAsset.personIcon,
-                      controller: userNameController,
-                      keyboardType: TextInputType.name,
-                      validator: (v) => Validators().validateUserName(v),
-                    ),
+                    
                     CustomInputField(
                       fieldLabel: 'Email address',
                       hint: 'enter email',
@@ -173,10 +164,7 @@ class _SignUpFormState extends State<_SignUpForm> {
                             context,
                             email: emailController!.text.trim(),
                             password: passwordController!.text.trim(),
-                            moreData: {
-                              'userName': userNameController!.text.trim(),
-                              'phoneNumber': phoneController!.text.trim(),
-                            },
+                          
                           );
                         }
                       },

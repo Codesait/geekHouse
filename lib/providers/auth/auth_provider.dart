@@ -89,12 +89,16 @@ class AuthViemodel extends _$AuthViemodel {
   /**
  * ? 
  */
+
   late StreamSubscription<AuthState> authSubscription;
+  late AuthChangeEvent event;
+  Session? session;
+
   void listenToAuthStateChange() {
     authSubscription =
         AuthService().supabase.auth.onAuthStateChange.listen((data) {
-      final event = data.event;
-      final session = data.session;
+      event = data.event;
+      session = data.session;
 
       log('event: $event, session: $session');
 
@@ -111,8 +115,10 @@ class AuthViemodel extends _$AuthViemodel {
             appNavigatorKey.currentContext!
                 .pushReplacementNamed(Constants.homePath);
           } else {
-            appNavigatorKey.currentContext!
-                .pushReplacementNamed(Constants.authPath);
+            Timer(const Duration(seconds: 2), () {
+              appNavigatorKey.currentContext!
+                  .pushReplacementNamed(Constants.authPath);
+            });
           }
 
           log('INITIAL SESSION');
@@ -123,6 +129,10 @@ class AuthViemodel extends _$AuthViemodel {
 
         case AuthChangeEvent.signedOut:
           showToast(msg: 'Signed out Successfully');
+          Timer(const Duration(seconds: 2), () {
+            appNavigatorKey.currentContext!
+                .pushReplacementNamed(Constants.authPath);
+          });
 
         case AuthChangeEvent.passwordRecovery:
         // handle password recovery
@@ -138,6 +148,10 @@ class AuthViemodel extends _$AuthViemodel {
 
         case AuthChangeEvent.userDeleted:
           showToast(msg: 'User deleted Successfully');
+          Timer(const Duration(seconds: 2), () {
+            appNavigatorKey.currentContext!
+                .pushReplacementNamed(Constants.authPath);
+          });
 
         case AuthChangeEvent.mfaChallengeVerified:
         // handle mfa challenge verified
