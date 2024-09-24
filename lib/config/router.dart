@@ -57,7 +57,7 @@ class AppRouterConfig {
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
-            child: const Home(),
+            child: const MainScreen(),
           );
         },
       ),

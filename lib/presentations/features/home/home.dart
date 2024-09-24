@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projects/main.dart';
 import 'package:projects/presentations/components/bottom_nav.dart';
 import 'package:projects/presentations/components/current_talks.dart';
 import 'package:projects/presentations/components/home_custom_appbar.dart';
@@ -83,7 +84,6 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNav(),
     );
   }
 }
@@ -136,7 +136,7 @@ class _Events extends StatelessWidget {
                     visitors: e['visitors'] as String,
                     onTap: () {
                       modal.modalSheet(
-                        context,
+                        appNavigatorKey.currentContext!,
                         child: Space(
                           title: e['title'] as String,
                         ),
