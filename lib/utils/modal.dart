@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class Modal {
-  void modalSheet(BuildContext context, {Widget? child}) {
+  void modalSheet(
+    BuildContext context, {
+    Widget? child,
+    bool isDismissible = true,
+    bool padTop = true,
+  }) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
+      isDismissible: isDismissible,
       context: context,
       builder: (BuildContext context) {
         return Container(
           height: fullHeigth(context),
           width: fullWidth(context),
-          padding: const EdgeInsets.only(top: 50),
+          padding: padTop ? const EdgeInsets.only(top: 50) : null,
           child: child,
         );
       },

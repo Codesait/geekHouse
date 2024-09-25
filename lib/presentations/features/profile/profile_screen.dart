@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_view.dart';
-import 'package:projects/providers/auth/auth_provider.dart';
 import 'package:projects/providers/profile/profile_viewmodel.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';

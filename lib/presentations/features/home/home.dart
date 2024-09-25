@@ -1,23 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:projects/main.dart';
-import 'package:projects/presentations/components/bottom_nav.dart';
 import 'package:projects/presentations/components/current_talks.dart';
 import 'package:projects/presentations/components/home_custom_appbar.dart';
-import 'package:projects/presentations/components/modal.dart';
 import 'package:projects/presentations/components/tab_pill.dart';
 import 'package:projects/presentations/components/up_coming_tablet.dart';
 import 'package:projects/presentations/features/home/space.dart';
+import 'package:projects/providers/profile/profile_viewmodel.dart';
 import 'package:projects/utils/data.dart';
 import 'package:projects/utils/mediaquery.dart';
+import 'package:projects/utils/modal.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends ConsumerState<Home> {
+  @override
+  void initState() {
+    /**
+     ** Retrieving the user data from the
+     ** authentication provider using Riverpod's `ref.watch` method.
+     */
+    Future.microtask(() {
+      ref.read(profileViewmodelProvider.notifier).getUserProfile();
+    });
+    super.initState();
+  }
+
   DataClass data = DataClass();
   double horizontalPad = 15;
 
@@ -30,57 +44,62 @@ class _HomeState extends State<Home> {
           width: fullWidth(context),
           height: fullHeigth(context),
           padding: const EdgeInsets.only(top: 25),
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: horizontalPad),
-                      child: const CustomAppBar(),
-                    ),
-                    const SizedBox(height: 25),
-                    Container(
-                      height: 45,
-                      padding: const EdgeInsets.only(bottom: 5),
-                      width: fullWidth(context),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: data.tabData
-                            .map(
-                              (e) => TabPill(
-                                backgroundColor: e['color'] as Color,
-                                title: e['title'] as String,
-                                icon: e['icon'] as String,
-                              ),
-                            )
-                            .toList(),
+          child: Skeletonizer(
+            enabled: ref.watch(profileViewmodelProvider).isLoading,
+            effect: const ShimmerEffect(),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: horizontalPad),
+                        child: const CustomAppBar(),
+                      ),
+                      const SizedBox(height: 25),
+                      Container(
+                        height: 45,
+                        padding: const EdgeInsets.only(bottom: 5),
+                        width: fullWidth(context),
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: data.tabData
+                              .map(
+                                (e) => TabPill(
+                                  backgroundColor: e['color'] as Color,
+                                  title: e['title'] as String,
+                                  icon: e['icon'] as String,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    width: fullWidth(context),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 4,
-                child: Container(
-                  width: fullWidth(context),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
+                    padding: EdgeInsets.only(
+                      right: horizontalPad,
+                      left: horizontalPad,
+                      top: 15,
+                    ),
+                    child: _Events(
+                      data: data,
                     ),
                   ),
-                  padding: EdgeInsets.only(
-                    right: horizontalPad,
-                    left: horizontalPad,
-                    top: 15,
-                  ),
-                  child: _Events(
-                    data: data,
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

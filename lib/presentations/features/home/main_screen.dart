@@ -76,8 +76,6 @@ class _MainScreenState extends State<MainScreen> {
         // margin: settings.margin,
         // avoidBottomPadding: settings.avoidBottomPadding,
         // handleAndroidBackButtonPress: settings.handleAndroidBackButtonPress,
-        // resizeToAvoidBottomInset: settings.resizeToAvoidBottomInset,
-        // stateManagement: settings.stateManagement,
         onWillPop: (context) async {
           await showDialog(
             context: context,

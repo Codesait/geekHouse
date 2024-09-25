@@ -8,4 +8,5 @@ class AppAsset {
   static String lockIcon = 'lock_icon'.svg;
   static String personIcon = 'person_Icon'.svg;
   static String dialpadIcon = 'dialpad_icon'.svg;
+  static String addIcon = 'add_icon'.svg;
 }

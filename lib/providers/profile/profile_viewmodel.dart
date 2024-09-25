@@ -1,7 +1,10 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/main.dart';
 import 'package:projects/src/data.dart';
+import 'package:projects/src/screens.dart';
 import 'package:projects/src/services.dart';
+import 'package:projects/src/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 part 'profile_viewmodel.g.dart';
@@ -17,15 +20,15 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
   Profile? userProfile;
 
-  Future<void> getUserProfile() async {
+  Future<void> getUserProfile({bool reloading = false}) async {
     final user = supabaseClient.auth.currentSession?.user;
-
-  
 
     state = const AsyncLoading();
     try {
-      // Start loader
-      BotToast.showLoading();
+      if (reloading) {
+        //* Start loader
+        BotToast.showLoading();
+      }
 
       state = await AsyncValue.guard(() async {
         final data = await supabaseClient
@@ -39,13 +42,18 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           userProfile = Profile(
             username: data['display_name'] as String? ?? 'No username',
             emailAddress: data['email'] as String? ?? 'No email',
-            phoneNumber: data['phone'] as String? ?? 'No phone',
             photoUrl: data['image_url'] as String? ?? 'No image',
             followersCount: data['follower_count'] as int? ?? 0,
             followingsCount: data['following_count'] as int? ?? 0,
           );
         } else {
           debugPrint('No profile found for user.');
+          Modal().modalSheet(
+            appNavigatorKey.currentContext!,
+            padTop: false,
+            child: const UserOnboarding(),
+          );
+
           // You can also create a new profile here if needed
           return;
         }
@@ -57,8 +65,10 @@ class ProfileViewmodel extends _$ProfileViewmodel {
       // General error handling
       debugPrintStack(stackTrace: s, label: e.toString());
     } finally {
-      // Close the loader in both success and error cases
-      BotToast.closeAllLoading();
+      if (reloading) {
+        //* Close the loader in both success and error cases
+        BotToast.closeAllLoading();
+      }
     }
   }
 
@@ -74,10 +84,10 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
       final updates = {
         'id': user.id,
-        'username': userName,
-        'website': 'website',
+        'display_name': userName,
+        'email': 'email',
+        'image_url': 'url',
         'updated_at': DateTime.now().toIso8601String(),
-        // Include followers and following counts if needed
       };
 
       await supabaseClient

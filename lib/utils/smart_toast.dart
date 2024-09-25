@@ -3,10 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/presentations/components/custom_text.dart';
+import 'package:projects/presentations/components/gap.dart';
 import 'package:projects/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
-
-import '../presentations/components/gap.dart';
 
 void showToast({
   required String msg,

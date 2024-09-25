@@ -164,28 +164,30 @@ class _PwsTextFieldState extends State<CustomInputField> {
                           ),
                         )
                       : null,
-                  suffixIcon: Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      Visibility(
-                        visible: widget.password,
-                        child: ObscureBtn(
-                          onTap: () {
-                            /// This is used to toggle the value of the `inputObscured`
-                            /// variable.
-                            setState(() {
-                              inputObscured = !inputObscured;
-                            });
-                          },
-                          inputObscured: inputObscured,
-                        ),
-                      ),
-                      Visibility(
-                        visible: widget.trailing != null,
-                        child: widget.trailing ?? const SizedBox(),
-                      ),
-                    ],
-                  ),
+                  suffixIcon: widget.password
+                      ? Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            Visibility(
+                              visible: widget.password,
+                              child: ObscureBtn(
+                                onTap: () {
+                                  /// This is used to toggle the value of the `inputObscured`
+                                  /// variable.
+                                  setState(() {
+                                    inputObscured = !inputObscured;
+                                  });
+                                },
+                                inputObscured: inputObscured,
+                              ),
+                            ),
+                            Visibility(
+                              visible: widget.trailing != null,
+                              child: widget.trailing ?? const SizedBox(),
+                            ),
+                          ],
+                        )
+                      : null,
                   filled: widget.isFilled,
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
