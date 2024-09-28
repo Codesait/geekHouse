@@ -185,11 +185,11 @@ class Validators {
 
   String? validateUserName(String? value) {
     if (value!.trim().isEmpty) {
-      return 'This field cannot be empty';
+      return 'Hey, your username is required';
     } else if (value.contains(' ')) {
       return 'This field cannot contain blank spaces';
     } else if (value.length <= 4) {
-      return 'Username too small';
+      return 'Username is too short';
     }
     return null;
   }

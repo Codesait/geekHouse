@@ -35,6 +35,7 @@ class CustomInputField extends StatefulWidget {
     this.useForgotPass = false,
     this.onForgotPassTap,
     this.visibleField = true,
+    this.hideError = false,
     this.enableInteractiveSelection,
     this.inputFormatters,
     this.onFieldSubmitted,
@@ -72,6 +73,7 @@ class CustomInputField extends StatefulWidget {
   final void Function()? onForgotPassTap;
   final bool visibleField;
   final bool? enableInteractiveSelection;
+  final bool hideError;
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String value)? onFieldSubmitted;
   final void Function()? onEditingComplete;
@@ -214,7 +216,11 @@ class _PwsTextFieldState extends State<CustomInputField> {
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
                   ),
-                  errorStyle: const TextStyle(color: Colors.redAccent),
+                  errorStyle: TextStyle(
+                    color: widget.hideError
+                        ? AppColors.kPrimary.withOpacity(.9)
+                        : Colors.redAccent,
+                  ),
                   errorMaxLines: 4,
                 ),
               ),

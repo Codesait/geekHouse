@@ -14,6 +14,7 @@ class Avatar extends StatelessWidget {
     this.avatarDimension,
     this.editorDimension = 30,
     this.editImage = false,
+    this.canDelete = true,
     super.key,
   });
   final double radius;
@@ -25,6 +26,7 @@ class Avatar extends StatelessWidget {
   final double? avatarDimension;
   final double editorDimension;
   final bool editImage;
+  final bool canDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -68,22 +70,35 @@ class Avatar extends StatelessWidget {
                     width: editorDimension / 2,
                   ),
                   itemBuilder: (context) {
-                    return <PopupMenuEntry<dynamic>>[
-                      PopupMenuItem(
-                        onTap: () {},
-                        child: const TextView(
-                          text: 'Change profile picture',
+                    if (!canDelete) {
+                      return <PopupMenuEntry<dynamic>>[
+                        PopupMenuItem(
+                          onTap: () {},
+                          child: const TextView(
+                            text: 'Change profile picture',
+                          ),
                         ),
-                      ),
-                      const PopupMenuDivider(),
-                      PopupMenuItem(
-                        onTap: () {},
-                        child: const TextView(
-                          text: 'Delete profile picture',
-                          color: Colors.red,
+                      ];
+                    } else {
+                      return <PopupMenuEntry<dynamic>>[
+                        PopupMenuItem(
+                          onTap: () {},
+                          child: const TextView(
+                            text: 'Change profile picture',
+                          ),
                         ),
-                      ),
-                    ];
+                        const PopupMenuDivider(),
+                        PopupMenuItem(
+                          onTap: () {},
+                          child: canDelete
+                              ? const TextView(
+                                  text: 'Delete profile picture',
+                                  color: Colors.red,
+                                )
+                              : const SizedBox(),
+                        ),
+                      ];
+                    }
                   },
                 ),
               ),
