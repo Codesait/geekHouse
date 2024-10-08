@@ -125,17 +125,10 @@ class _SpaceState extends State<Space> {
                         ),
                       ),
                     ),
-                    Avatar(
+                    const Avatar(
                       radius: 20,
                       backgroundColor: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 7),
-                        child: Image.asset(
-                          'assets/images/dm.png',
-                          height: 24,
-                          width: 24,
-                        ),
-                      ),
+                      avatarDimension: 40,
                     ),
                   ],
                 ),
@@ -185,18 +178,17 @@ class _SpaceState extends State<Space> {
                     // reaction row
                     Row(
                       children: [
-                        Avatar(
-                          radius: 20,
-                          backgroundColor: Colors.blueGrey.shade50,
-                          child: const Text('👋🏽'),
-                        ),
+                        // Avatar(
+                        //   radius: 20,
+                        //   backgroundColor: Colors.blueGrey.shade50,
+                        //   url: const Text('👋🏽'),
+                        // ),
                         const SizedBox(
                           width: 10,
                         ),
                         Avatar(
                           radius: 20,
                           backgroundColor: Colors.blueGrey.shade400,
-                          child: Image.asset('assets/images/yello.png'),
                         ),
                       ],
                     ),

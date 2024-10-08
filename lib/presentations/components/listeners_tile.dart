@@ -28,11 +28,7 @@ class ListenerAvatar extends StatelessWidget {
           Avatar(
             radius: 50,
             backgroundColor: color.withOpacity(0.3),
-            child: Image.asset(
-              'assets/images/$avatar',
-              height: 80,
-              width: 80,
-            ),
+            avatarDimension: 60,
           ),
           Positioned(
             bottom: 10,
@@ -47,7 +43,7 @@ class ListenerAvatar extends StatelessWidget {
   Widget desc() {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           width: 85,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,37 +52,32 @@ class ListenerAvatar extends StatelessWidget {
               Avatar(
                 radius: 14,
                 backgroundColor: Colors.white,
-                child: Text(
-                  reaction,
-                  style: const TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+                avatarDimension: 60,
               ),
-              Visibility(
-                visible: !(speaking == 'true'),
-                child: const Avatar(
-                  radius: 14,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.mic_off,
-                    color: Colors.black87,
-                    size: 15,
-                  ),
-                ),
-              ),
+              // Visibility(
+              //   visible: !(speaking == 'true'),
+              //   child: const Avatar(
+              //     radius: 14,
+              //     backgroundColor: Colors.white,
+              //     url: Icon(
+              //       Icons.mic_off,
+              //       color: Colors.black87,
+              //       size: 15,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
         const SizedBox(height: 18),
         Row(
           children: [
-            Avatar(
-              radius: 10,
-              padding: 3,
-              backgroundColor: Colors.deepPurple.shade300,
-              child: Image.asset('assets/images/frost.png'),
-            ),
+            // Avatar(
+            //   radius: 10,
+            //   padding: 3,
+            //   backgroundColor: Colors.deepPurple.shade300,
+            //   url: Image.asset('assets/images/frost.png'),
+            // ),
             const SizedBox(
               width: 5,
             ),

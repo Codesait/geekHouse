@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projects/main.dart';
+import 'package:projects/service/profile_service.dart';
 import 'package:projects/src/data.dart';
 import 'package:projects/src/screens.dart';
 import 'package:projects/src/services.dart';
@@ -18,8 +22,10 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
   final supabaseClient = AuthService().supabase;
 
+/**
+ * * FETCH/UPDATE USER PROFILE DATA
+ */
   Profile? userProfile;
-
   Future<void> getUserProfile({bool reloading = false}) async {
     final user = supabaseClient.auth.currentSession?.user;
 
@@ -48,21 +54,22 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           );
         } else {
           debugPrint('No profile found for user.');
+
+          //* We can create a new profile here
           Modal().modalSheet(
             appNavigatorKey.currentContext!,
             padTop: false,
             child: const UserOnboarding(),
           );
 
-          // You can also create a new profile here if needed
           return;
         }
       });
     } on PostgrestException catch (e) {
-      // Catch and handle the specific Postgrest error
+      //! Catch and handle the specific Postgrest error
       debugPrint('Postgrest Error: ${e.message}, Code: ${e.code}');
     } catch (e, s) {
-      // General error handling
+      //! General error handling
       debugPrintStack(stackTrace: s, label: e.toString());
     } finally {
       if (reloading) {
@@ -99,6 +106,50 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     });
   }
 
+/**
+ * * PROFILE IMAGE UPLOAD
+ */
+  int _uploadProgress = 0;
+  int get uploadProgress => _uploadProgress;
+
+  int _totalUploadProgress = 0;
+  int get totalUploadProgress => _totalUploadProgress;
+
+  Future<String?> uploadProfileImageAndGetUrl() async {
+    String? url;
+
+    // UPLOAD  CREDENTIALS
+    final cloudName = dotenv.get('CLOUD_NAME');
+    final apiKey = dotenv.get('CLOUDINARY_API_KEY');
+    final apiSecret = dotenv.get('CLOUDINARY_API_SECRET');
+    final uploadPreset = dotenv.get('CLOUDINARY_PRESET');
+
+    log('upload cred: $cloudName, $apiKey, $apiSecret, $uploadPreset');
+
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      /// Responsible for allowing the user to pick an image from their device, either from
+      /// the gallery or by taking a new photo using the camera.
+      final pickedImage = await UtilFunctions.pickImage();
+
+      url = await ProfileService().uploadProfilePhotoToCloudinary(
+        imageFile: pickedImage!,
+        cloudName: cloudName,
+        apiKey: apiKey,
+        apiSecret: apiSecret,
+        uploadPreset: uploadPreset,
+        uploadProgress: (sent, total) {
+          _uploadProgress = sent;
+          _totalUploadProgress = total;
+        },
+      ) as String;
+    });
+    return url;
+  }
+
+/**
+ * * USER LOG OUT FUNCTION
+ */
   Future<void> logOut() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {

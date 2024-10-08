@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:projects/config/app_colors.dart';
 import 'package:projects/providers/onboarding/onboard_controller.dart';
+import 'package:projects/providers/profile/profile_viewmodel.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/config.dart';
 import 'package:projects/src/utils.dart';
@@ -196,12 +197,14 @@ class _ChooseUserNameState extends State<_ChooseUserName> {
   }
 }
 
-class _AddProfilePhoto extends StatelessWidget {
+class _AddProfilePhoto extends ConsumerWidget {
   const _AddProfilePhoto({required this.userName});
   final String userName;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileProvider = ref.read(profileViewmodelProvider.notifier);
+
     return SizedBox(
       child: SingleChildScrollView(
         child: Column(
@@ -244,7 +247,13 @@ class _AddProfilePhoto extends StatelessWidget {
               editorDimension: 60,
               editImage: true,
               canDelete: false,
-              child: Image.asset('assets/images/yello.png'),
+              onEditImageTap: () {
+                profileProvider.uploadProfileImageAndGetUrl().then((v) {
+                  if(v != null){
+                    
+                  }
+                });
+              },
             ),
           ],
         ),

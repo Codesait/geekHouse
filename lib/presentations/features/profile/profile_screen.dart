@@ -106,9 +106,8 @@ class _AboutUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Avatar(
+        const Avatar(
           avatarDimension: 100,
-          child: Image.asset('assets/images/yello.png'),
         ),
         const Gap(10),
         const Hero(
@@ -139,7 +138,7 @@ class _AboutUser extends StatelessWidget {
 }
 
 class _Followings extends StatelessWidget {
-  const _Followings({super.key});
+  const _Followings();
 
   @override
   Widget build(BuildContext context) {

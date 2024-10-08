@@ -6,10 +6,12 @@ class Modal {
     BuildContext context, {
     Widget? child,
     bool isDismissible = true,
+    bool enableDrag = false,
     bool padTop = true,
   }) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
+      enableDrag: enableDrag,
       isDismissible: isDismissible,
       context: context,
       builder: (BuildContext context) {

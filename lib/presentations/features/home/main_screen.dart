@@ -76,22 +76,5 @@ class _MainScreenState extends State<MainScreen> {
         // margin: settings.margin,
         // avoidBottomPadding: settings.avoidBottomPadding,
         // handleAndroidBackButtonPress: settings.handleAndroidBackButtonPress,
-        onWillPop: (context) async {
-          await showDialog(
-            context: context,
-            builder: (context) => Dialog(
-              child: Center(
-                child: ElevatedButton(
-                  child: const Text('Close'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-          return false;
-        },
-        // popAllScreensOnTapOfSelectedTab: true,
       );
 }

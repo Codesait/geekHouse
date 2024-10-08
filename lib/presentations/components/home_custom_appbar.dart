@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:projects/presentations/components/avatar.dart';
 import 'package:projects/src/components.dart';
 import 'package:projects/src/utils.dart';
 
@@ -30,7 +29,6 @@ class CustomAppBar extends StatelessWidget {
             Avatar(
               radius: 20,
               backgroundColor: Colors.deepPurple.shade300,
-              child: Image.asset('assets/images/yello.png'),
               onTap: () => context.pushNamed(Constants.profilePath),
             ),
           ],
