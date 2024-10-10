@@ -18,17 +18,51 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
+
+  google_fonts: ^6.2.1
+  persistent_bottom_nav_bar_v2: ^5.3.0
+  package_info_plus: ^8.0.2
+  flutter_svg: ^2.0.10+1
+  skeletonizer: ^1.4.2
+
+  # router
+  go_router: ^14.1.4
+
+
+  # database
+  supabase_flutter: ^2.6.0
+  flutter_dotenv: ^5.1.0
+  shared_preferences: ^2.3.2
+
+  # state management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  bot_toast: ^4.1.3
+  dio: ^5.5.0
+  file_picker: ^8.1.2
+  image_picker: ^1.1.2
+  http_parser: ^4.0.2
+  cached_network_image: ^3.4.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  very_good_analysis: ^5.1.0
+
+  build_runner:
+
+  riverpod_generator:
+
+  hive_generator: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -40,6 +74,7 @@ flutter:
 
   assets:
     - assets/images/
+    - auth_secrets.env
 
 
   fonts:

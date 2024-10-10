@@ -11,7 +11,13 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>projects</string>
+	<string>Geek House</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This permission allows you to select images from your library to personalize your profile within the app.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This permission allows you to take selfie or pictures to personalize your profile within the app.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone for you to join real-time calls in the app.</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,5 +47,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>
