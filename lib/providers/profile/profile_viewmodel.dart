@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:projects/main.dart';
 import 'package:projects/service/profile_service.dart';
 import 'package:projects/src/data.dart';
@@ -17,7 +17,7 @@ part 'profile_viewmodel.g.dart';
 class ProfileViewmodel extends _$ProfileViewmodel {
   @override
   FutureOr<dynamic> build() {
-    return null;
+    return state;
   }
 
   final supabaseClient = AuthService().supabase;
@@ -118,19 +118,17 @@ class ProfileViewmodel extends _$ProfileViewmodel {
   Future<String?> uploadProfileImageAndGetUrl() async {
     String? url;
 
-    // UPLOAD  CREDENTIALS
-    final cloudName = dotenv.get('CLOUD_NAME');
-    final apiKey = dotenv.get('CLOUDINARY_API_KEY');
-    final apiSecret = dotenv.get('CLOUDINARY_API_SECRET');
-    final uploadPreset = dotenv.get('CLOUDINARY_PRESET');
-
-    log('upload cred: $cloudName, $apiKey, $apiSecret, $uploadPreset');
+    /// Responsible for allowing the user to pick an image from their device, either from
+    /// the gallery or by taking a new photo using the camera.
+    final pickedImage = await UtilFunctions.pickImage();
 
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      /// Responsible for allowing the user to pick an image from their device, either from
-      /// the gallery or by taking a new photo using the camera.
-      final pickedImage = await UtilFunctions.pickImage();
+      // UPLOAD  CREDENTIALS
+      final cloudName = dotenv.get('CLOUD_NAME');
+      final apiKey = dotenv.get('CLOUDINARY_API_KEY');
+      final apiSecret = dotenv.get('CLOUDINARY_API_SECRET');
+      final uploadPreset = dotenv.get('CLOUDINARY_PRESET');
 
       url = await ProfileService().uploadProfilePhotoToCloudinary(
         imageFile: pickedImage!,

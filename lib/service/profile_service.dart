@@ -24,12 +24,16 @@ class ProfileService extends ApiHelper {
     /**
      ** GENERATE TIMESTAMP FOR SIGNING
      */
-    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final timestamp = (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
     /**
      ** GENERATE SIGNATURE FOR UPLOAD 
      */
-    final signature = UtilFunctions.generateSignature(apiSecret, timestamp);
+    // final signature = UtilFunctions.generateSignature(
+    //   apiSecret,
+    //   timestamp,
+    //   'profile_image',
+    // );
 
     /** 
      *? SET UP UPLOAD MAP
@@ -40,13 +44,14 @@ class ProfileService extends ApiHelper {
         filename: imageFile.name,
         contentType: MediaType('image', 'png'),
       ),
-      'timestamp': timestamp,
       'api_key': apiKey,
-      // 'signature': signature,
+      'timestamp': timestamp,
+      'folder': 'profile_photo',
       'upload_preset': uploadPreset,
       'api_secret': apiSecret,
     });
 
+    //* RESPONSE
     final response = await uploadMth(
       Uri.parse(url),
       data: form,
@@ -58,6 +63,7 @@ class ProfileService extends ApiHelper {
 
     if (decodeRes != null) {
       final secureImageUrl = decodeRes['secure_url'] as String;
+
       log('SECURE URL: $secureImageUrl');
 
       return secureImageUrl;

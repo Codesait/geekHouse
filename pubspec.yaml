@@ -51,6 +51,9 @@ dependencies:
   http_parser: ^4.0.2
   cached_network_image: ^3.4.1
   permission_handler: ^11.3.1
+  crypto: ^3.0.5
+
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +77,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/animations/
     - auth_secrets.env
 
 

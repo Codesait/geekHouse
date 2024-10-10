@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget {
               onPressed: () {},
             ),
             Avatar(
-              radius: 20,
+              avatarDimension: 40,
               backgroundColor: Colors.deepPurple.shade300,
               onTap: () => context.pushNamed(Constants.profilePath),
             ),

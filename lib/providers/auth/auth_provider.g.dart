@@ -6,7 +6,7 @@ part of 'auth_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViemodelHash() => r'beb2fc2fbeef3211196b741382d650864ec9cb61';
+String _$authViemodelHash() => r'd77cad34cde8a91ba4043fe5f17a82bd2ee55e9b';
 
 /// See also [AuthViemodel].
 @ProviderFor(AuthViemodel)

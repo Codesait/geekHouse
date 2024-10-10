@@ -197,13 +197,20 @@ class _ChooseUserNameState extends State<_ChooseUserName> {
   }
 }
 
-class _AddProfilePhoto extends ConsumerWidget {
+class _AddProfilePhoto extends ConsumerStatefulWidget {
   const _AddProfilePhoto({required this.userName});
   final String userName;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _AddProfilePhotoState createState() => _AddProfilePhotoState();
+}
+
+class _AddProfilePhotoState extends ConsumerState<_AddProfilePhoto> {
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(profileViewmodelProvider);
     final profileProvider = ref.read(profileViewmodelProvider.notifier);
+    final onboardController = ref.read(onboardingController);
 
     return SizedBox(
       child: SingleChildScrollView(
@@ -214,7 +221,7 @@ class _AddProfilePhoto extends ConsumerWidget {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: '@${userName.toLowerCase()}',
+                    text: '@${widget.userName.toLowerCase()}',
                     style: TextStyle(
                       color: AppColors.kPrimary,
                     ),
@@ -243,14 +250,17 @@ class _AddProfilePhoto extends ConsumerWidget {
             ),
             const Gap(30),
             Avatar(
-              avatarDimension: 300,
-              editorDimension: 60,
+              url: onboardController.imageUrl,
+              avatarDimension: 280,
+              editorDimension: 65,
+              radius: 200,
               editImage: true,
               canDelete: false,
-              onEditImageTap: () {
-                profileProvider.uploadProfileImageAndGetUrl().then((v) {
-                  if(v != null){
-                    
+              imageUploadInProgress: state.isLoading,
+              onEditImageTap: () async {
+                await profileProvider.uploadProfileImageAndGetUrl().then((v) {
+                  if (v != null) {
+                    onboardController.imageUrl = v;
                   }
                 });
               },
