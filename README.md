@@ -1,6 +1,6 @@
 # GeekHouse
 
-# Open Source Flutter App
+# RTC Flutter App
 
 This is an open-source Flutter app that integrates with Supabase for authentication and Cloudinary for image uploads.
 
