@@ -19,21 +19,17 @@ class UserOnboarding extends ConsumerStatefulWidget {
 
 class UserOnboardingState extends ConsumerState<UserOnboarding> {
   late PageController _pageController;
-  late TextEditingController _userNameController;
-
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _pageController = PageController();
-    _userNameController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _userNameController.dispose();
     super.dispose();
   }
 
@@ -74,9 +70,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                         const _OnboardIntro(),
                         Form(
                           key: formKey,
-                          child: _ChooseUserName(
-                            userNameController: _userNameController,
-                          ),
+                          child: const _ChooseUserName(),
                         ),
                         _AddProfilePhoto(
                           userName: controller.userName ?? '',
@@ -95,18 +89,20 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                               duration: transitionDuration,
                               curve: animationCurve,
                             );
-                          } else if (controller.page == 1) {
-                            if (formKey.currentState!.validate()) {
-                              await _pageController.nextPage(
-                                duration: transitionDuration,
-                                curve: animationCurve,
-                              );
-                              state(() {
-                                controller.userName =
-                                    _userNameController.text.trim();
-                              });
-                            }
-                          } else {}
+                          } else if (controller.page == 1 &&
+                              formKey.currentState!.validate()) {
+                            await _pageController.nextPage(
+                              duration: transitionDuration,
+                              curve: animationCurve,
+                            );
+                          } else if (controller.page == 2) {
+                            await ref
+                                .read(profileViewmodelProvider.notifier)
+                                .onboardUser(
+                                  userName: controller.userName,
+                                  imageUrl: controller.imageUrl,
+                                );
+                          }
                         },
                         borderRadius: 100,
                         color: controller.page == 1
@@ -154,15 +150,28 @@ class _OnboardIntro extends StatelessWidget {
   }
 }
 
-class _ChooseUserName extends StatefulWidget {
-  const _ChooseUserName({required this.userNameController});
-  final TextEditingController userNameController;
+class _ChooseUserName extends ConsumerStatefulWidget {
+  const _ChooseUserName();
+  // final TextEditingController userNameController;
 
   @override
-  State<_ChooseUserName> createState() => _ChooseUserNameState();
+  _ChooseUserNameState createState() => _ChooseUserNameState();
 }
 
-class _ChooseUserNameState extends State<_ChooseUserName> {
+class _ChooseUserNameState extends ConsumerState<_ChooseUserName> {
+  late TextEditingController _userNameController;
+  @override
+  void initState() {
+    _userNameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -186,8 +195,11 @@ class _ChooseUserNameState extends State<_ChooseUserName> {
                 hideError: true,
                 prefixIcon: 'assets/images/@_email.svg',
                 textAlign: TextAlign.center,
-                controller: widget.userNameController,
+                controller: _userNameController,
                 validator: (value) => Validators().validateUserName(value),
+                onChanged: (v) {
+                  ref.read(onboardingController).userName = v;
+                },
               ),
             ),
           ],

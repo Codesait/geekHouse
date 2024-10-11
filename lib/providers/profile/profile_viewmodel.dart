@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:projects/main.dart';
 import 'package:projects/service/profile_service.dart';
 import 'package:projects/src/data.dart';
@@ -77,38 +78,56 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     }
   }
 
-  Future<void> updateUserProfile({String? userName}) async {
-    final user = supabaseClient.auth.currentSession!.user;
+  Future<void> onboardUser({
+    String? userName,
+    String? imageUrl,
+  }) async {
+    if (userName != null && imageUrl != null) {
+      final user = supabaseClient.auth.currentSession!.user;
 
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      /**
+      state = const AsyncLoading();
+      state = await AsyncValue.guard(() async {
+        /**
        * *START LOADER
       */
-      BotToast.showLoading();
+        BotToast.showLoading();
 
-      final updates = {
-        'id': user.id,
-        'display_name': userName,
-        'email': 'email',
-        'image_url': 'url',
-        'updated_at': DateTime.now().toIso8601String(),
-      };
+        final updates = {
+          'id': user.id,
+          'display_name': userName,
+          'image_url': imageUrl,
+          'updated_at': DateTime.now().toIso8601String(),
+        };
 
-      await supabaseClient
-          .from('profile')
-          .upsert(updates)
-          .whenComplete(BotToast.closeAllLoading);
-    }).onError<PostgrestException>((e, s) {
-      throw PostgrestException(message: e.message, code: e.code);
-    });
+        await supabaseClient.from('profile').upsert(updates).then((v) {
+          /**
+         *? Navigate use to entry
+         */
+          appNavigatorKey.currentContext!.pushReplacementNamed(
+            Constants.homePath,
+          );
+        }).whenComplete(BotToast.closeAllLoading);
+      }).onError<PostgrestException>((e, s) {
+        throw PostgrestException(message: e.message, code: e.code);
+      });
+    } else if (imageUrl == null) {
+      showToast(
+        title: 'Missing Params',
+        msg: 'To proceed, please select \na profile photo ',
+        isWarningMessage: true,
+      );
+    } else {
+      showToast(
+        title: 'Missing Params',
+        msg: 'Unexpected Error',
+        isError: true,
+      );
+    }
   }
 
 /**
  * * PROFILE IMAGE UPLOAD
  */
-  int _uploadProgress = 0;
-  int get uploadProgress => _uploadProgress;
 
   int _totalUploadProgress = 0;
   int get totalUploadProgress => _totalUploadProgress;
@@ -143,7 +162,6 @@ class ProfileViewmodel extends _$ProfileViewmodel {
         apiSecret: apiSecret,
         uploadPreset: uploadPreset,
         uploadProgress: (sent, total) {
-          _uploadProgress = sent;
           _totalUploadProgress = total;
         },
       ) as String;
