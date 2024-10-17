@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({

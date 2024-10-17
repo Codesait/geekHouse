@@ -6,7 +6,7 @@ import 'package:projects/presentations/components/home_custom_appbar.dart';
 import 'package:projects/presentations/components/tab_pill.dart';
 import 'package:projects/presentations/components/up_coming_tablet.dart';
 import 'package:projects/presentations/features/home/space.dart';
-import 'package:projects/providers/profile/profile_viewmodel.dart';
+import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:projects/utils/data.dart';
 import 'package:projects/utils/mediaquery.dart';
 import 'package:projects/utils/modal.dart';
@@ -42,7 +42,7 @@ class HomeState extends ConsumerState<Home> {
       body: SafeArea(
         child: Container(
           width: fullWidth(context),
-          height: fullHeigth(context),
+          height: fullHeight(context),
           padding: const EdgeInsets.only(top: 25),
           child: Skeletonizer(
             enabled: ref.watch(profileViewmodelProvider).isLoading,

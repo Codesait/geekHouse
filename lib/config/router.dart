@@ -2,8 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/main.dart';
-import 'package:projects/src/screens.dart';
-import 'package:projects/src/utils.dart';
+import 'package:projects/commons/src/screens.dart';
+import 'package:projects/commons/src/utils.dart';
 
 CustomTransitionPage<T> buildPageWithDefaultTransition<T>({
   required BuildContext context,

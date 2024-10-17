@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projects/presentations/components/obscure_btn.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
 
 class CustomInputField extends StatefulWidget {
   const CustomInputField({

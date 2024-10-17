@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_text.dart';
 import 'package:projects/presentations/components/gap.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 void showToast({
@@ -324,7 +324,7 @@ void alertSheet(
   showModalBottomSheet<dynamic>(
     context: context,
     builder: (ctx) => SizedBox(
-      height: fullHeigth(context),
+      height: fullHeight(context),
       width: fullWidth(context),
       child: StatefulBuilder(
         builder: (context, setState) {

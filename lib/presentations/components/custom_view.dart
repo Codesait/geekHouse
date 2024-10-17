@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class ContentView extends StatelessWidget {
@@ -27,7 +27,7 @@ class ContentView extends StatelessWidget {
         ),
       ),
       body: Container(
-        height: fullHeigth(context),
+        height: fullHeight(context),
         width: fullWidth(context),
         padding: padding,
         child: body,

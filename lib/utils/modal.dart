@@ -16,7 +16,7 @@ class Modal {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: fullHeigth(context),
+          height: fullHeight(context),
           width: fullWidth(context),
           padding: padTop ? const EdgeInsets.only(top: 50) : null,
           child: child,

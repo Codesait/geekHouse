@@ -1,15 +1,18 @@
+import 'dart:developer';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projects/commons/src/data.dart';
+import 'package:projects/commons/src/screens.dart';
+import 'package:projects/commons/src/services.dart';
+import 'package:projects/commons/src/utils.dart';
 import 'package:projects/main.dart';
 import 'package:projects/service/profile_service.dart';
-import 'package:projects/src/data.dart';
-import 'package:projects/src/screens.dart';
-import 'package:projects/src/services.dart';
-import 'package:projects/src/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 part 'profile_viewmodel.g.dart';
 
 @riverpod
@@ -51,6 +54,8 @@ class ProfileViewmodel extends _$ProfileViewmodel {
             followersCount: data['follower_count'] as int? ?? 0,
             followingsCount: data['following_count'] as int? ?? 0,
           );
+
+          log('PROFILE $userProfile');
         } else {
           debugPrint('No profile found for user.');
 
@@ -78,7 +83,8 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     }
   }
 
-  Future<void> onboardUser({
+  Future<void> onboardUser(
+    BuildContext context, {
     String? userName,
     String? imageUrl,
   }) async {
@@ -95,18 +101,31 @@ class ProfileViewmodel extends _$ProfileViewmodel {
         final updates = {
           'id': user.id,
           'display_name': userName,
+          'email': user.email,
           'image_url': imageUrl,
+          'following_count': 0,
+          'follower_count': 0,
           'updated_at': DateTime.now().toIso8601String(),
         };
 
-        await supabaseClient.from('profile').upsert(updates).then((v) {
+        await supabaseClient.from('profile').insert(updates).then((v) {
+          if (v != null) {
+            log('Update data: $v');
+          }
+        }).whenComplete(() {
           /**
-         *? Navigate use to entry
-         */
+            *! stop loader
+          */
+          BotToast.closeAllLoading();
+
+          /**
+           *? Navigate use to entry
+          */
           appNavigatorKey.currentContext!.pushReplacementNamed(
             Constants.homePath,
           );
-        }).whenComplete(BotToast.closeAllLoading);
+          context.pop();
+        });
       }).onError<PostgrestException>((e, s) {
         throw PostgrestException(message: e.message, code: e.code);
       });

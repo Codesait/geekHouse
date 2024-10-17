@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/providers/auth/auth_provider.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
+import 'package:projects/presentations/features/auth/viewmodel/auth_provider.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       body: SafeArea(
         bottom: false,
         child: Container(
-          height: fullHeigth(context),
+          height: fullHeight(context),
           width: fullWidth(context),
           padding: const EdgeInsets.only(top: 30),
           child: Stack(
@@ -41,7 +41,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Positioned(
                 bottom: 0,
                 child: Container(
-                  height: fullHeigth(context) / 1.4,
+                  height: fullHeight(context) / 1.4,
                   width: fullWidth(context),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 25,
@@ -98,7 +98,7 @@ class _SignUpFormState extends State<_SignUpForm> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: fullHeigth(context) / 1.9,
+            height: fullHeight(context) / 1.9,
             child: Form(
               key: regFormKey,
               child: SingleChildScrollView(

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/main.dart';
-import 'package:projects/src/services.dart';
-import 'package:projects/src/utils.dart';
+import 'package:projects/commons/src/services.dart';
+import 'package:projects/commons/src/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 part 'auth_provider.g.dart';
@@ -37,6 +37,7 @@ class AuthViemodel extends _$AuthViemodel {
       await provider
           .registerNewUser(email: email, password: password)
           .then((value) {
+
         /**
          * ? go to login after user sign up
          */
@@ -50,6 +51,7 @@ class AuthViemodel extends _$AuthViemodel {
             const Duration(milliseconds: 1500),
             () => context.pushReplacementNamed(Constants.loginPath),
           );
+
         }
       }).whenComplete(BotToast.closeAllLoading);
     });

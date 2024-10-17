@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:projects/config/app_colors.dart';
-import 'package:projects/providers/onboarding/onboard_controller.dart';
-import 'package:projects/providers/profile/profile_viewmodel.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
-import 'package:projects/utils/mediaquery.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/providers.dart';
+import 'package:projects/commons/src/utils.dart';
 
 class UserOnboarding extends ConsumerStatefulWidget {
   const UserOnboarding({super.key});
@@ -46,7 +43,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
           return SafeArea(
             child: Container(
               width: fullWidth(context),
-              height: fullHeigth(context),
+              height: fullHeight(context),
               padding: const EdgeInsets.fromLTRB(25, 55, 25, 15),
               child: Column(
                 children: [
@@ -64,7 +61,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                     child: CustomPageView(
                       pageController: _pageController,
                       onPageChange: controller.setPage,
-                      height: fullHeigth(context) / 1.5,
+                      height: fullHeight(context) / 1.5,
                       pageSnapping: false,
                       pages: [
                         const _OnboardIntro(),
@@ -99,6 +96,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                             await ref
                                 .read(profileViewmodelProvider.notifier)
                                 .onboardUser(
+                                  context,
                                   userName: controller.userName,
                                   imageUrl: controller.imageUrl,
                                 );
@@ -131,7 +129,7 @@ class _OnboardIntro extends StatelessWidget {
         children: [
           SvgPicture.asset(
             'assets/images/onboarding.svg',
-            height: fullHeigth(context) / 1.9,
+            height: fullHeight(context) / 1.9,
           ),
           const TextView(
             text: 'We Want to Know You More Geek',

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/config.dart';
 
 class TextView extends StatelessWidget {
   const TextView({

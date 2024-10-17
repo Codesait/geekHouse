@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class PageViewIndicator extends StatelessWidget {
@@ -16,7 +16,7 @@ class PageViewIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        maxWidth: fullHeigth(context),
+        maxWidth: fullHeight(context),
         minWidth: 100,
         maxHeight: 50,
       ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_view.dart';
-import 'package:projects/providers/profile/profile_viewmodel.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
+import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
