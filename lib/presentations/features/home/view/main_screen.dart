@@ -8,6 +8,8 @@ import 'package:projects/utils/mediaquery.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
+  static String homePath = 'homeScreen';
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }

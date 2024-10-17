@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/commons/src/screens.dart';
 import 'package:projects/presentations/features/auth/viewmodel/auth_provider.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/config.dart';
@@ -10,6 +11,7 @@ import 'package:projects/utils/mediaquery.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
+  static String regPath = 'regScreen';
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -197,7 +199,7 @@ class _RegisteredWidget extends StatelessWidget {
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: InkWell(
-              onTap: () => context.pushNamed(Constants.loginPath),
+              onTap: () => context.pushNamed(LoginScreen.loginPath),
               borderRadius: BorderRadius.circular(5),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),

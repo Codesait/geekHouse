@@ -122,7 +122,7 @@ class ProfileViewmodel extends _$ProfileViewmodel {
            *? Navigate use to entry
           */
           appNavigatorKey.currentContext!.pushReplacementNamed(
-            Constants.homePath,
+            MainScreen.homePath,
           );
           context.pop();
         });

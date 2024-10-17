@@ -12,6 +12,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
 
+  static String profilePath = 'profileScreen';
+
   @override
   UserProfileState createState() => UserProfileState();
 }

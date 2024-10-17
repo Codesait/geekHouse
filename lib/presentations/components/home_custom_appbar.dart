@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/components.dart';
-import 'package:projects/commons/src/utils.dart';
+import 'package:projects/commons/src/screens.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget {
             Avatar(
               avatarDimension: 40,
               backgroundColor: Colors.deepPurple.shade300,
-              onTap: () => context.pushNamed(Constants.profilePath),
+              onTap: () => context.pushNamed(UserProfile.profilePath),
             ),
           ],
         ),

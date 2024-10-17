@@ -9,6 +9,8 @@ import 'package:projects/commons/src/config.dart';
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
+  static String splashPath = 'loginScreen';
+
   @override
   SplashScreenState createState() => SplashScreenState();
 }
@@ -16,7 +18,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 class SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
-    Timer(
+    Future.delayed(
       const Duration(seconds: 4),
       () => ref.read(authViemodelProvider.notifier).listenToAuthStateChange(),
     );

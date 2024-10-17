@@ -53,8 +53,7 @@ class HomeState extends ConsumerState<Home> {
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: horizontalPad),
+                        padding: EdgeInsets.symmetric(horizontal: horizontalPad),
                         child: const CustomAppBar(),
                       ),
                       const SizedBox(height: 25),
@@ -120,7 +119,7 @@ class _Events extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           /**
-           ** UPCOMMING EVENTS
+           ** UPCOMING EVENTS
            */
           const Text(
             'Upcoming',
