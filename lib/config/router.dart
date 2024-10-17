@@ -1,9 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projects/commons/src/screens.dart';
 import 'package:projects/main.dart';
-import 'package:projects/src/screens.dart';
-import 'package:projects/src/utils.dart';
 
 CustomTransitionPage<T> buildPageWithDefaultTransition<T>({
   required BuildContext context,
@@ -40,7 +39,7 @@ class AppRouterConfig {
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
         path: '/',
-        name: Constants.splashPath,
+        name: SplashScreen.splashPath,
         pageBuilder: (context, state) {
           return buildPageWithDefaultTransition(
             context: context,
@@ -52,7 +51,7 @@ class AppRouterConfig {
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
         path: '/home',
-        name: Constants.homePath,
+        name: MainScreen.homePath,
         pageBuilder: (context, state) {
           return buildPageWithDefaultTransition(
             context: context,
@@ -64,7 +63,7 @@ class AppRouterConfig {
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
         path: '/profile',
-        name: Constants.profilePath,
+        name: UserProfile.profilePath,
         pageBuilder: (context, state) {
           return buildPageWithDefaultTransition(
             context: context,
@@ -82,8 +81,8 @@ class AppRouterConfig {
         },
         routes: [
           GoRoute(
-            path: '/auth',
-            name: Constants.authPath,
+            path: '/welcome',
+            name: WelcomeScreen.welcomePath,
             pageBuilder: (context, state) {
               return buildPageWithDefaultTransition(
                 context: context,
@@ -94,7 +93,7 @@ class AppRouterConfig {
             routes: [
               GoRoute(
                 path: 'login',
-                name: Constants.loginPath,
+                name: LoginScreen.loginPath,
                 pageBuilder: (context, state) {
                   return buildPageWithDefaultTransition(
                     context: context,
@@ -105,7 +104,7 @@ class AppRouterConfig {
               ),
               GoRoute(
                 path: 'registration',
-                name: Constants.regPath,
+                name: RegistrationScreen.regPath,
                 pageBuilder: (context, state) {
                   return buildPageWithDefaultTransition(
                     context: context,

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/providers/auth/auth_provider.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
+import 'package:projects/commons/src/screens.dart';
+import 'package:projects/presentations/features/auth/viewmodel/auth_provider.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+  static String loginPath = 'loginScreen';
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: Container(
-          height: fullHeigth(context),
+          height: fullHeight(context),
           width: fullWidth(context),
           padding: const EdgeInsets.only(top: 30),
           child: Stack(
@@ -33,10 +36,9 @@ class LoginScreen extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 child: Container(
-                  height: fullHeigth(context) / 1.4,
+                  height: fullHeight(context) / 1.4,
                   width: fullWidth(context),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                   decoration: const BoxDecoration(
                     color: AppColors.kWhite,
                     borderRadius: BorderRadius.horizontal(
@@ -160,7 +162,7 @@ class _NotRegisteredWidget extends StatelessWidget {
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: InkWell(
-              onTap: () => context.pushNamed(Constants.regPath),
+              onTap: () => context.pushNamed(RegistrationScreen.regPath),
               borderRadius: BorderRadius.circular(5),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),

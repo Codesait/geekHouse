@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/screens.dart';
+import 'package:projects/commons/src/utils.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+
+  static String welcomePath = 'welcomeScreen';
 
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
@@ -19,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       backgroundColor: AppColors.kPrimary,
       body: SafeArea(
         child: Container(
-          height: fullHeigth(context),
+          height: fullHeight(context),
           width: fullWidth(context),
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
           child: Column(
@@ -45,7 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       width: fullWidth(context) * .4,
                       borderColor: AppColors.kWhite,
                       text: 'Login',
-                      onPressed: () => context.pushNamed(Constants.loginPath),
+                      onPressed: () => context.pushNamed(LoginScreen.loginPath),
                     ),
                     DefaultButton(
                       borderRadius: 40,
@@ -53,7 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       color: AppColors.kWhite,
                       textColor: AppColors.kBlack,
                       text: 'Signup',
-                      onPressed: () => context.pushNamed(Constants.regPath),
+                      onPressed: () => context.pushNamed(RegistrationScreen.regPath),
                     ),
                   ],
                 ),

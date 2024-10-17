@@ -1,17 +1,20 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_text.dart';
 import 'package:projects/presentations/components/gap.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 void showToast({
   required String msg,
   bool isError = false,
   String? title,
-  bool isNeutralMessage = false,
+  bool isWarningMessage = false,
 }) {
   const second = 4;
   const preferDirection = PreferDirection.topRight;
@@ -94,18 +97,91 @@ void showToast({
       ),
     );
   } else {
-    BotToast.showSimpleNotification(
-      title: msg,
-      borderRadius: 10.2,
-      duration: const Duration(seconds: 3),
-      titleStyle: const TextStyle(color: Colors.white, fontSize: 12),
+    BotToast.showCustomNotification(
+      // title: msg,
+      // borderRadius: 10.2,
+      duration: const Duration(seconds: 5),
+      // titleStyle: const TextStyle(color: Colors.white, fontSize: 12),
       align: Alignment.topRight,
       crossPage: false,
-      backgroundColor: isNeutralMessage
-          ? Colors.grey
-          : isError
-              ? Colors.red
-              : Colors.green,
+      toastBuilder: (cancelFunc) {
+        /**
+         ** Status colors based on message type
+         */
+        Color getStatusColor() {
+          return isWarningMessage
+              ? Colors.orangeAccent.shade700
+              : isError
+                  ? Colors.redAccent.shade700
+                  : Colors.greenAccent.shade700;
+        }
+
+        /**
+         ** Icon status data based on message type
+         */
+        IconData getStatusIcon() {
+          return isWarningMessage
+              ? Icons.warning_rounded
+              : isError
+                  ? Icons.error
+                  : Icons.check_circle;
+        }
+
+        return Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
+          width: fullWidth(appNavigatorKey.currentContext!),
+          constraints: const BoxConstraints(
+            maxHeight: 90,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColors.kWhite, width: 1.5),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                getStatusColor().withOpacity(.5),
+                getStatusColor().withOpacity(.4),
+                AppColors.kWhite,
+              ],
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundColor: const Color.fromARGB(255, 239, 233, 233),
+                child: Icon(
+                  getStatusIcon(),
+                  color: getStatusColor(),
+                ),
+              ),
+              const Gap(10),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextView(
+                      text: title ?? 'Alert',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    Flexible(
+                      child: TextView(
+                        text: msg,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontSize: 16,
+                        maxLines: 2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -248,7 +324,7 @@ void alertSheet(
   showModalBottomSheet<dynamic>(
     context: context,
     builder: (ctx) => SizedBox(
-      height: fullHeigth(context),
+      height: fullHeight(context),
       width: fullWidth(context),
       child: StatefulBuilder(
         builder: (context, setState) {

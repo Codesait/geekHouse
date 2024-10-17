@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/screens.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/screens.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  static String homePath = 'homeScreen';
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -46,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         PersistentTabConfig(
           screen: SizedBox(
-            height: fullHeigth(context),
+            height: fullHeight(context),
             width: fullWidth(context),
             child: const Center(
               child: Text('Messages'),

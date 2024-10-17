@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projects/src/config.dart';
+import 'package:projects/commons/src/config.dart';
 
 class ObscureBtn extends StatefulWidget {
   const ObscureBtn({

@@ -8,7 +8,7 @@ class UpComings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: fullWidth(context),
-      height: fullHeigth(context) / 6.5,
+      height: fullHeight(context) / 6.5,
       padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),

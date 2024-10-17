@@ -1,13 +1,22 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:crypto/crypto.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class UtilFunctions {
-  static String generateSignature(String apiSecret, int timestamp) {
-    final signatureData = 'timestamp=$timestamp$apiSecret';
-    final bytes = utf8.encode(signatureData);
-    return base64.encode(bytes);
+  static String generateSignature(
+    String apiSecret,
+    int timestamp,
+    String publicId,
+  ) {
+    
+    final signatureString = '$timestamp:$apiSecret:$publicId';
+    final bytes = utf8.encode(signatureString);
+    final digest = sha1.convert(bytes);
+    final signature =
+        digest.bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    return '$timestamp:$signature';
   }
 
   /// Allows the user to pick an image from the gallery using the `ImagePicker`

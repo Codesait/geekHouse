@@ -20,7 +20,7 @@ class CurrentTablet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: fullWidth(context),
-      height: fullHeigth(context) / 4.5,
+      height: fullHeight(context) / 4.5,
       padding: const EdgeInsets.all(30),
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(

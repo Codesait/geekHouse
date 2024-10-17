@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
+import 'package:lottie/lottie.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({
@@ -18,6 +17,7 @@ class Avatar extends StatelessWidget {
     this.editorDimension = 30,
     this.editImage = false,
     this.canDelete = true,
+    this.imageUploadInProgress = false,
     this.onEditImageTap,
     super.key,
   });
@@ -31,6 +31,7 @@ class Avatar extends StatelessWidget {
   final double editorDimension;
   final bool editImage;
   final bool canDelete;
+  final bool imageUploadInProgress;
   final void Function()? onEditImageTap;
 
   @override
@@ -43,15 +44,16 @@ class Avatar extends StatelessWidget {
             avatarDimension: avatarDimension,
             onTap: onTap,
             imageUrl: url,
-            backgroundColor: backgroundColor,
+            backgroundColor: AppColors.kPrimary.withOpacity(.4),
             radius: radius,
             padding: padding,
+            uploading: imageUploadInProgress,
           ),
           _EditWidget(
             canDelete: canDelete,
             editImage: editImage,
             editorDimension: editorDimension,
-            onEditImageTap: onEditImageTap ,
+            onEditImageTap: onEditImageTap,
           ),
         ],
       ),
@@ -61,53 +63,66 @@ class Avatar extends StatelessWidget {
 
 class _ImageHolder extends StatelessWidget {
   const _ImageHolder({
+    required this.radius,
+    required this.uploading,
     this.avatarDimension,
     this.onTap,
     this.imageUrl,
     this.backgroundColor,
-    this.radius,
     this.padding,
   });
   final void Function()? onTap;
   final double? avatarDimension;
-  final double? radius;
+  final double radius;
   final String? imageUrl;
   final Color? backgroundColor;
   final double? padding;
+  final bool uploading;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: avatarDimension,
-      child: GestureDetector(
-        onTap: onTap,
-        child: CircleAvatar(
-          radius: radius,
-          backgroundColor: backgroundColor,
-          child: Padding(
-            padding: EdgeInsets.all(padding ?? 5.0),
-            child: CachedNetworkImage(
-              imageUrl: imageUrl ?? '',
-              fit: BoxFit.cover,
-              progressIndicatorBuilder:
-                  (context, url, DownloadProgress progress) {
-                return SizedBox.fromSize(
-                  child: CircularProgressIndicator(
-                    value: progress.progress,
-                    color: AppColors.kPrimary,
-                    backgroundColor: AppColors.kWhite,
-                  ),
-                );
-              },
-              errorWidget: (context, url, __) => SvgPicture.asset(
-                AppAsset.personIcon,
-                colorFilter: ColorFilter.mode(
-                  AppColors.kPrimary.withOpacity(.6),
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
           ),
+          child: uploading
+              ? SizedBox.square(
+                  dimension: avatarDimension,
+                  child: Lottie.asset(
+                    'assets/animations/upload_animation.json',
+                    repeat: true,
+                  ),
+                )
+              : CachedNetworkImage(
+                  imageUrl: imageUrl ?? '',
+                  fit: BoxFit.fill,
+                  height: avatarDimension,
+                  width: avatarDimension,
+                  progressIndicatorBuilder:
+                      (context, url, DownloadProgress progress) {
+                    return SizedBox.fromSize(
+                      child: CircularProgressIndicator(
+                        value: progress.progress,
+                        color: AppColors.kPrimary,
+                        backgroundColor: AppColors.kWhite,
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, __) => Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SvgPicture.asset(
+                      AppAsset.personIcon,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.kPrimary.withOpacity(.6),
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ),
         ),
       ),
     );

@@ -4,6 +4,6 @@ double fullWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
 }
 
-double fullHeigth(BuildContext context) {
+double fullHeight(BuildContext context) {
   return MediaQuery.of(context).size.height;
 }

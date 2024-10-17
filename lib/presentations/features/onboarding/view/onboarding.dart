@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:projects/config/app_colors.dart';
-import 'package:projects/providers/onboarding/onboard_controller.dart';
-import 'package:projects/providers/profile/profile_viewmodel.dart';
-import 'package:projects/src/components.dart';
-import 'package:projects/src/config.dart';
-import 'package:projects/src/utils.dart';
-import 'package:projects/utils/mediaquery.dart';
+import 'package:projects/commons/src/components.dart';
+import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/providers.dart';
+import 'package:projects/commons/src/utils.dart';
 
 class UserOnboarding extends ConsumerStatefulWidget {
   const UserOnboarding({super.key});
@@ -19,21 +16,17 @@ class UserOnboarding extends ConsumerStatefulWidget {
 
 class UserOnboardingState extends ConsumerState<UserOnboarding> {
   late PageController _pageController;
-  late TextEditingController _userNameController;
-
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _pageController = PageController();
-    _userNameController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _userNameController.dispose();
     super.dispose();
   }
 
@@ -50,7 +43,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
           return SafeArea(
             child: Container(
               width: fullWidth(context),
-              height: fullHeigth(context),
+              height: fullHeight(context),
               padding: const EdgeInsets.fromLTRB(25, 55, 25, 15),
               child: Column(
                 children: [
@@ -68,15 +61,13 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                     child: CustomPageView(
                       pageController: _pageController,
                       onPageChange: controller.setPage,
-                      height: fullHeigth(context) / 1.5,
+                      height: fullHeight(context) / 1.5,
                       pageSnapping: false,
                       pages: [
                         const _OnboardIntro(),
                         Form(
                           key: formKey,
-                          child: _ChooseUserName(
-                            userNameController: _userNameController,
-                          ),
+                          child: const _ChooseUserName(),
                         ),
                         _AddProfilePhoto(
                           userName: controller.userName ?? '',
@@ -95,18 +86,21 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                               duration: transitionDuration,
                               curve: animationCurve,
                             );
-                          } else if (controller.page == 1) {
-                            if (formKey.currentState!.validate()) {
-                              await _pageController.nextPage(
-                                duration: transitionDuration,
-                                curve: animationCurve,
-                              );
-                              state(() {
-                                controller.userName =
-                                    _userNameController.text.trim();
-                              });
-                            }
-                          } else {}
+                          } else if (controller.page == 1 &&
+                              formKey.currentState!.validate()) {
+                            await _pageController.nextPage(
+                              duration: transitionDuration,
+                              curve: animationCurve,
+                            );
+                          } else if (controller.page == 2) {
+                            await ref
+                                .read(profileViewmodelProvider.notifier)
+                                .onboardUser(
+                                  context,
+                                  userName: controller.userName,
+                                  imageUrl: controller.imageUrl,
+                                );
+                          }
                         },
                         borderRadius: 100,
                         color: controller.page == 1
@@ -135,7 +129,7 @@ class _OnboardIntro extends StatelessWidget {
         children: [
           SvgPicture.asset(
             'assets/images/onboarding.svg',
-            height: fullHeigth(context) / 1.9,
+            height: fullHeight(context) / 1.9,
           ),
           const TextView(
             text: 'We Want to Know You More Geek',
@@ -154,15 +148,28 @@ class _OnboardIntro extends StatelessWidget {
   }
 }
 
-class _ChooseUserName extends StatefulWidget {
-  const _ChooseUserName({required this.userNameController});
-  final TextEditingController userNameController;
+class _ChooseUserName extends ConsumerStatefulWidget {
+  const _ChooseUserName();
+  // final TextEditingController userNameController;
 
   @override
-  State<_ChooseUserName> createState() => _ChooseUserNameState();
+  _ChooseUserNameState createState() => _ChooseUserNameState();
 }
 
-class _ChooseUserNameState extends State<_ChooseUserName> {
+class _ChooseUserNameState extends ConsumerState<_ChooseUserName> {
+  late TextEditingController _userNameController;
+  @override
+  void initState() {
+    _userNameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -186,8 +193,11 @@ class _ChooseUserNameState extends State<_ChooseUserName> {
                 hideError: true,
                 prefixIcon: 'assets/images/@_email.svg',
                 textAlign: TextAlign.center,
-                controller: widget.userNameController,
+                controller: _userNameController,
                 validator: (value) => Validators().validateUserName(value),
+                onChanged: (v) {
+                  ref.read(onboardingController).userName = v;
+                },
               ),
             ),
           ],
@@ -197,13 +207,20 @@ class _ChooseUserNameState extends State<_ChooseUserName> {
   }
 }
 
-class _AddProfilePhoto extends ConsumerWidget {
+class _AddProfilePhoto extends ConsumerStatefulWidget {
   const _AddProfilePhoto({required this.userName});
   final String userName;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _AddProfilePhotoState createState() => _AddProfilePhotoState();
+}
+
+class _AddProfilePhotoState extends ConsumerState<_AddProfilePhoto> {
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(profileViewmodelProvider);
     final profileProvider = ref.read(profileViewmodelProvider.notifier);
+    final onboardController = ref.read(onboardingController);
 
     return SizedBox(
       child: SingleChildScrollView(
@@ -214,7 +231,7 @@ class _AddProfilePhoto extends ConsumerWidget {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: '@${userName.toLowerCase()}',
+                    text: '@${widget.userName.toLowerCase()}',
                     style: TextStyle(
                       color: AppColors.kPrimary,
                     ),
@@ -243,14 +260,17 @@ class _AddProfilePhoto extends ConsumerWidget {
             ),
             const Gap(30),
             Avatar(
-              avatarDimension: 300,
-              editorDimension: 60,
+              url: onboardController.imageUrl,
+              avatarDimension: 280,
+              editorDimension: 65,
+              radius: 200,
               editImage: true,
               canDelete: false,
-              onEditImageTap: () {
-                profileProvider.uploadProfileImageAndGetUrl().then((v) {
-                  if(v != null){
-                    
+              imageUploadInProgress: state.isLoading,
+              onEditImageTap: () async {
+                await profileProvider.uploadProfileImageAndGetUrl().then((v) {
+                  if (v != null) {
+                    onboardController.imageUrl = v;
                   }
                 });
               },
