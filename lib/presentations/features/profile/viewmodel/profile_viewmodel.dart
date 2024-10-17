@@ -24,10 +24,12 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
   final supabaseClient = AuthService().supabase;
 
-/**
- * * FETCH/UPDATE USER PROFILE DATA
- */
-  Profile? userProfile;
+  /**
+   ** FETCH/UPDATE USER PROFILE DATA
+  */
+  Profile? _userProfile;
+  Profile? get userProfile => _userProfile;
+
   Future<void> getUserProfile({bool reloading = false}) async {
     final user = supabaseClient.auth.currentSession?.user;
 
@@ -39,15 +41,11 @@ class ProfileViewmodel extends _$ProfileViewmodel {
       }
 
       state = await AsyncValue.guard(() async {
-        final data = await supabaseClient
-            .from('profile')
-            .select()
-            .eq('id', user!.id)
-            .maybeSingle(); // Use maybeSingle to avoid exception if no data
+        final data = await supabaseClient.from('profile').select().eq('id', user!.id).maybeSingle(); // Use maybeSingle to avoid exception if no data
 
         if (data != null) {
           // Map the response data to your Profile model
-          userProfile = Profile(
+          _userProfile = Profile(
             username: data['display_name'] as String? ?? 'No username',
             emailAddress: data['email'] as String? ?? 'No email',
             photoUrl: data['image_url'] as String? ?? 'No image',
@@ -55,7 +53,7 @@ class ProfileViewmodel extends _$ProfileViewmodel {
             followingsCount: data['following_count'] as int? ?? 0,
           );
 
-          log('PROFILE $userProfile');
+          log('PROFILE $_userProfile');
         } else {
           debugPrint('No profile found for user.');
 
@@ -189,15 +187,13 @@ class ProfileViewmodel extends _$ProfileViewmodel {
   }
 
 /**
- * * USER LOG OUT FUNCTION
+ ** USER LOG OUT FUNCTION
  */
   Future<void> logOut() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       BotToast.showLoading();
-      await supabaseClient.auth
-          .signOut()
-          .whenComplete(BotToast.closeAllLoading);
+      await supabaseClient.auth.signOut().whenComplete(BotToast.closeAllLoading);
     });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:projects/commons/src/data.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_view.dart';
 import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
@@ -19,7 +20,7 @@ class UserProfile extends ConsumerStatefulWidget {
 }
 
 class UserProfileState extends ConsumerState<UserProfile> {
-  late User userData;
+  Profile? user;
 
   @override
   void initState() {
@@ -28,14 +29,17 @@ class UserProfileState extends ConsumerState<UserProfile> {
      ** authentication provider using Riverpod's `ref.watch` method.
      */
     Future.microtask(() {
-      ref.read(profileViewmodelProvider.notifier).getUserProfile();
+      if (user == null) {
+        ref.read(profileViewmodelProvider.notifier).getUserProfile();
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = ref.read(profileViewmodelProvider.notifier);
+    final provider = ref.watch(profileViewmodelProvider.notifier);
+    user = provider.userProfile;
 
     return ContentView(
       key: UniqueKey(),
@@ -44,11 +48,9 @@ class UserProfileState extends ConsumerState<UserProfile> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const _AboutUser(
-              key: ValueKey('about-user'),
-              userName: '',
-              email: '',
-              photo: '',
+            _AboutUser(
+              key: const ValueKey('about-user'),
+              user: user!,
             ),
             const Gap(25),
             const Divider(),
@@ -83,8 +85,7 @@ class UserProfileState extends ConsumerState<UserProfile> {
             ),
             const Gap(40),
             TextView(
-              text:
-                  'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
+              text: 'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
             ),
           ],
         ),
@@ -95,37 +96,37 @@ class UserProfileState extends ConsumerState<UserProfile> {
 
 class _AboutUser extends StatelessWidget {
   const _AboutUser({
-    required this.userName,
-    required this.email,
-    required this.photo,
+    required this.user,
     super.key,
   });
-  final String userName;
-  final String email;
-  final String photo;
+  final Profile user;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Avatar(
+        Avatar(
+          url: user.photoUrl,
           avatarDimension: 100,
         ),
         const Gap(10),
-        const Hero(
+        Hero(
           tag: 'user-name',
           child: TextView(
-            text: 'Greg Mali',
+            text: '@${user.username}',
             fontWeight: FontWeight.w600,
             fontSize: 18,
           ),
         ),
-        const TextView(
-          text: '@gregali123',
+        TextView(
+          text: user.emailAddress ?? 'null',
           fontWeight: FontWeight.normal,
         ),
         const Gap(20),
-        const _Followings(),
+        _Followings(
+          followingCount: user.followingsCount,
+          followersCount: user.followersCount,
+        ),
         const Gap(20),
         DefaultButton(
           text: 'Edit Profile',
@@ -140,10 +141,15 @@ class _AboutUser extends StatelessWidget {
 }
 
 class _Followings extends StatelessWidget {
-  const _Followings();
+  const _Followings({this.followingCount, this.followersCount});
+  final int? followingCount;
+  final int? followersCount;
 
   @override
   Widget build(BuildContext context) {
+    /**
+     ** following/followers count widget
+    */
     Widget dataHolder(String count, String desc) => Column(
           children: [
             TextView(
@@ -164,11 +170,11 @@ class _Followings extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          dataHolder('300', 'Following'),
+          dataHolder('$followingCount', 'Following'),
           const VerticalDivider(
             indent: 15,
           ),
-          dataHolder('3,100', 'Followers'),
+          dataHolder('$followersCount', 'Followers'),
         ],
       ),
     );
