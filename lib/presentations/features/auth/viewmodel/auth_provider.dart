@@ -14,7 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'auth_provider.g.dart';
 
 @riverpod
-class AuthViemodel extends _$AuthViemodel {
+class AuthViewmodel extends _$AuthViewmodel {
   @override
   FutureOr<dynamic> build() {
     return null;

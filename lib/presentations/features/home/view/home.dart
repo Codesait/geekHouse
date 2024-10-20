@@ -7,7 +7,7 @@ import 'package:projects/presentations/components/tab_pill.dart';
 import 'package:projects/presentations/components/up_coming_tablet.dart';
 import 'package:projects/presentations/features/home/space.dart';
 import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
-import 'package:projects/utils/data.dart';
+import 'package:projects/data/local/data.dart';
 import 'package:projects/utils/mediaquery.dart';
 import 'package:projects/utils/modal.dart';
 import 'package:skeletonizer/skeletonizer.dart';

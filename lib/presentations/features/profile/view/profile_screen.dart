@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:projects/commons/src/data.dart';
-import 'package:projects/main.dart';
-import 'package:projects/presentations/components/custom_view.dart';
-import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
+import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/data.dart';
+import 'package:projects/commons/src/providers.dart';
+import 'package:projects/commons/src/screens.dart';
 import 'package:projects/commons/src/utils.dart';
-import 'package:projects/utils/mediaquery.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:projects/main.dart';
 
 class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
@@ -133,7 +132,9 @@ class _AboutUser extends StatelessWidget {
           width: 150,
           height: 45,
           borderRadius: 100,
-          onPressed: () {},
+          onPressed: () {
+            context.pushNamed(EditProfileScreen.editProfilePath);
+          },
         ),
       ],
     );
