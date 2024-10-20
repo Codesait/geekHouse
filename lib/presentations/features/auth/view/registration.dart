@@ -152,7 +152,7 @@ class _SignUpFormState extends State<_SignUpForm> {
             child: Consumer(
               builder: (context, ref, _) {
                 //? acessing auth provider
-                final provider = ref.read(authViemodelProvider.notifier);
+                final provider = ref.read(authViewmodelProvider.notifier);
 
                 return Column(
                   children: [

@@ -119,7 +119,7 @@ class __LoginFormState extends State<_LoginForm> {
                 alignment: Alignment.bottomCenter,
                 child: Consumer(
                   builder: (context, ref, _) {
-                    final provider = ref.read(authViemodelProvider.notifier);
+                    final provider = ref.read(authViewmodelProvider.notifier);
                     return DefaultButton(
                       text: 'Login',
                       borderRadius: 100,
