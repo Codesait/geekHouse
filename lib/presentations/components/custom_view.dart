@@ -8,12 +8,14 @@ class ContentView extends StatelessWidget {
   const ContentView({
     required this.pageTitle,
     required this.body,
-    super.key,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    this.appBarTrailing,
+    super.key,
   });
   final String pageTitle;
   final Widget body;
   final EdgeInsetsGeometry? padding;
+  final List<Widget>? appBarTrailing;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class ContentView extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
+        actions: appBarTrailing,
       ),
       body: Container(
         height: fullHeight(context),

@@ -6,5 +6,6 @@ export '../../presentations/features/home/space.dart';
 export '../../presentations/features/home/view/home.dart';
 export '../../presentations/features/home/view/main_screen.dart';
 export '../../presentations/features/onboarding/view/onboarding.dart';
+export '../../presentations/features/profile/view/edit_profile_data.dart';
 export '../../presentations/features/profile/view/edit_profile_screen.dart';
 export '../../presentations/features/profile/view/profile_screen.dart';

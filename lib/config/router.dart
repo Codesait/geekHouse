@@ -21,9 +21,6 @@ CustomTransitionPage<T> buildPageWithDefaultTransition<T>({
   );
 }
 
-final _authShellKey = GlobalKey<NavigatorState>();
-final _profileShellKey = GlobalKey<NavigatorState>();
-
 class AppRouterConfig {
   static final GoRouter router = GoRouter(
     navigatorKey: appNavigatorKey,
@@ -62,11 +59,9 @@ class AppRouterConfig {
         },
       ),
       ShellRoute(
-        navigatorKey: _profileShellKey,
+        navigatorKey: profileShellKey,
         builder: (context, state, child) {
-          return  child;
-
-
+          return child;
         },
         routes: [
           GoRoute(
@@ -90,14 +85,31 @@ class AppRouterConfig {
                     child: const EditProfileScreen(),
                   );
                 },
+                routes: [
+                  GoRoute(
+                    path: 'edit-user-data',
+                    name: EditUserData.editUserDataPath,
+                    pageBuilder: (context, state) {
+                      final queryData = state.uri.queryParameters;
+
+                      return buildPageWithDefaultTransition(
+                        context: context,
+                        state: state,
+                        child: EditUserData(
+                          title: queryData['title']!,
+                          value: queryData['value']!,
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
         ],
       ),
-
       ShellRoute(
-        navigatorKey: _authShellKey,
+        navigatorKey: authShellKey,
         pageBuilder: (context, state, child) {
           return NoTransitionPage(
             child: child,

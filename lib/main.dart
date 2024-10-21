@@ -7,8 +7,11 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:projects/app/app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-final GlobalKey<NavigatorState> appNavigatorKey =
+final  appNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
+final authShellKey = GlobalKey<NavigatorState>();
+final profileShellKey = GlobalKey<NavigatorState>();
+
 late PackageInfo packageInfo;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

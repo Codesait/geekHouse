@@ -8,3 +8,4 @@ export '../../presentations/components/custom_view.dart';
 export '../../presentations/components/gap.dart';
 export '../../presentations/components/page_indicator.dart';
 export '../../presentations/components/pageview.dart';
+export '../../presentations/features/profile/widget/edit_profile_tile.dart';

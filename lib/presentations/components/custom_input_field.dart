@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projects/presentations/components/obscure_btn.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/config.dart';
+import 'package:projects/presentations/components/obscure_btn.dart';
 
 class CustomInputField extends StatefulWidget {
   const CustomInputField({
@@ -41,6 +41,7 @@ class CustomInputField extends StatefulWidget {
     this.onFieldSubmitted,
     this.onEditingComplete,
     this.focusNode,
+    this.autofocus = false,
     super.key,
   });
 
@@ -74,6 +75,7 @@ class CustomInputField extends StatefulWidget {
   final bool visibleField;
   final bool? enableInteractiveSelection;
   final bool hideError;
+  final bool autofocus;
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String value)? onFieldSubmitted;
   final void Function()? onEditingComplete;
@@ -123,6 +125,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                 controller: widget.controller,
                 enableInteractiveSelection: widget.enableInteractiveSelection,
                 focusNode: widget.focusNode,
+                autofocus: widget.autofocus,
                 style: theme.textTheme.bodyMedium!.copyWith(
                   color: AppColors.kBlack,
                   fontWeight: FontWeight.bold,
@@ -140,8 +143,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                 maxLines: widget.maxLines ?? 1,
                 validator: widget.validator,
                 onChanged: widget.onChanged,
-                obscureText:
-                    widget.password ? inputObscured : widget.obscureInput,
+                obscureText: widget.password ? inputObscured : widget.obscureInput,
                 inputFormatters: widget.inputFormatters,
                 onFieldSubmitted: widget.onFieldSubmitted,
                 onEditingComplete: widget.onEditingComplete,
@@ -189,16 +191,21 @@ class _PwsTextFieldState extends State<CustomInputField> {
                             ),
                           ],
                         )
-                      : null,
+                      : IconButton(
+                          onPressed: () => setState(() {
+                            widget.controller!.clear();
+                          }),
+                          icon: const Icon(
+                            Icons.clear_rounded,
+                            size: 14,
+                          ),
+                        ),
                   filled: widget.isFilled,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  fillColor: widget.fillColor ??
-                      const Color.fromARGB(255, 240, 239, 239),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  fillColor: widget.fillColor ?? const Color.fromARGB(255, 240, 239, 239),
                   enabledBorder: widget.isFilled
                       ? OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(widget.borderRadius),
+                          borderRadius: BorderRadius.circular(widget.borderRadius),
                           borderSide: BorderSide(
                             color: widget.borderColor ?? AppColors.kWhite,
                           ),
@@ -217,9 +224,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                     borderRadius: BorderRadius.circular(widget.borderRadius),
                   ),
                   errorStyle: TextStyle(
-                    color: widget.hideError
-                        ? AppColors.kPrimary.withOpacity(.9)
-                        : Colors.redAccent,
+                    color: widget.hideError ? AppColors.kPrimary.withOpacity(.9) : Colors.redAccent,
                   ),
                   errorMaxLines: 4,
                 ),
@@ -231,7 +236,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap(0),
-                //? forgot passowrd link widget
+                //? forgot password link widget
                 //? [useForgotPass] to enable widget
                 Visibility(
                   visible: widget.useForgotPass,
