@@ -12,7 +12,11 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 
   static String editProfilePath = 'editProfileScreen';
 
-  static void navToEdit(BuildContext ctxt, {required String title, required String value}) {
+  static void navToEdit(
+    BuildContext ctxt, {
+    required String title,
+    String? value,
+  }) {
     ctxt.pushNamed(
       EditUserData.editUserDataPath,
       queryParameters: {
@@ -96,15 +100,25 @@ class _AboutYouSection extends StatelessWidget {
           ),
           EditProfileTile(
             title: 'Username',
-            value: user?.username ?? 'null',
+            value: user?.username,
             onEditTap: () {
-              EditProfileScreen.navToEdit(context, title: 'Username', value: user!.username!);
+              EditProfileScreen.navToEdit(
+                context,
+                title: 'Username',
+                value: user?.username,
+              );
             },
           ),
           EditProfileTile(
             title: 'Bio',
-            value: 'Add bio',
-            onEditTap: () {},
+            value: user?.bio,
+            onEditTap: () {
+              EditProfileScreen.navToEdit(
+                context,
+                title: 'Bio',
+                value: user?.bio,
+              );
+            },
           ),
         ],
       ),
@@ -114,6 +128,7 @@ class _AboutYouSection extends StatelessWidget {
 
 class _EditSocialSection extends StatelessWidget {
   const _EditSocialSection({
+    // ignore: unused_element
     this.user,
   });
   final Profile? user;

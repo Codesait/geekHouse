@@ -41,16 +41,21 @@ class ProfileViewmodel extends _$ProfileViewmodel {
       }
 
       state = await AsyncValue.guard(() async {
-        final data = await supabaseClient.from('profile').select().eq('id', user!.id).maybeSingle(); // Use maybeSingle to avoid exception if no data
+        final data = await supabaseClient
+            .from('profile')
+            .select()
+            .eq('id', user!.id)
+            .maybeSingle(); // Use maybeSingle to avoid exception if no data
 
         if (data != null) {
-          // Map the response data to your Profile model
+          // Map the response data to Profile model
           _userProfile = Profile(
             username: data['display_name'] as String? ?? 'No username',
             emailAddress: data['email'] as String? ?? 'No email',
             photoUrl: data['image_url'] as String? ?? 'No image',
             followersCount: data['follower_count'] as int? ?? 0,
             followingsCount: data['following_count'] as int? ?? 0,
+            bio: data['bio'] as String? ?? 'No bio',
           );
 
           log('PROFILE $_userProfile');
@@ -101,8 +106,6 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           'display_name': userName,
           'email': user.email,
           'image_url': imageUrl,
-          'following_count': 0,
-          'follower_count': 0,
           'updated_at': DateTime.now().toIso8601String(),
         };
 
@@ -122,10 +125,11 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           appNavigatorKey.currentContext!.pushReplacementNamed(
             MainScreen.homePath,
           );
-          context.pop();
+          appNavigatorKey.currentContext!.pop();
         });
       }).onError<PostgrestException>((e, s) {
         throw PostgrestException(message: e.message, code: e.code);
+      
       });
     } else if (imageUrl == null) {
       showToast(
@@ -193,7 +197,9 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       BotToast.showLoading();
-      await supabaseClient.auth.signOut().whenComplete(BotToast.closeAllLoading);
+      await supabaseClient.auth
+          .signOut()
+          .whenComplete(BotToast.closeAllLoading);
     });
   }
 }

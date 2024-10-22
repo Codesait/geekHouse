@@ -24,7 +24,7 @@ class _EditUserDataState extends State<EditUserData> {
   Widget build(BuildContext context) {
     return ContentView(
       pageTitle: widget.title,
-      appBarTrailing: [],
+      appBarTrailing: const [],
       body: Column(
         children: [
           CustomInputField(

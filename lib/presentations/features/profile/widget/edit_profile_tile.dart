@@ -5,12 +5,12 @@ import 'package:projects/commons/src/utils.dart';
 class EditProfileTile extends StatelessWidget {
   const EditProfileTile({
     required this.title,
-    required this.value,
     required this.onEditTap,
+    this.value,
     super.key,
   });
   final String title;
-  final String value;
+  final String? value;
   final void Function() onEditTap;
 
   @override
@@ -31,7 +31,7 @@ class EditProfileTile extends StatelessWidget {
             Row(
               children: [
                 TextView(
-                  text: value,
+                  text: value ?? 'Add ${title.toLowerCase()}',
                   fontWeight: FontWeight.w600,
                 ),
                 const Gap(3),
