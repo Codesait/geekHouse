@@ -33,6 +33,7 @@ class EditProfileTile extends StatelessWidget {
                 TextView(
                   text: value ?? 'Add ${title.toLowerCase()}',
                   fontWeight: FontWeight.w600,
+                  textOverflow: TextOverflow.ellipsis,
                 ),
                 const Gap(3),
                 const Icon(

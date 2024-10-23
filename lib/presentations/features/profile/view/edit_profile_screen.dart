@@ -16,12 +16,14 @@ class EditProfileScreen extends ConsumerStatefulWidget {
     BuildContext ctxt, {
     required String title,
     String? value,
+    String? charSize,
   }) {
     ctxt.pushNamed(
       EditUserData.editUserDataPath,
       queryParameters: {
         'title': title,
         'value': value,
+        'charSize': charSize,
       },
     );
   }
@@ -106,6 +108,7 @@ class _AboutYouSection extends StatelessWidget {
                 context,
                 title: 'Username',
                 value: user?.username,
+                charSize: '25',
               );
             },
           ),
@@ -117,6 +120,7 @@ class _AboutYouSection extends StatelessWidget {
                 context,
                 title: 'Bio',
                 value: user?.bio,
+                charSize: '50',
               );
             },
           ),

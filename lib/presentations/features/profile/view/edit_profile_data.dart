@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:projects/commons/src/components.dart';
 
 class EditUserData extends StatefulWidget {
-  const EditUserData({required this.title, required this.value, super.key});
+  const EditUserData(
+      {required this.title, this.value, this.editableCharSize, super.key,});
   final String title;
-  final String value;
+  final String? value;
+  final int? editableCharSize;
 
   static String editUserDataPath = 'editUserData';
 
@@ -20,6 +22,7 @@ class _EditUserDataState extends State<EditUserData> {
     editingController = TextEditingController(text: widget.value);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return ContentView(
@@ -30,7 +33,7 @@ class _EditUserDataState extends State<EditUserData> {
           CustomInputField(
             controller: editingController,
             autofocus: true,
-            maxLength: 25,
+            maxLength: widget.editableCharSize,
           ),
         ],
       ),

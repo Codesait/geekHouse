@@ -97,7 +97,8 @@ class AppRouterConfig {
                         state: state,
                         child: EditUserData(
                           title: queryData['title']!,
-                          value: queryData['value']!,
+                          value: queryData['value'],
+                          editableCharSize: int.parse(queryData['charSize']!),
                         ),
                       );
                     },

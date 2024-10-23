@@ -10,12 +10,14 @@ class ContentView extends StatelessWidget {
     required this.body,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     this.appBarTrailing,
+    this.onRefresh,
     super.key,
   });
   final String pageTitle;
   final Widget body;
   final EdgeInsetsGeometry? padding;
   final List<Widget>? appBarTrailing;
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,26 @@ class ContentView extends StatelessWidget {
         ),
         actions: appBarTrailing,
       ),
-      body: Container(
-        height: fullHeight(context),
-        width: fullWidth(context),
-        padding: padding,
-        child: body,
-      ),
+      body: onRefresh != null
+          ? RefreshIndicator.adaptive(
+              onRefresh: onRefresh!,
+              child: SafeArea(
+                child: Container(
+                  height: fullHeight(context),
+                  width: fullWidth(context),
+                  padding: padding,
+                  child: body,
+                ),
+              ),
+            )
+          : SafeArea(
+              child: Container(
+                height: fullHeight(context),
+                width: fullWidth(context),
+                padding: padding,
+                child: body,
+              ),
+            ),
     );
   }
 }

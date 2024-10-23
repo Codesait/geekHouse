@@ -43,51 +43,52 @@ class UserProfileState extends ConsumerState<UserProfile> {
     return ContentView(
       key: UniqueKey(),
       pageTitle: 'Profile',
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _AboutUser(
-              key: const ValueKey('about-user'),
-              user: user!,
+      onRefresh: () => provider.getUserProfile(reloading: true),
+      body: ListView(
+        children: [
+          _AboutUser(
+            key: const ValueKey('about-user'),
+            user: user!,
+          ),
+          const Gap(25),
+          const Divider(),
+          _ActionWidgets(
+            icon: Icons.settings,
+            title: 'Settings',
+            onTap: () {},
+          ),
+          _ActionWidgets(
+            icon: Icons.question_mark_rounded,
+            title: 'How it works',
+            onTap: () {},
+          ),
+          const Divider(),
+          _ActionWidgets(
+            icon: Icons.report,
+            title: 'Report',
+            onTap: () {},
+          ),
+          _ActionWidgets(
+            icon: Icons.exit_to_app,
+            title: 'Log Out',
+            logout: true,
+            onTap: () {
+              logOutAlertDialog(
+                context,
+                title: 'Log Out',
+                content: 'Are you sure you want to log out ?',
+                onAccept: provider.logOut,
+              );
+            },
+          ),
+          const Gap(40),
+          Align(
+            child: TextView(
+              text:
+                  'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
             ),
-            const Gap(25),
-            const Divider(),
-            _ActionWidgets(
-              icon: Icons.settings,
-              title: 'Settings',
-              onTap: () {},
-            ),
-            _ActionWidgets(
-              icon: Icons.question_mark_rounded,
-              title: 'How it works',
-              onTap: () {},
-            ),
-            const Divider(),
-            _ActionWidgets(
-              icon: Icons.report,
-              title: 'Report',
-              onTap: () {},
-            ),
-            _ActionWidgets(
-              icon: Icons.exit_to_app,
-              title: 'Log Out',
-              logout: true,
-              onTap: () {
-                logOutAlertDialog(
-                  context,
-                  title: 'Log Out',
-                  content: 'Are you sure you want to log out ?',
-                  onAccept: provider.logOut,
-                );
-              },
-            ),
-            const Gap(40),
-            TextView(
-              text: 'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -103,6 +104,7 @@ class _AboutUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Avatar(
           url: user.photoUrl,
@@ -126,7 +128,12 @@ class _AboutUser extends StatelessWidget {
           followingCount: user.followingsCount,
           followersCount: user.followersCount,
         ),
-        const Gap(20),
+        const Gap(10),
+        TextView(
+          text: user.bio ?? '',
+          fontWeight: FontWeight.w500,
+        ),
+        const Gap(10),
         DefaultButton(
           text: 'Edit Profile',
           width: 150,
