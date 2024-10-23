@@ -8,6 +8,7 @@ import 'package:projects/commons/src/providers.dart';
 import 'package:projects/commons/src/screens.dart';
 import 'package:projects/commons/src/utils.dart';
 import 'package:projects/main.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
@@ -29,7 +30,7 @@ class UserProfileState extends ConsumerState<UserProfile> {
      */
     Future.microtask(() {
       if (user == null) {
-        ref.read(profileViewmodelProvider.notifier).getUserProfile();
+        ref.watch(profileViewmodelProvider.notifier).getUserProfile();
       }
     });
     super.initState();
@@ -38,57 +39,61 @@ class UserProfileState extends ConsumerState<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(profileViewmodelProvider.notifier);
+    final providerState = ref.watch(profileViewmodelProvider);
     user = provider.userProfile;
 
     return ContentView(
       key: UniqueKey(),
       pageTitle: 'Profile',
       onRefresh: () => provider.getUserProfile(reloading: true),
-      body: ListView(
-        children: [
-          _AboutUser(
-            key: const ValueKey('about-user'),
-            user: user!,
-          ),
-          const Gap(25),
-          const Divider(),
-          _ActionWidgets(
-            icon: Icons.settings,
-            title: 'Settings',
-            onTap: () {},
-          ),
-          _ActionWidgets(
-            icon: Icons.question_mark_rounded,
-            title: 'How it works',
-            onTap: () {},
-          ),
-          const Divider(),
-          _ActionWidgets(
-            icon: Icons.report,
-            title: 'Report',
-            onTap: () {},
-          ),
-          _ActionWidgets(
-            icon: Icons.exit_to_app,
-            title: 'Log Out',
-            logout: true,
-            onTap: () {
-              logOutAlertDialog(
-                context,
-                title: 'Log Out',
-                content: 'Are you sure you want to log out ?',
-                onAccept: provider.logOut,
-              );
-            },
-          ),
-          const Gap(40),
-          Align(
-            child: TextView(
-              text:
-                  'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
+      body: Skeletonizer(
+        enabled: providerState.isLoading,
+        child: ListView(
+          children: [
+            _AboutUser(
+              key: const ValueKey('about-user'),
+              user: user!,
             ),
-          ),
-        ],
+            const Gap(25),
+            const Divider(),
+            _ActionWidgets(
+              icon: Icons.settings,
+              title: 'Settings',
+              onTap: () {},
+            ),
+            _ActionWidgets(
+              icon: Icons.question_mark_rounded,
+              title: 'How it works',
+              onTap: () {},
+            ),
+            const Divider(),
+            _ActionWidgets(
+              icon: Icons.report,
+              title: 'Report',
+              onTap: () {},
+            ),
+            _ActionWidgets(
+              icon: Icons.exit_to_app,
+              title: 'Log Out',
+              logout: true,
+              onTap: () {
+                logOutAlertDialog(
+                  context,
+                  title: 'Log Out',
+                  content: 'Are you sure you want to log out ?',
+                  onAccept: provider.logOut,
+                );
+              },
+            ),
+            const Gap(40),
+            Align(
+              child: TextView(
+                text:
+                    'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -129,9 +134,13 @@ class _AboutUser extends StatelessWidget {
           followersCount: user.followersCount,
         ),
         const Gap(10),
-        TextView(
-          text: user.bio ?? '',
-          fontWeight: FontWeight.w500,
+        SizedBox(
+          width: fullWidth(context) / 1.5,
+          child: TextView(
+            text: user.bio ?? '',
+            fontWeight: FontWeight.w500,
+            textAlign: TextAlign.center,
+          ),
         ),
         const Gap(10),
         DefaultButton(

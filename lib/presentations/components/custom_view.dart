@@ -30,27 +30,21 @@ class ContentView extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         actions: appBarTrailing,
+        scrolledUnderElevation: 0,
       ),
-      body: onRefresh != null
-          ? RefreshIndicator.adaptive(
-              onRefresh: onRefresh!,
-              child: SafeArea(
-                child: Container(
-                  height: fullHeight(context),
-                  width: fullWidth(context),
-                  padding: padding,
+      body: SafeArea(
+        child: Container(
+          height: fullHeight(context),
+          width: fullWidth(context),
+          padding: padding,
+          child: onRefresh != null
+              ? RefreshIndicator.adaptive(
+                  onRefresh: onRefresh!,
                   child: body,
-                ),
-              ),
-            )
-          : SafeArea(
-              child: Container(
-                height: fullHeight(context),
-                width: fullWidth(context),
-                padding: padding,
-                child: body,
-              ),
-            ),
+                )
+              : body,
+        ),
+      ),
     );
   }
 }

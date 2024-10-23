@@ -35,6 +35,7 @@ class AuthService {
 
     return res;
   }
+
   Future<AuthResponse?> signIn(
     String email,
     String password,
@@ -46,8 +47,4 @@ class AuthService {
 
     return res;
   }
-
-  
-
-  
 }

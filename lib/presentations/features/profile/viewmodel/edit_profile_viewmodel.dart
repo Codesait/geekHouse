@@ -16,7 +16,7 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
 
   final supabaseClient = AuthService().supabase;
 
-  Future<void> onboardUser({
+  Future<void> updateUserData({
     required void Function() getUserCallback,
     String? userName,
     String? bio,
@@ -29,23 +29,31 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
 
       if (userName != null) {
         updates = {
-          'id': user.id,
           'display_name': userName,
           'updated_at': DateTime.now().toIso8601String(),
         };
       } else if (bio != null) {
         updates = {
-          'id': user.id,
           'bio': bio,
           'updated_at': DateTime.now().toIso8601String(),
         };
       }
 
-      await supabaseClient.from('profile').insert(updates).then((v) {
-        if (v != null) {
-          log('Update data: $v');
-          getUserCallback();
-        }
+      await supabaseClient
+          .from('profile')
+          .update(updates)
+          .eq('id', user.id)
+          .maybeSingle()
+          .then((v) {
+        /// The code `log('UPDATE PROFILE COMPLETE');` is logging a message indicating that the profile
+        /// update operation has been completed. This log message can be helpful for debugging and
+        /// tracking the flow of the application.
+        log('UPDATE PROFILE COMPLETE');
+
+        /**
+         *? FETCH UPDATED PROFILE
+         */
+        getUserCallback();
       }).whenComplete(() {
         /**
          *? close editor

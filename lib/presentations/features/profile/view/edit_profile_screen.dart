@@ -6,6 +6,7 @@ import 'package:projects/commons/src/config.dart';
 import 'package:projects/commons/src/data.dart';
 import 'package:projects/commons/src/providers.dart';
 import 'package:projects/commons/src/screens.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
@@ -36,19 +37,23 @@ class EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(profileViewmodelProvider.notifier);
+    final providerState = ref.watch(profileViewmodelProvider);
     final user = provider.userProfile;
 
     return ContentView(
       pageTitle: 'Edit Profile',
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _EditPhotoSection(user: user),
-            _AboutYouSection(user: user),
-            const Divider(),
-            const _EditSocialSection(),
-          ],
+      body: Skeletonizer(
+        enabled: providerState.isLoading,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _EditPhotoSection(user: user),
+              _AboutYouSection(user: user),
+              const Divider(),
+              const _EditSocialSection(),
+            ],
+          ),
         ),
       ),
     );

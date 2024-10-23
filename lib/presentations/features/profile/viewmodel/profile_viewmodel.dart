@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/data.dart';
 import 'package:projects/commons/src/screens.dart';
@@ -19,7 +20,7 @@ part 'profile_viewmodel.g.dart';
 class ProfileViewmodel extends _$ProfileViewmodel {
   @override
   FutureOr<dynamic> build() {
-    return state;
+    return null;
   }
 
   final supabaseClient = AuthService().supabase;
@@ -30,39 +31,46 @@ class ProfileViewmodel extends _$ProfileViewmodel {
   Profile? _userProfile;
   Profile? get userProfile => _userProfile;
 
+  final profileRepo = ProfileRepo();
+
   Future<void> getUserProfile({bool reloading = false}) async {
     final user = supabaseClient.auth.currentSession?.user;
 
-    state = const AsyncLoading();
-    try {
-      if (reloading) {
-        //* Start loader
-        BotToast.showLoading();
-      }
+    //* Start loader
+    if (reloading) {
+      BotToast.showLoading();
+    }
 
-      state = await AsyncValue.guard(() async {
-        final data = await supabaseClient
-            .from('profile')
-            .select()
-            .eq('id', user!.id)
-            .maybeSingle(); // Use maybeSingle to avoid exception if no data
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(
+      () => profileRepo.fetchUserProfileData(userId: user!.id).then((data) {
+        /**
+         *! Close the loader in both success and error cases
+         */
+        if (reloading) {
+          BotToast.closeAllLoading();
+        }
 
         if (data != null) {
-          // Map the response data to Profile model
+          /**
+             ** Map the response data to Profile model
+             */
           _userProfile = Profile(
             username: data['display_name'] as String? ?? 'No username',
             emailAddress: data['email'] as String? ?? 'No email',
-            photoUrl: data['image_url'] as String? ?? 'No image',
+            photoUrl: data['image_url'] as String? ?? '',
             followersCount: data['follower_count'] as int? ?? 0,
             followingsCount: data['following_count'] as int? ?? 0,
-            bio: data['bio'] as String? ?? 'No bio',
+            bio: data['bio'] as String?,
           );
 
           log('PROFILE $_userProfile');
         } else {
           debugPrint('No profile found for user.');
 
-          //* We can create a new profile here
+          /**
+             ** We can create a new profile at this point
+             */
           Modal().modalSheet(
             appNavigatorKey.currentContext!,
             padTop: false,
@@ -71,19 +79,8 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
           return;
         }
-      });
-    } on PostgrestException catch (e) {
-      //! Catch and handle the specific Postgrest error
-      debugPrint('Postgrest Error: ${e.message}, Code: ${e.code}');
-    } catch (e, s) {
-      //! General error handling
-      debugPrintStack(stackTrace: s, label: e.toString());
-    } finally {
-      if (reloading) {
-        //* Close the loader in both success and error cases
-        BotToast.closeAllLoading();
-      }
-    }
+      }),
+    );
   }
 
   Future<void> onboardUser(
@@ -129,7 +126,6 @@ class ProfileViewmodel extends _$ProfileViewmodel {
         });
       }).onError<PostgrestException>((e, s) {
         throw PostgrestException(message: e.message, code: e.code);
-      
       });
     } else if (imageUrl == null) {
       showToast(
@@ -200,6 +196,24 @@ class ProfileViewmodel extends _$ProfileViewmodel {
       await supabaseClient.auth
           .signOut()
           .whenComplete(BotToast.closeAllLoading);
+    });
+  }
+}
+
+final profileRepo = ChangeNotifierProvider((_) => ProfileRepo());
+
+class ProfileRepo extends ChangeNotifier {
+  Future<PostgrestMap?> fetchUserProfileData({required String userId}) async {
+    final supabaseClient = AuthService().supabase;
+    return supabaseClient
+        .from('profile')
+        .select()
+        .eq('id', userId)
+        .maybeSingle()
+        .onError((e, s) {
+      //! General error handling
+      debugPrintStack(stackTrace: s, label: e.toString());
+      return;
     });
   }
 }

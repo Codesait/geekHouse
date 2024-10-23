@@ -30,10 +30,13 @@ class EditProfileTile extends StatelessWidget {
             ),
             Row(
               children: [
-                TextView(
-                  text: value ?? 'Add ${title.toLowerCase()}',
-                  fontWeight: FontWeight.w600,
-                  textOverflow: TextOverflow.ellipsis,
+                SizedBox(
+                  width: 250,
+                  child: TextView(
+                    text: value ?? 'Add ${title.toLowerCase()}',
+                    fontWeight: FontWeight.w600,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 const Gap(3),
                 const Icon(
