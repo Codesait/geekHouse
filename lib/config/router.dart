@@ -88,6 +88,7 @@ class AppRouterConfig {
                 routes: [
                   GoRoute(
                     path: 'edit-user-data',
+                    parentNavigatorKey: profileShellKey,
                     name: EditUserData.editUserDataPath,
                     pageBuilder: (context, state) {
                       final queryData = state.uri.queryParameters;

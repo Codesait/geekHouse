@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/services.dart';
+import 'package:projects/config/router.dart';
 import 'package:projects/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,7 +20,8 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
 
   final supabaseClient = AuthService().supabase;
 
-  Future<void> updateUserData({
+  Future<void> updateUserData(
+   {
     required void Function() getUserCallback,
     String? userName,
     String? bio,
@@ -54,12 +59,9 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
          *? FETCH UPDATED PROFILE
          */
         getUserCallback();
-      }).whenComplete(() {
-        /**
-         *? close editor
-        */
-        appNavigatorKey.currentContext!.pop();
       });
+    }).whenComplete(() {
+      profileShellKey.currentContext!.pop();
     }).onError<PostgrestException>((e, s) {
       throw PostgrestException(message: e.message, code: e.code);
     });

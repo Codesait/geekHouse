@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/providers.dart';
 import 'package:projects/presentations/features/profile/viewmodel/edit_profile_viewmodel.dart';
@@ -30,8 +31,6 @@ class EditUserDataState extends ConsumerState<EditUserData> {
     editingController = TextEditingController(text: widget.value);
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +63,6 @@ class EditUserDataState extends ConsumerState<EditUserData> {
                   getUserCallback: profileProv.getUserProfile,
                   bio: editingController!.text,
                 );
-            }
-            if (widget.title.toUpperCase() == 'USERNAME') {
-              provider.updateUserData(
-                getUserCallback: () {},
-                userName: editingController!.text,
-              );
             }
           },
         ),
