@@ -1,11 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/services.dart';
-import 'package:projects/config/router.dart';
 import 'package:projects/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

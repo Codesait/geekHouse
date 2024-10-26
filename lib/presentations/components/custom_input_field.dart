@@ -7,6 +7,7 @@ import 'package:projects/presentations/components/obscure_btn.dart';
 
 class CustomInputField extends StatefulWidget {
   const CustomInputField({
+    this.minLines,
     this.fieldLabel,
     this.toolTipMessage,
     this.hint,
@@ -45,6 +46,7 @@ class CustomInputField extends StatefulWidget {
     super.key,
   });
 
+  final int? minLines;
   final String? fieldLabel;
   final String? hint;
   final String? toolTipMessage;
@@ -121,6 +123,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
               ),
             SizedBox(
               child: TextFormField(
+                minLines: widget.minLines,
                 maxLength: widget.maxLength,
                 controller: widget.controller,
                 enableInteractiveSelection: widget.enableInteractiveSelection,
@@ -143,7 +146,8 @@ class _PwsTextFieldState extends State<CustomInputField> {
                 maxLines: widget.maxLines ?? 1,
                 validator: widget.validator,
                 onChanged: widget.onChanged,
-                obscureText: widget.password ? inputObscured : widget.obscureInput,
+                obscureText:
+                    widget.password ? inputObscured : widget.obscureInput,
                 inputFormatters: widget.inputFormatters,
                 onFieldSubmitted: widget.onFieldSubmitted,
                 onEditingComplete: widget.onEditingComplete,
@@ -201,11 +205,14 @@ class _PwsTextFieldState extends State<CustomInputField> {
                           ),
                         ),
                   filled: widget.isFilled,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  fillColor: widget.fillColor ?? const Color.fromARGB(255, 240, 239, 239),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  fillColor: widget.fillColor ??
+                      const Color.fromARGB(255, 240, 239, 239),
                   enabledBorder: widget.isFilled
                       ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(widget.borderRadius),
+                          borderRadius:
+                              BorderRadius.circular(widget.borderRadius),
                           borderSide: BorderSide(
                             color: widget.borderColor ?? AppColors.kWhite,
                           ),
@@ -224,7 +231,9 @@ class _PwsTextFieldState extends State<CustomInputField> {
                     borderRadius: BorderRadius.circular(widget.borderRadius),
                   ),
                   errorStyle: TextStyle(
-                    color: widget.hideError ? AppColors.kPrimary.withOpacity(.9) : Colors.redAccent,
+                    color: widget.hideError
+                        ? AppColors.kPrimary.withOpacity(.9)
+                        : Colors.redAccent,
                   ),
                   errorMaxLines: 4,
                 ),

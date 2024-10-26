@@ -128,7 +128,7 @@ void showToast({
         return Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(10),
-          width: fullWidth(appNavigatorKey.currentContext!),
+          width: fullWidth(rootNavigatorKey.currentContext!),
           constraints: const BoxConstraints(
             maxHeight: 90,
           ),

@@ -36,6 +36,7 @@ class EditProfileTile extends StatelessWidget {
                     text: value ?? 'Add ${title.toLowerCase()}',
                     fontWeight: FontWeight.w600,
                     textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
                   ),
                 ),
                 const Gap(3),

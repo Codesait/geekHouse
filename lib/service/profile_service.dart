@@ -4,12 +4,14 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projects/commons/src/utils.dart';
 
 class ProfileService extends ApiHelper {
   Future<dynamic> uploadProfilePhotoToCloudinary({
-    required XFile imageFile,
+    required CroppedFile imageFile,
+    required String imageName,
     required String cloudName,
     required String apiKey,
     required String apiSecret,
@@ -41,7 +43,7 @@ class ProfileService extends ApiHelper {
     final form = FormData.fromMap({
       'file': MultipartFile.fromBytes(
         await imageFile.readAsBytes() as List<int>,
-        filename: imageFile.name,
+        filename: imageName,
         contentType: MediaType('image', 'png'),
       ),
       'api_key': apiKey,

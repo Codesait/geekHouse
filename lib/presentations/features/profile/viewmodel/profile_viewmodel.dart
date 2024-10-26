@@ -2,15 +2,15 @@ import 'dart:developer';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/commons/src/data.dart';
 import 'package:projects/commons/src/screens.dart';
 import 'package:projects/commons/src/services.dart';
 import 'package:projects/commons/src/utils.dart';
 import 'package:projects/main.dart';
-import 'package:projects/service/profile_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -72,7 +72,7 @@ class ProfileViewmodel extends _$ProfileViewmodel {
              ** We can create a new profile at this point
              */
           Modal().modalSheet(
-            appNavigatorKey.currentContext!,
+            rootNavigatorKey.currentContext!,
             padTop: false,
             child: const UserOnboarding(),
           );
@@ -119,10 +119,10 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           /**
            *? Navigate use to entry
           */
-          appNavigatorKey.currentContext!.pushReplacementNamed(
+          rootNavigatorKey.currentContext!.pushReplacementNamed(
             MainScreen.homePath,
           );
-          appNavigatorKey.currentContext!.pop();
+          rootNavigatorKey.currentContext!.pop();
         });
       }).onError<PostgrestException>((e, s) {
         throw PostgrestException(message: e.message, code: e.code);
@@ -151,33 +151,32 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
   Future<String?> uploadProfileImageAndGetUrl() async {
     String? url;
+    CroppedFile? croppedImage;
 
     /**
      *? Responsible for allowing the user to pick an image from their device, either from
      *? the gallery or by taking a new photo using the camera.
      */
     final pickedImage = await UtilFunctions.pickImage();
+    if (pickedImage != null) {
+      croppedImage =
+          await ImageCropper().cropImage(sourcePath: pickedImage.path);
+    }
 
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       /**
-       *?  UPLOAD AUTH CREDENTIALS
-       */
-      final cloudName = dotenv.get('CLOUD_NAME');
-      final apiKey = dotenv.get('CLOUDINARY_API_KEY');
-      final apiSecret = dotenv.get('CLOUDINARY_API_SECRET');
-      final uploadPreset = dotenv.get('CLOUDINARY_PRESET');
-
-      /**
        *? upload a profile photo to Cloudinary and return a [secure_url] for
        *? user onboarding
        */
+      if (pickedImage == null) return;
       url = await ProfileService().uploadProfilePhotoToCloudinary(
-        imageFile: pickedImage!,
-        cloudName: cloudName,
-        apiKey: apiKey,
-        apiSecret: apiSecret,
-        uploadPreset: uploadPreset,
+        imageFile: croppedImage!,
+        imageName: pickedImage.name,
+        cloudName: Env.cloudName,
+        apiKey: Env.apiKey,
+        apiSecret: Env.apiSecret,
+        uploadPreset: Env.uploadPreset,
         uploadProgress: (sent, total) {
           _totalUploadProgress = total;
         },

@@ -50,7 +50,7 @@ class AuthViewmodel extends _$AuthViewmodel {
           */
           Future.delayed(
             const Duration(milliseconds: 1500),
-            () => appNavigatorKey.currentContext!
+            () => rootNavigatorKey.currentContext!
                 .pushReplacementNamed(LoginScreen.loginPath),
           );
         }
@@ -82,7 +82,7 @@ class AuthViewmodel extends _$AuthViewmodel {
           */
           Future.delayed(
             const Duration(milliseconds: 1500),
-            () => appNavigatorKey.currentContext!
+            () => rootNavigatorKey.currentContext!
                 .pushReplacementNamed(MainScreen.homePath),
           );
         }
@@ -116,11 +116,11 @@ class AuthViewmodel extends _$AuthViewmodel {
            *? `Constants.homePath`.
            */
           if (session != null) {
-            appNavigatorKey.currentContext!
+            rootNavigatorKey.currentContext!
                 .pushReplacementNamed(MainScreen.homePath);
           } else {
             Timer(const Duration(seconds: 2), () {
-              appNavigatorKey.currentContext!
+              rootNavigatorKey.currentContext!
                   .pushReplacementNamed(WelcomeScreen.welcomePath);
             });
           }
@@ -134,7 +134,7 @@ class AuthViewmodel extends _$AuthViewmodel {
         case AuthChangeEvent.signedOut:
           showToast(msg: 'Signed out Successfully');
           Timer(const Duration(seconds: 2), () {
-            appNavigatorKey.currentContext!
+            rootNavigatorKey.currentContext!
                 .pushReplacementNamed(WelcomeScreen.welcomePath);
           });
 
@@ -154,7 +154,7 @@ class AuthViewmodel extends _$AuthViewmodel {
         case AuthChangeEvent.userDeleted:
           showToast(msg: 'User deleted Successfully');
           Timer(const Duration(seconds: 2), () {
-            appNavigatorKey.currentContext!
+            rootNavigatorKey.currentContext!
                 .pushReplacementNamed(WelcomeScreen.welcomePath);
           });
 

@@ -53,7 +53,8 @@ class HomeState extends ConsumerState<Home> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: horizontalPad),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: horizontalPad),
                         child: const CustomAppBar(),
                       ),
                       const SizedBox(height: 25),
@@ -154,7 +155,7 @@ class _Events extends StatelessWidget {
                     visitors: e['visitors'] as String,
                     onTap: () {
                       modal.modalSheet(
-                        appNavigatorKey.currentContext!,
+                        rootNavigatorKey.currentContext!,
                         child: Space(
                           title: e['title'] as String,
                         ),

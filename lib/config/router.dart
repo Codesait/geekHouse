@@ -23,7 +23,7 @@ CustomTransitionPage<T> buildPageWithDefaultTransition<T>({
 
 class AppRouterConfig {
   static final GoRouter router = GoRouter(
-    navigatorKey: appNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     observers: [BotToastNavigatorObserver()],
     errorBuilder: (context, state) => const SizedBox(
@@ -35,7 +35,7 @@ class AppRouterConfig {
     ),
     routes: <RouteBase>[
       GoRoute(
-        parentNavigatorKey: appNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/',
         name: SplashScreen.splashPath,
         pageBuilder: (context, state) {
@@ -47,7 +47,7 @@ class AppRouterConfig {
         },
       ),
       GoRoute(
-        parentNavigatorKey: appNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/home',
         name: MainScreen.homePath,
         pageBuilder: (context, state) {

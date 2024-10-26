@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/providers.dart';
 import 'package:projects/presentations/features/profile/viewmodel/edit_profile_viewmodel.dart';
@@ -73,6 +72,8 @@ class EditUserDataState extends ConsumerState<EditUserData> {
             controller: editingController,
             autofocus: true,
             maxLength: widget.editableCharSize,
+            minLines: 1,
+            maxLines: 3,
             onChanged: (value) {
               setState(() {});
             },
