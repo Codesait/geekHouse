@@ -15,11 +15,12 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
 
   final supabaseClient = AuthService().supabase;
 
-  Future<void> updateUserData(
-   {
+  Future<void> updateUserData({
     required void Function() getUserCallback,
+    bool disablePop = false,
     String? userName,
     String? bio,
+    String? profilePhoto,
   }) async {
     final user = supabaseClient.auth.currentSession!.user;
 
@@ -35,6 +36,11 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
       } else if (bio != null) {
         updates = {
           'bio': bio,
+          'updated_at': DateTime.now().toIso8601String(),
+        };
+      } else if (profilePhoto != null) {
+        updates = {
+          'image_url': profilePhoto,
           'updated_at': DateTime.now().toIso8601String(),
         };
       }
@@ -56,6 +62,7 @@ class EditProfileViewmodel extends _$EditProfileViewmodel {
         getUserCallback();
       });
     }).whenComplete(() {
+      if (disablePop) return;
       profileShellKey.currentContext!.pop();
     }).onError<PostgrestException>((e, s) {
       throw PostgrestException(message: e.message, code: e.code);

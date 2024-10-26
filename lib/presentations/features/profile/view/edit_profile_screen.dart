@@ -6,6 +6,7 @@ import 'package:projects/commons/src/config.dart';
 import 'package:projects/commons/src/data.dart';
 import 'package:projects/commons/src/providers.dart';
 import 'package:projects/commons/src/screens.dart';
+import 'package:projects/presentations/features/profile/viewmodel/edit_profile_viewmodel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -48,7 +49,9 @@ class EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _EditPhotoSection(user: user),
+              _EditPhotoSection(
+                user: user,
+              ),
               _AboutYouSection(user: user),
               const Divider(),
               const _EditSocialSection(),
@@ -60,12 +63,19 @@ class EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 }
 
-class _EditPhotoSection extends StatelessWidget {
-  const _EditPhotoSection({this.user});
+class _EditPhotoSection extends ConsumerWidget {
+  const _EditPhotoSection({
+    this.user,
+  });
   final Profile? user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileProvider = ref.watch(profileViewmodelProvider.notifier);
+    final editProfilePRovider =
+        ref.watch(editProfileViewmodelProvider.notifier);
+    final state = ref.watch(profileViewmodelProvider);
+
     return Column(
       children: [
         Avatar(
@@ -73,6 +83,25 @@ class _EditPhotoSection extends StatelessWidget {
           avatarDimension: 100,
           editorDimension: 35,
           editImage: true,
+          canDelete: false,
+          imageUploadInProgress: state.isLoading,
+          onEditImageTap: () async {
+            await profileProvider.uploadProfileImageAndGetUrl().then((v) {
+              if (v != null) {
+                /**
+                 *? Push new image to db
+                 */
+                editProfilePRovider.updateUserData(
+                  disablePop: true,
+                  getUserCallback: () {
+                    //* then fetch updated user data
+                    profileProvider.getUserProfile(reloading: true);
+                  },
+                  profilePhoto: v,
+                );
+              }
+            });
+          },
         ),
         const Gap(5),
         InkWell(
