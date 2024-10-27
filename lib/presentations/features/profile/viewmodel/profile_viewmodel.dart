@@ -2,14 +2,15 @@ import 'dart:developer';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/commons/src/data.dart';
 import 'package:projects/commons/src/screens.dart';
 import 'package:projects/commons/src/services.dart';
 import 'package:projects/commons/src/utils.dart';
 import 'package:projects/main.dart';
-import 'package:projects/service/profile_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +20,7 @@ part 'profile_viewmodel.g.dart';
 class ProfileViewmodel extends _$ProfileViewmodel {
   @override
   FutureOr<dynamic> build() {
-    return state;
+    return null;
   }
 
   final supabaseClient = AuthService().supabase;
@@ -30,55 +31,56 @@ class ProfileViewmodel extends _$ProfileViewmodel {
   Profile? _userProfile;
   Profile? get userProfile => _userProfile;
 
+  final profileRepo = ProfileRepo();
+
   Future<void> getUserProfile({bool reloading = false}) async {
     final user = supabaseClient.auth.currentSession?.user;
 
-    state = const AsyncLoading();
-    try {
-      if (reloading) {
-        //* Start loader
-        BotToast.showLoading();
-      }
+    //* Start loader
+    if (reloading) {
+      BotToast.showLoading();
+    }
 
-      state = await AsyncValue.guard(() async {
-        final data = await supabaseClient.from('profile').select().eq('id', user!.id).maybeSingle(); // Use maybeSingle to avoid exception if no data
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(
+      () => profileRepo.fetchUserProfileData(userId: user!.id).then((data) {
+        /**
+         *! Close the loader in both success and error cases
+         */
+        if (reloading) {
+          BotToast.closeAllLoading();
+        }
 
         if (data != null) {
-          // Map the response data to your Profile model
+          /**
+             ** Map the response data to Profile model
+             */
           _userProfile = Profile(
             username: data['display_name'] as String? ?? 'No username',
             emailAddress: data['email'] as String? ?? 'No email',
-            photoUrl: data['image_url'] as String? ?? 'No image',
+            photoUrl: data['image_url'] as String? ?? '',
             followersCount: data['follower_count'] as int? ?? 0,
             followingsCount: data['following_count'] as int? ?? 0,
+            bio: data['bio'] as String?,
           );
 
           log('PROFILE $_userProfile');
         } else {
           debugPrint('No profile found for user.');
 
-          //* We can create a new profile here
+          /**
+             ** We can create a new profile at this point
+             */
           Modal().modalSheet(
-            appNavigatorKey.currentContext!,
+            rootNavigatorKey.currentContext!,
             padTop: false,
             child: const UserOnboarding(),
           );
 
           return;
         }
-      });
-    } on PostgrestException catch (e) {
-      //! Catch and handle the specific Postgrest error
-      debugPrint('Postgrest Error: ${e.message}, Code: ${e.code}');
-    } catch (e, s) {
-      //! General error handling
-      debugPrintStack(stackTrace: s, label: e.toString());
-    } finally {
-      if (reloading) {
-        //* Close the loader in both success and error cases
-        BotToast.closeAllLoading();
-      }
-    }
+      }),
+    );
   }
 
   Future<void> onboardUser(
@@ -101,8 +103,6 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           'display_name': userName,
           'email': user.email,
           'image_url': imageUrl,
-          'following_count': 0,
-          'follower_count': 0,
           'updated_at': DateTime.now().toIso8601String(),
         };
 
@@ -119,10 +119,10 @@ class ProfileViewmodel extends _$ProfileViewmodel {
           /**
            *? Navigate use to entry
           */
-          appNavigatorKey.currentContext!.pushReplacementNamed(
+          rootNavigatorKey.currentContext!.pushReplacementNamed(
             MainScreen.homePath,
           );
-          context.pop();
+          rootNavigatorKey.currentContext!.pop();
         });
       }).onError<PostgrestException>((e, s) {
         throw PostgrestException(message: e.message, code: e.code);
@@ -151,33 +151,32 @@ class ProfileViewmodel extends _$ProfileViewmodel {
 
   Future<String?> uploadProfileImageAndGetUrl() async {
     String? url;
+    CroppedFile? croppedImage;
 
     /**
      *? Responsible for allowing the user to pick an image from their device, either from
      *? the gallery or by taking a new photo using the camera.
      */
     final pickedImage = await UtilFunctions.pickImage();
+    if (pickedImage != null) {
+      croppedImage =
+          await ImageCropper().cropImage(sourcePath: pickedImage.path);
+    }
 
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       /**
-       *?  UPLOAD AUTH CREDENTIALS
-       */
-      final cloudName = dotenv.get('CLOUD_NAME');
-      final apiKey = dotenv.get('CLOUDINARY_API_KEY');
-      final apiSecret = dotenv.get('CLOUDINARY_API_SECRET');
-      final uploadPreset = dotenv.get('CLOUDINARY_PRESET');
-
-      /**
        *? upload a profile photo to Cloudinary and return a [secure_url] for
        *? user onboarding
        */
+      if (pickedImage == null) return;
       url = await ProfileService().uploadProfilePhotoToCloudinary(
-        imageFile: pickedImage!,
-        cloudName: cloudName,
-        apiKey: apiKey,
-        apiSecret: apiSecret,
-        uploadPreset: uploadPreset,
+        imageFile: croppedImage!,
+        imageName: pickedImage.name,
+        cloudName: Env.cloudName,
+        apiKey: Env.apiKey,
+        apiSecret: Env.apiSecret,
+        uploadPreset: Env.uploadPreset,
         uploadProgress: (sent, total) {
           _totalUploadProgress = total;
         },
@@ -193,7 +192,27 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       BotToast.showLoading();
-      await supabaseClient.auth.signOut().whenComplete(BotToast.closeAllLoading);
+      await supabaseClient.auth
+          .signOut()
+          .whenComplete(BotToast.closeAllLoading);
+    });
+  }
+}
+
+final profileRepo = ChangeNotifierProvider((_) => ProfileRepo());
+
+class ProfileRepo extends ChangeNotifier {
+  Future<PostgrestMap?> fetchUserProfileData({required String userId}) async {
+    final supabaseClient = AuthService().supabase;
+    return supabaseClient
+        .from('profile')
+        .select()
+        .eq('id', userId)
+        .maybeSingle()
+        .onError((e, s) {
+      //! General error handling
+      debugPrintStack(stackTrace: s, label: e.toString());
+      return;
     });
   }
 }

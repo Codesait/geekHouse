@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:projects/commons/src/data.dart';
-import 'package:projects/main.dart';
-import 'package:projects/presentations/components/custom_view.dart';
-import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
+import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/data.dart';
+import 'package:projects/commons/src/providers.dart';
+import 'package:projects/commons/src/screens.dart';
 import 'package:projects/commons/src/utils.dart';
-import 'package:projects/utils/mediaquery.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:projects/main.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
@@ -30,7 +30,7 @@ class UserProfileState extends ConsumerState<UserProfile> {
      */
     Future.microtask(() {
       if (user == null) {
-        ref.read(profileViewmodelProvider.notifier).getUserProfile();
+        ref.watch(profileViewmodelProvider.notifier).getUserProfile();
       }
     });
     super.initState();
@@ -39,14 +39,16 @@ class UserProfileState extends ConsumerState<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(profileViewmodelProvider.notifier);
+    final providerState = ref.watch(profileViewmodelProvider);
     user = provider.userProfile;
 
     return ContentView(
       key: UniqueKey(),
       pageTitle: 'Profile',
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      onRefresh: () => provider.getUserProfile(reloading: true),
+      body: Skeletonizer(
+        enabled: providerState.isLoading,
+        child: ListView(
           children: [
             _AboutUser(
               key: const ValueKey('about-user'),
@@ -84,8 +86,11 @@ class UserProfileState extends ConsumerState<UserProfile> {
               },
             ),
             const Gap(40),
-            TextView(
-              text: 'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
+            Align(
+              child: TextView(
+                text:
+                    'Version: ${packageInfo.version}+${packageInfo.buildNumber}',
+              ),
             ),
           ],
         ),
@@ -104,6 +109,7 @@ class _AboutUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Avatar(
           url: user.photoUrl,
@@ -127,13 +133,24 @@ class _AboutUser extends StatelessWidget {
           followingCount: user.followingsCount,
           followersCount: user.followersCount,
         ),
-        const Gap(20),
+        const Gap(10),
+        SizedBox(
+          width: fullWidth(context) / 1.5,
+          child: TextView(
+            text: user.bio ?? '',
+            fontWeight: FontWeight.w500,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const Gap(10),
         DefaultButton(
           text: 'Edit Profile',
           width: 150,
           height: 45,
           borderRadius: 100,
-          onPressed: () {},
+          onPressed: () {
+            context.pushNamed(EditProfileScreen.editProfilePath);
+          },
         ),
       ],
     );

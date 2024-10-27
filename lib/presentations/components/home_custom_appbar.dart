@@ -35,7 +35,7 @@ class CustomAppBar extends ConsumerWidget {
               avatarDimension: 40,
               backgroundColor: Colors.deepPurple.shade300,
               onTap: () => context.pushNamed(UserProfile.profilePath),
-            )
+            ),
           ],
         ),
       ],

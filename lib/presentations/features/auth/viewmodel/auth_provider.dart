@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/commons/src/screens.dart';
-import 'package:projects/main.dart';
 import 'package:projects/commons/src/services.dart';
 import 'package:projects/commons/src/utils.dart';
+import 'package:projects/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 part 'auth_provider.g.dart';
 
 @riverpod
-class AuthViemodel extends _$AuthViemodel {
+class AuthViewmodel extends _$AuthViewmodel {
   @override
   FutureOr<dynamic> build() {
     return null;
@@ -35,7 +36,9 @@ class AuthViemodel extends _$AuthViemodel {
        */
       BotToast.showLoading();
 
-      await provider.registerNewUser(email: email, password: password).then((value) {
+      await provider
+          .registerNewUser(email: email, password: password)
+          .then((value) {
         /**
          * ? go to login after user sign up
          */
@@ -47,7 +50,8 @@ class AuthViemodel extends _$AuthViemodel {
           */
           Future.delayed(
             const Duration(milliseconds: 1500),
-            () => context.pushReplacementNamed(LoginScreen.loginPath),
+            () => rootNavigatorKey.currentContext!
+                .pushReplacementNamed(LoginScreen.loginPath),
           );
         }
       }).whenComplete(BotToast.closeAllLoading);
@@ -78,7 +82,8 @@ class AuthViemodel extends _$AuthViemodel {
           */
           Future.delayed(
             const Duration(milliseconds: 1500),
-            () => context.pushReplacementNamed(MainScreen.homePath),
+            () => rootNavigatorKey.currentContext!
+                .pushReplacementNamed(MainScreen.homePath),
           );
         }
       }).whenComplete(BotToast.closeAllLoading);
@@ -94,7 +99,8 @@ class AuthViemodel extends _$AuthViemodel {
   Session? session;
 
   void listenToAuthStateChange() {
-    authSubscription = AuthService().supabase.auth.onAuthStateChange.listen((data) {
+    authSubscription =
+        AuthService().supabase.auth.onAuthStateChange.listen((data) {
       event = data.event;
       session = data.session;
 
@@ -110,10 +116,12 @@ class AuthViemodel extends _$AuthViemodel {
            *? `Constants.homePath`.
            */
           if (session != null) {
-            appNavigatorKey.currentContext!.pushReplacementNamed(MainScreen.homePath);
+            rootNavigatorKey.currentContext!
+                .pushReplacementNamed(MainScreen.homePath);
           } else {
             Timer(const Duration(seconds: 2), () {
-              appNavigatorKey.currentContext!.pushReplacementNamed(WelcomeScreen.welcomePath);
+              rootNavigatorKey.currentContext!
+                  .pushReplacementNamed(WelcomeScreen.welcomePath);
             });
           }
 
@@ -126,7 +134,8 @@ class AuthViemodel extends _$AuthViemodel {
         case AuthChangeEvent.signedOut:
           showToast(msg: 'Signed out Successfully');
           Timer(const Duration(seconds: 2), () {
-            appNavigatorKey.currentContext!.pushReplacementNamed(WelcomeScreen.welcomePath);
+            rootNavigatorKey.currentContext!
+                .pushReplacementNamed(WelcomeScreen.welcomePath);
           });
 
         case AuthChangeEvent.passwordRecovery:
@@ -141,10 +150,12 @@ class AuthViemodel extends _$AuthViemodel {
           showToast(msg: 'User updated Successfully');
           debugPrint('USER: ${session!.user}');
 
+        // ignore: deprecated_member_use
         case AuthChangeEvent.userDeleted:
           showToast(msg: 'User deleted Successfully');
           Timer(const Duration(seconds: 2), () {
-            appNavigatorKey.currentContext!.pushReplacementNamed(WelcomeScreen.welcomePath);
+            rootNavigatorKey.currentContext!
+                .pushReplacementNamed(WelcomeScreen.welcomePath);
           });
 
         case AuthChangeEvent.mfaChallengeVerified:

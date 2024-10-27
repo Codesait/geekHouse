@@ -26,15 +26,20 @@ dependencies:
 
   cupertino_icons: ^1.0.6
 
+  # dev ui
+  file_picker: ^8.1.2
+  image_picker: ^1.1.2
+  image_cropper: ^8.0.2
   google_fonts: ^6.2.1
   persistent_bottom_nav_bar_v2: ^5.3.0
-  package_info_plus: ^8.0.2
   flutter_svg: ^2.0.10+1
+
+  # animations
   skeletonizer: ^1.4.2
+  lottie: ^3.1.2
 
   # router
   go_router: ^14.1.4
-
 
   # database
   supabase_flutter: ^2.6.0
@@ -45,15 +50,17 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   bot_toast: ^4.1.3
-  dio: ^5.5.0
-  file_picker: ^8.1.2
-  image_picker: ^1.1.2
-  http_parser: ^4.0.2
+
+  # network
   cached_network_image: ^3.4.1
+  dio: ^5.5.0
+  http_parser: ^4.0.2
+
   permission_handler: ^11.3.1
+  package_info_plus: ^8.0.2
   crypto: ^3.0.5
 
-  lottie: ^3.1.2
+  
 
 dev_dependencies:
   flutter_test:

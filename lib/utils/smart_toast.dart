@@ -1,13 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projects/commons/src/config.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/custom_text.dart';
 import 'package:projects/presentations/components/gap.dart';
-import 'package:projects/commons/src/config.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 void showToast({
@@ -130,7 +128,7 @@ void showToast({
         return Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(10),
-          width: fullWidth(appNavigatorKey.currentContext!),
+          width: fullWidth(rootNavigatorKey.currentContext!),
           constraints: const BoxConstraints(
             maxHeight: 90,
           ),

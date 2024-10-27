@@ -36,11 +36,11 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: heroAnimationTag,
-      child: Stack(
-        children: [
-          _ImageHolder(
+    return Stack(
+      children: [
+        Hero(
+          tag: heroAnimationTag,
+          child: _ImageHolder(
             avatarDimension: avatarDimension,
             onTap: onTap,
             imageUrl: url,
@@ -49,14 +49,14 @@ class Avatar extends StatelessWidget {
             padding: padding,
             uploading: imageUploadInProgress,
           ),
-          _EditWidget(
-            canDelete: canDelete,
-            editImage: editImage,
-            editorDimension: editorDimension,
-            onEditImageTap: onEditImageTap,
-          ),
-        ],
-      ),
+        ),
+        _EditWidget(
+          canDelete: canDelete,
+          editImage: editImage,
+          editorDimension: editorDimension,
+          onEditImageTap: onEditImageTap,
+        ),
+      ],
     );
   }
 }
@@ -143,61 +143,62 @@ class _EditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
+    return  Visibility(
       visible: editImage,
       child: Positioned(
-        right: 0,
-        top: 0,
-        child: Container(
-          height: editorDimension,
-          width: editorDimension,
-          decoration: BoxDecoration(
-            color: AppColors.kPrimary,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: AppColors.kWhite),
-          ),
-          alignment: Alignment.center,
-          child: PopupMenuButton(
-            tooltip: 'Edit Image',
-            child: SvgPicture.asset(
-              AppAsset.addIcon,
-              height: editorDimension / 2,
-              width: editorDimension / 2,
+          right: 0,
+          top: 0,
+          child: Container(
+            height: editorDimension,
+            width: editorDimension,
+            decoration: BoxDecoration(
+              color: AppColors.kPrimary,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(color: AppColors.kWhite),
             ),
-            itemBuilder: (context) {
-              if (!canDelete) {
-                return <PopupMenuEntry<dynamic>>[
-                  PopupMenuItem(
-                    onTap: onEditImageTap,
-                    child: const TextView(
-                      text: 'Change profile picture',
+            alignment: Alignment.center,
+            child: PopupMenuButton(
+              tooltip: 'Edit Image',
+              child: SvgPicture.asset(
+                AppAsset.addIcon,
+                height: editorDimension / 2,
+                width: editorDimension / 2,
+              ),
+              itemBuilder: (context) {
+                if (!canDelete) {
+                  return <PopupMenuEntry<dynamic>>[
+                    PopupMenuItem(
+                      onTap: onEditImageTap,
+                      child: const TextView(
+                        text: 'Change profile picture',
+                      ),
                     ),
-                  ),
-                ];
-              } else {
-                return <PopupMenuEntry<dynamic>>[
-                  PopupMenuItem(
-                    onTap: () {},
-                    child: const TextView(
-                      text: 'Change profile picture',
+                  ];
+                } else {
+                  return <PopupMenuEntry<dynamic>>[
+                    PopupMenuItem(
+                      onTap: () {},
+                      child: const TextView(
+                        text: 'Change profile picture',
+                      ),
                     ),
-                  ),
-                  const PopupMenuDivider(),
-                  PopupMenuItem(
-                    onTap: () {},
-                    child: canDelete
-                        ? const TextView(
-                            text: 'Delete profile picture',
-                            color: Colors.red,
-                          )
-                        : const SizedBox(),
-                  ),
-                ];
-              }
-            },
+                    const PopupMenuDivider(),
+                    PopupMenuItem(
+                      onTap: () {},
+                      child: canDelete
+                          ? const TextView(
+                              text: 'Delete profile picture',
+                              color: Colors.red,
+                            )
+                          : const SizedBox(),
+                    ),
+                  ];
+                }
+              },
+            ),
           ),
         ),
-      ),
     );
+
   }
 }

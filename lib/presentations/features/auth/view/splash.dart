@@ -20,7 +20,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     Future.delayed(
       const Duration(seconds: 4),
-      () => ref.read(authViemodelProvider.notifier).listenToAuthStateChange(),
+      () => ref.read(authViewmodelProvider.notifier).listenToAuthStateChange(),
     );
 
     super.initState();

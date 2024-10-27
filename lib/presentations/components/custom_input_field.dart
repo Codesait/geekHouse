@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projects/presentations/components/obscure_btn.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/config.dart';
+import 'package:projects/presentations/components/obscure_btn.dart';
 
 class CustomInputField extends StatefulWidget {
   const CustomInputField({
+    this.minLines,
     this.fieldLabel,
     this.toolTipMessage,
     this.hint,
@@ -41,9 +42,11 @@ class CustomInputField extends StatefulWidget {
     this.onFieldSubmitted,
     this.onEditingComplete,
     this.focusNode,
+    this.autofocus = false,
     super.key,
   });
 
+  final int? minLines;
   final String? fieldLabel;
   final String? hint;
   final String? toolTipMessage;
@@ -74,6 +77,7 @@ class CustomInputField extends StatefulWidget {
   final bool visibleField;
   final bool? enableInteractiveSelection;
   final bool hideError;
+  final bool autofocus;
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String value)? onFieldSubmitted;
   final void Function()? onEditingComplete;
@@ -119,10 +123,12 @@ class _PwsTextFieldState extends State<CustomInputField> {
               ),
             SizedBox(
               child: TextFormField(
+                minLines: widget.minLines,
                 maxLength: widget.maxLength,
                 controller: widget.controller,
                 enableInteractiveSelection: widget.enableInteractiveSelection,
                 focusNode: widget.focusNode,
+                autofocus: widget.autofocus,
                 style: theme.textTheme.bodyMedium!.copyWith(
                   color: AppColors.kBlack,
                   fontWeight: FontWeight.bold,
@@ -189,7 +195,15 @@ class _PwsTextFieldState extends State<CustomInputField> {
                             ),
                           ],
                         )
-                      : null,
+                      : IconButton(
+                          onPressed: () => setState(() {
+                            widget.controller!.clear();
+                          }),
+                          icon: const Icon(
+                            Icons.clear_rounded,
+                            size: 14,
+                          ),
+                        ),
                   filled: widget.isFilled,
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -231,7 +245,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Gap(0),
-                //? forgot passowrd link widget
+                //? forgot password link widget
                 //? [useForgotPass] to enable widget
                 Visibility(
                   visible: widget.useForgotPass,

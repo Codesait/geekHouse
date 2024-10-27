@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/commons/src/screens.dart';
-import 'package:projects/presentations/features/auth/viewmodel/auth_provider.dart';
 import 'package:projects/commons/src/components.dart';
 import 'package:projects/commons/src/config.dart';
+import 'package:projects/commons/src/screens.dart';
 import 'package:projects/commons/src/utils.dart';
-import 'package:projects/utils/mediaquery.dart';
+import 'package:projects/presentations/features/auth/viewmodel/auth_provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -152,7 +151,7 @@ class _SignUpFormState extends State<_SignUpForm> {
             child: Consumer(
               builder: (context, ref, _) {
                 //? acessing auth provider
-                final provider = ref.read(authViemodelProvider.notifier);
+                final provider = ref.read(authViewmodelProvider.notifier);
 
                 return Column(
                   children: [

@@ -21,11 +21,9 @@ CustomTransitionPage<T> buildPageWithDefaultTransition<T>({
   );
 }
 
-final _shellKey = GlobalKey<NavigatorState>();
-
 class AppRouterConfig {
   static final GoRouter router = GoRouter(
-    navigatorKey: appNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     observers: [BotToastNavigatorObserver()],
     errorBuilder: (context, state) => const SizedBox(
@@ -37,7 +35,7 @@ class AppRouterConfig {
     ),
     routes: <RouteBase>[
       GoRoute(
-        parentNavigatorKey: appNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/',
         name: SplashScreen.splashPath,
         pageBuilder: (context, state) {
@@ -49,7 +47,7 @@ class AppRouterConfig {
         },
       ),
       GoRoute(
-        parentNavigatorKey: appNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/home',
         name: MainScreen.homePath,
         pageBuilder: (context, state) {
@@ -60,20 +58,60 @@ class AppRouterConfig {
           );
         },
       ),
-      GoRoute(
-        parentNavigatorKey: appNavigatorKey,
-        path: '/profile',
-        name: UserProfile.profilePath,
-        pageBuilder: (context, state) {
-          return buildPageWithDefaultTransition(
-            context: context,
-            state: state,
-            child: const UserProfile(),
-          );
+      ShellRoute(
+        navigatorKey: profileShellKey,
+        builder: (context, state, child) {
+          return child;
         },
+        routes: [
+          GoRoute(
+            path: '/profile',
+            name: UserProfile.profilePath,
+            pageBuilder: (context, state) {
+              return buildPageWithDefaultTransition(
+                context: context,
+                state: state,
+                child: const UserProfile(),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: EditProfileScreen.editProfilePath,
+                pageBuilder: (context, state) {
+                  return buildPageWithDefaultTransition(
+                    context: context,
+                    state: state,
+                    child: const EditProfileScreen(),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit-user-data',
+                    parentNavigatorKey: profileShellKey,
+                    name: EditUserData.editUserDataPath,
+                    pageBuilder: (context, state) {
+                      final queryData = state.uri.queryParameters;
+
+                      return buildPageWithDefaultTransition(
+                        context: context,
+                        state: state,
+                        child: EditUserData(
+                          title: queryData['title']!,
+                          value: queryData['value'],
+                          editableCharSize: int.parse(queryData['charSize']!),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
       ShellRoute(
-        navigatorKey: _shellKey,
+        navigatorKey: authShellKey,
         pageBuilder: (context, state, child) {
           return NoTransitionPage(
             child: child,

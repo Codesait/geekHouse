@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:projects/data/local/data.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentations/components/current_talks.dart';
 import 'package:projects/presentations/components/home_custom_appbar.dart';
@@ -7,7 +8,6 @@ import 'package:projects/presentations/components/tab_pill.dart';
 import 'package:projects/presentations/components/up_coming_tablet.dart';
 import 'package:projects/presentations/features/home/space.dart';
 import 'package:projects/presentations/features/profile/viewmodel/profile_viewmodel.dart';
-import 'package:projects/utils/data.dart';
 import 'package:projects/utils/mediaquery.dart';
 import 'package:projects/utils/modal.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -53,7 +53,8 @@ class HomeState extends ConsumerState<Home> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: horizontalPad),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: horizontalPad),
                         child: const CustomAppBar(),
                       ),
                       const SizedBox(height: 25),
@@ -154,7 +155,7 @@ class _Events extends StatelessWidget {
                     visitors: e['visitors'] as String,
                     onTap: () {
                       modal.modalSheet(
-                        appNavigatorKey.currentContext!,
+                        rootNavigatorKey.currentContext!,
                         child: Space(
                           title: e['title'] as String,
                         ),

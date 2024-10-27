@@ -10,6 +10,7 @@ class Profile {
     this.photoUrl,
     this.followingsCount,
     this.followersCount,
+    this.bio,
   });
 
   factory Profile.fromMap(Map<String, dynamic> map) {
@@ -22,6 +23,7 @@ class Profile {
           map['followingsCount'] != null ? map['followingsCount'] as int? : 0,
       followersCount:
           map['followersCount'] != null ? map['followersCount'] as int? : 0,
+      bio: map['bio'] as String?,
     );
   }
 
@@ -34,6 +36,7 @@ class Profile {
   final String? photoUrl;
   final int? followingsCount;
   final int? followersCount;
+  final String? bio;
 
   Profile copyWith({
     String? username,
@@ -42,6 +45,7 @@ class Profile {
     String? photoUrl,
     int? followingsCount,
     int? followersCount,
+    String? bio,
   }) {
     return Profile(
       username: username ?? this.username,
@@ -50,6 +54,7 @@ class Profile {
       photoUrl: photoUrl ?? this.photoUrl,
       followingsCount: followingsCount ?? this.followingsCount,
       followersCount: followersCount ?? this.followersCount,
+      bio: bio ?? this.bio,
     );
   }
 
@@ -61,6 +66,7 @@ class Profile {
       'photoUrl': photoUrl,
       'followingsCount': followingsCount,
       'followersCount': followersCount,
+      'bio': bio,
     };
   }
 
@@ -68,7 +74,7 @@ class Profile {
 
   @override
   String toString() {
-    return 'Profile(username: $username, emailAddress: $emailAddress, phoneNumber: $phoneNumber, photoUrl: $photoUrl, followingsCount: $followingsCount, followersCount: $followersCount)';
+    return 'Profile(username: $username, emailAddress: $emailAddress, phoneNumber: $phoneNumber, photoUrl: $photoUrl, followingsCount: $followingsCount, followersCount: $followersCount, bio: $bio)';
   }
 
   @override
@@ -81,7 +87,8 @@ class Profile {
         other.phoneNumber == phoneNumber &&
         other.photoUrl == photoUrl &&
         other.followingsCount == followingsCount &&
-        other.followersCount == followersCount;
+        other.followersCount == followersCount &&
+        other.bio == bio;
   }
 
   @override
@@ -91,6 +98,7 @@ class Profile {
         phoneNumber.hashCode ^
         photoUrl.hashCode ^
         followingsCount.hashCode ^
-        followersCount.hashCode;
+        followersCount.hashCode ^
+        bio.hashCode;
   }
 }
