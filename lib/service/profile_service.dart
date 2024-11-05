@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:projects/commons/src/utils.dart';
+import 'package:projects/common/src/utils.dart';
 
 class ProfileService extends ApiHelper {
   Future<dynamic> uploadProfilePhotoToCloudinary({

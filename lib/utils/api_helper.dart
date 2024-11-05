@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:projects/commons/exceptions/custom_exception.dart';
-import 'package:projects/commons/src/utils.dart';
+import 'package:projects/common/exceptions/custom_exception.dart';
+import 'package:projects/common/src/utils.dart';
 
 class ApiHelper {
   final dio = Dio();

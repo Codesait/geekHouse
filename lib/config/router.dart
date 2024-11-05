@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:projects/commons/src/screens.dart';
+import 'package:projects/common/src/screens.dart';
 import 'package:projects/main.dart';
 
 CustomTransitionPage<T> buildPageWithDefaultTransition<T>({

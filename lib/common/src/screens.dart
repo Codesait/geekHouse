@@ -1,0 +1,11 @@
+export '../../presentation/features/auth/view/login.dart';
+export '../../presentation/features/auth/view/registration.dart';
+export '../../presentation/features/auth/view/splash.dart';
+export '../../presentation/features/auth/view/welcome.dart';
+export '../../presentation/features/home/space.dart';
+export '../../presentation/features/home/view/home.dart';
+export '../../presentation/features/home/view/main_screen.dart';
+export '../../presentation/features/onboarding/view/onboarding.dart';
+export '../../presentation/features/profile/view/edit_profile_data.dart';
+export '../../presentation/features/profile/view/edit_profile_screen.dart';
+export '../../presentation/features/profile/view/profile_screen.dart';
