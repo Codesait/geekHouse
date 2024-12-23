@@ -155,7 +155,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                   border: widget.readOnly ? InputBorder.none : null,
                   hintText: widget.hint,
                   hintStyle: theme.textTheme.bodyMedium!.copyWith(
-                    color: AppColors.kGrey.withOpacity(.6),
+                    color: AppColors.kGrey.withValues(alpha: .6),
                     fontSize: 13,
                   ),
                   prefixIcon: widget.prefixIcon != null
@@ -232,7 +232,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                   ),
                   errorStyle: TextStyle(
                     color: widget.hideError
-                        ? AppColors.kPrimary.withOpacity(.9)
+                        ? AppColors.kPrimary.withValues(alpha: .9)
                         : Colors.redAccent,
                   ),
                   errorMaxLines: 4,

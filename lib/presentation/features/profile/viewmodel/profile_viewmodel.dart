@@ -24,14 +24,13 @@ class ProfileViewmodel extends _$ProfileViewmodel {
   }
 
   final supabaseClient = AuthService().supabase;
+  final profileRepo = ProfileRepo();
 
   /**
    ** FETCH/UPDATE USER PROFILE DATA
   */
   Profile? _userProfile;
   Profile? get userProfile => _userProfile;
-
-  final profileRepo = ProfileRepo();
 
   Future<void> getUserProfile({bool reloading = false}) async {
     final user = supabaseClient.auth.currentSession?.user;

@@ -63,7 +63,7 @@ class _BackBtn extends StatelessWidget {
               margin: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                color: AppColors.kPrimary.withOpacity(.3),
+                color: AppColors.kPrimary.withValues(alpha: .3),
               ),
               child: const Padding(
                 padding: EdgeInsets.only(left: 4),

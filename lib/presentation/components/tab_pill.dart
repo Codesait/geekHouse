@@ -18,7 +18,7 @@ class TabPill extends StatelessWidget {
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: backgroundColor.withOpacity(0.2),
+        color: backgroundColor.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Center(

@@ -66,7 +66,7 @@ class PageIndicator extends StatelessWidget {
         width: 20,
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: AppColors.kPrimary.withOpacity(.2),
+          color: AppColors.kPrimary.withValues(alpha: .2),
           borderRadius: const BorderRadius.all(
             Radius.circular(100),
           ),
@@ -88,7 +88,7 @@ class PageIndicator extends StatelessWidget {
         height: 10,
         width: 10,
         decoration: BoxDecoration(
-          color: AppColors.kPrimary.withOpacity(.6),
+          color: AppColors.kPrimary.withValues(alpha: .6),
           borderRadius: const BorderRadius.all(
             Radius.circular(100),
           ),

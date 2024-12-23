@@ -37,7 +37,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
     const animationCurve = Curves.easeIn;
 
     return Scaffold(
-      backgroundColor: AppColors.kPrimary.withOpacity(.2),
+      backgroundColor: AppColors.kPrimary.withValues(alpha: .2),
       body: StatefulBuilder(
         builder: (context, state) {
           return SafeArea(

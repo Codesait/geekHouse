@@ -44,7 +44,7 @@ class Avatar extends StatelessWidget {
             avatarDimension: avatarDimension,
             onTap: onTap,
             imageUrl: url,
-            backgroundColor: AppColors.kPrimary.withOpacity(.4),
+            backgroundColor: AppColors.kPrimary.withValues(alpha:  .4),
             radius: radius,
             padding: padding,
             uploading: imageUploadInProgress,
@@ -117,7 +117,7 @@ class _ImageHolder extends StatelessWidget {
                     child: SvgPicture.asset(
                       AppAsset.personIcon,
                       colorFilter: ColorFilter.mode(
-                        AppColors.kPrimary.withOpacity(.6),
+                        AppColors.kPrimary.withValues(alpha: .6),
                         BlendMode.srcIn,
                       ),
                     ),

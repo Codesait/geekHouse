@@ -27,7 +27,7 @@ class ListenerAvatar extends StatelessWidget {
         children: [
           Avatar(
             radius: 50,
-            backgroundColor: color.withOpacity(0.3),
+            backgroundColor: color.withValues(alpha: 0.3),
             avatarDimension: 60,
           ),
           Positioned(

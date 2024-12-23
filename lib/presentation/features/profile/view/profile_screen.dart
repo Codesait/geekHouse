@@ -227,7 +227,7 @@ class _ActionWidgets extends StatelessWidget {
                   width: 35,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: AppColors.kPrimary.withOpacity(.4),
+                    color: AppColors.kPrimary.withValues(alpha: .4),
                   ),
                   child: Icon(
                     icon,
