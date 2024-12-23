@@ -75,7 +75,7 @@ class AuthViewmodel extends _$AuthViewmodel {
 
       await provider.userSignIn(email: email, password: password).then((value) {
         if (value != null) {
-          showToast(msg: 'Please login');
+          
 
           /**
            ** GO TO HOME AFTER LOGIN

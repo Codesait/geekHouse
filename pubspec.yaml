@@ -39,7 +39,7 @@ dependencies:
   lottie: ^3.1.2
 
   # router
-  go_router: ^14.1.4
+  go_router: ^14.4.1
 
   # database
   supabase_flutter: ^2.6.0

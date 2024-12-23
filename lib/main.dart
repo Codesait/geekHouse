@@ -15,6 +15,7 @@ final profileShellKey = GlobalKey<NavigatorState>();
 late PackageInfo packageInfo;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   packageInfo = await PackageInfo.fromPlatform();
 
   await dotenv.load(fileName: 'auth_secrets.env');

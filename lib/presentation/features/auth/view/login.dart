@@ -124,6 +124,11 @@ class __LoginFormState extends State<_LoginForm> {
                       borderRadius: 100,
                       color: AppColors.kBlack,
                       onPressed: () {
+
+                        /**
+                         * if all field passes required validations
+                         * then login can happen
+                         */
                         if (loginFormKey.currentState!.validate()) {
                           provider.login(
                             context,

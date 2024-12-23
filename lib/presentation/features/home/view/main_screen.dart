@@ -17,6 +17,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final PersistentTabController _controller = PersistentTabController();
 
+
   List<PersistentTabConfig> _tabs() => [
         PersistentTabConfig(
           screen: const Home(),
@@ -74,6 +75,8 @@ class _MainScreenState extends State<MainScreen> {
         tabs: _tabs(),
         navBarBuilder: (navBarConfig) => Style5BottomNavBar(
           navBarConfig: navBarConfig,
+
+          
         ),
         // margin: settings.margin,
         // avoidBottomPadding: settings.avoidBottomPadding,
