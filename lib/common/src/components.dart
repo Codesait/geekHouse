@@ -8,4 +8,5 @@ export '../../presentation/components/custom_view.dart';
 export '../../presentation/components/gap.dart';
 export '../../presentation/components/page_indicator.dart';
 export '../../presentation/components/pageview.dart';
+export '../../presentation/components/smart/createMenu/create_menu.dart';
 export '../../presentation/features/profile/widget/edit_profile_tile.dart';

@@ -1,72 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:projects/common/src/components.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/common/src/screens.dart';
+import 'package:projects/presentation/components/smart/createMenu/controller.dart';
 import 'package:projects/utils/mediaquery.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   static String homePath = 'homeScreen';
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends ConsumerState<MainScreen> {
   final PersistentTabController _controller = PersistentTabController();
 
-  List<PersistentTabConfig> _tabs() => [
-        PersistentTabConfig(
-          screen: const Home(),
-          item: ItemConfig(
-            icon: SizedBox.square(
-              dimension: 20,
-              child: SvgPicture.asset(
-                'assets/images/home_icon.svg',
-                colorFilter:
-                    ColorFilter.mode(AppColors.kPrimary, BlendMode.srcIn),
-              ),
+  List<PersistentTabConfig> _tabs() {
+    final controllerProvider = ref.watch(createMenuController);
+
+    return [
+      PersistentTabConfig(
+        screen: const Home(),
+        item: ItemConfig(
+          icon: SizedBox.square(
+            dimension: 20,
+            child: SvgPicture.asset(
+              'assets/images/home_icon.svg',
+              colorFilter:
+                  ColorFilter.mode(AppColors.kPrimary, BlendMode.srcIn),
             ),
-            activeForegroundColor: Colors.deepOrange,
+          ),
+          activeForegroundColor: Colors.deepOrange,
+        ),
+      ),
+      PersistentTabConfig.noScreen(
+        item: ItemConfig(
+          icon: SizedBox.square(
+            dimension: 35,
+            child: controllerProvider.isModalOpen
+                ? const Icon(Icons.close, color: Colors.red)
+                : SvgPicture.asset(
+                    'assets/images/add_icon.svg',
+                    colorFilter:
+                        const ColorFilter.mode(Colors.orange, BlendMode.srcIn),
+                  ),
+          ),
+          activeForegroundColor: Colors.blueAccent,
+        ),
+        onPressed: (context) {
+          controllerProvider.toggleModalStatus();
+        },
+      ),
+      PersistentTabConfig(
+        screen: SizedBox(
+          height: fullHeight(context),
+          width: fullWidth(context),
+          child: const Center(
+            child: Text('Messages'),
           ),
         ),
-        PersistentTabConfig.noScreen(
-          item: ItemConfig(
-            icon: SizedBox.square(
-              dimension: 35,
-              child: SvgPicture.asset(
-                'assets/images/add_icon.svg',
-                colorFilter:
-                    const ColorFilter.mode(Colors.orange, BlendMode.srcIn),
-              ),
+        item: ItemConfig(
+          icon: SizedBox.square(
+            dimension: 20,
+            child: SvgPicture.asset(
+              'assets/images/mail_icon.svg',
+              colorFilter:
+                  ColorFilter.mode(AppColors.kPrimary, BlendMode.srcIn),
             ),
-            activeForegroundColor: Colors.blueAccent,
           ),
-          onPressed: (context) {},
+          activeForegroundColor: Colors.deepOrange,
         ),
-        PersistentTabConfig(
-          screen: SizedBox(
-            height: fullHeight(context),
-            width: fullWidth(context),
-            child: const Center(
-              child: Text('Messages'),
-            ),
-          ),
-          item: ItemConfig(
-            icon: SizedBox.square(
-              dimension: 20,
-              child: SvgPicture.asset(
-                'assets/images/mail_icon.svg',
-                colorFilter:
-                    ColorFilter.mode(AppColors.kPrimary, BlendMode.srcIn),
-              ),
-            ),
-            activeForegroundColor: Colors.deepOrange,
-          ),
-        ),
-      ];
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -78,6 +89,7 @@ class _MainScreenState extends State<MainScreen> {
               navBarConfig: navBarConfig,
             ),
           ),
+          const CreateMenuWidget(),
         ],
       );
 }
