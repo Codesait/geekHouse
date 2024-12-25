@@ -38,6 +38,7 @@ dependencies:
   skeletonizer: ^1.4.2
   lottie: ^3.1.2
   flutter_animate: ^4.5.2
+  rive_animated_icon: ^2.0.3
 
   # router
   go_router: ^14.4.1

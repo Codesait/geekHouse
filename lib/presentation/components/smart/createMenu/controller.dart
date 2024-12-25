@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:projects/common/src/utils.dart';
 import 'package:projects/main.dart';
+import 'package:projects/presentation/features/creative/live/start_live.dart';
+import 'package:projects/presentation/features/creative/post/create_post.dart';
+import 'package:projects/presentation/features/creative/room/start_room.dart';
 
 final createMenuController =
     ChangeNotifierProvider((ref) => CreateMenuController());
@@ -96,6 +99,9 @@ class CreateMenuController extends ChangeNotifier {
   /// Returns `true` if the modal is fully collapsed, otherwise `false`.
   bool get isModalCollapsed => animationController.value == 0;
 
+  /// Returns `true` if the modal is fully expanded, otherwise `false`.
+  bool get isModalExpanded => animationController.value == 1;
+
   /// Expands the modal to its full size.
   ///
   /// Animates the modal to the expanded state and notifies listeners.
@@ -110,4 +116,29 @@ class CreateMenuController extends ChangeNotifier {
   void fullyCollapseModal() {
     animationController.animateTo(0, curve: curve, duration: duration);
   }
+
+  MenuPageState _page = MenuPageState.post;
+
+  void setPage(MenuPageState page) {
+    _page = page;
+    fullyExpandModal();
+  }
+
+// get the current menu page
+  Widget get currentPage {
+    switch (_page) {
+      case MenuPageState.post:
+        return const CreatePostView();
+      case MenuPageState.room:
+        return const StartRoomView();
+      case MenuPageState.live:
+        return const StartLiveView();
+    }
+  }
+}
+
+enum MenuPageState {
+  post,
+  room,
+  live,
 }

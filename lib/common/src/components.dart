@@ -9,4 +9,7 @@ export '../../presentation/components/gap.dart';
 export '../../presentation/components/page_indicator.dart';
 export '../../presentation/components/pageview.dart';
 export '../../presentation/components/smart/createMenu/create_menu.dart';
+export '../../presentation/features/creative/live/start_live.dart';
+export '../../presentation/features/creative/post/create_post.dart';
+export '../../presentation/features/creative/room/start_room.dart';
 export '../../presentation/features/profile/widget/edit_profile_tile.dart';
