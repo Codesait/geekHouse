@@ -21,8 +21,7 @@ class AuthViewmodel extends _$AuthViewmodel {
     return null;
   }
 
-  Future<void> signUp(
-    BuildContext context, {
+  Future<void> signUp({
     required String email,
     required String password,
     Map<String, dynamic>? moreData,
@@ -43,16 +42,7 @@ class AuthViewmodel extends _$AuthViewmodel {
          * ? go to login after user sign up
          */
         if (value != null) {
-          showToast(msg: 'Please Sign in');
-
-          /**
-           ** GO TO LOGIN AFTER SIGNUP
-          */
-          Future.delayed(
-            const Duration(milliseconds: 1500),
-            () => rootNavigatorKey.currentContext!
-                .pushReplacementNamed(LoginScreen.loginPath),
-          );
+          UtilFunctions.showVerifyEmailDialog();
         }
       }).whenComplete(BotToast.closeAllLoading);
     });
@@ -75,8 +65,6 @@ class AuthViewmodel extends _$AuthViewmodel {
 
       await provider.userSignIn(email: email, password: password).then((value) {
         if (value != null) {
-          
-
           /**
            ** GO TO HOME AFTER LOGIN
           */
@@ -158,8 +146,9 @@ class AuthViewmodel extends _$AuthViewmodel {
                 .pushReplacementNamed(WelcomeScreen.welcomePath);
           });
 
-        case AuthChangeEvent.mfaChallengeVerified:
         // handle mfa challenge verified
+        case AuthChangeEvent.mfaChallengeVerified:
+          showToast(msg: 'User Verify');
       }
     });
   }
@@ -180,13 +169,24 @@ class AuthRepo extends ChangeNotifier {
     required String password,
     Map<String, dynamic>? moreData,
   }) async {
-    return authService.signUp(email, password, moreData);
+    return authService
+        .signUp(email, password, moreData)
+        .catchError((dynamic e) {
+      // ignore: avoid_dynamic_calls
+      showToast(msg: e['message'].toString(), isError: true);
+      throw Exception(e);
+    });
   }
 
   Future<AuthResponse?> userSignIn({
     required String email,
     required String password,
   }) async {
-    return authService.signIn(email, password);
+    return authService.signIn(email, password).catchError((dynamic e) {
+      log(e['message'].toString());
+      // ignore: avoid_dynamic_calls
+      showToast(msg: e['message'].toString(), isError: true);
+      throw Exception(e);
+    });
   }
 }

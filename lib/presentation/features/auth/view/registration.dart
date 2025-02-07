@@ -20,48 +20,46 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kPrimary,
-      body: SafeArea(
-        bottom: false,
-        child: Container(
-          height: fullHeight(context),
-          width: fullWidth(context),
-          padding: const EdgeInsets.only(top: 30),
-          child: Stack(
-            children: [
-              const Positioned(
-                top: 20,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: AuthTitlebar(
-                    title: 'Signup\n',
-                    subTitle: 'Best way to discuss smart\nideas',
-                  ),
+      backgroundColor: AppColors.kBlack,
+      body: SizedBox(
+        height: fullHeight(context),
+        width: fullWidth(context),
+        child: Stack(
+          children: [
+            const Positioned(
+              bottom: 60,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: AuthTitlebar(
+                  title: 'Signup\n',
+                  subTitle: 'Best way to discuss smart\nideas',
                 ),
               ),
-              Positioned(
-                bottom: 0,
+            ),
+            Positioned(
+              child: SingleChildScrollView(
                 child: Container(
-                  height: fullHeight(context) / 1.4,
+                  height: fullHeight(context) / 1.3,
                   width: fullWidth(context),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 25,
-                    vertical: 25,
                   ),
                   decoration: const BoxDecoration(
                     color: AppColors.kWhite,
-                    borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(40),
-                      right: Radius.circular(40),
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
                     ),
                   ),
-                  child: const _SignUpForm(
-                    key: Key('signup_form'),
+                  child: const SafeArea(
+                    child: _SignUpForm(
+                      key: Key('signup_form'),
+                    ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -96,53 +94,49 @@ class _SignUpFormState extends State<_SignUpForm> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            height: fullHeight(context) / 1.9,
-            child: Form(
-              key: regFormKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    
-                    CustomInputField(
-                      fieldLabel: 'Email address',
-                      hint: 'enter email',
-                      prefixIcon: AppAsset.mailIcon,
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (v) => Validators().validateEmail(v),
-                    ),
-                    CustomInputField(
-                      fieldLabel: 'Phone number',
-                      hint: '123-456-344',
-                      prefixIcon: AppAsset.dialpadIcon,
-                      controller: phoneController,
-                      keyboardType: TextInputType.phone,
-                      validator: (v) => Validators().validatePhoneNumber(v),
-                    ),
-                    CustomInputField(
-                      fieldLabel: 'Password',
-                      hint: 'enter password',
-                      prefixIcon: AppAsset.lockIcon,
-                      controller: passwordController,
-                      password: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      validator: (v) => Validators().validatePassword(v),
-                    ),
-                    CustomInputField(
-                      fieldLabel: 'Confirm password',
-                      hint: 'enter password again',
-                      prefixIcon: AppAsset.lockIcon,
-                      controller: confirmPasswordController,
-                      password: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      validator: (v) => Validators()
-                          .validateConfirmPassword(v, passwordController!.text),
-                    ),
-                  ],
-                ),
+          Form(
+            key: regFormKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CustomInputField(
+                    fieldLabel: 'Email address',
+                    hint: 'enter email',
+                    prefixIcon: AppAsset.mailIcon,
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (v) => Validators().validateEmail(v),
+                  ),
+                  CustomInputField(
+                    fieldLabel: 'Phone number',
+                    hint: '123-456-344',
+                    prefixIcon: AppAsset.dialpadIcon,
+                    controller: phoneController,
+                    keyboardType: TextInputType.phone,
+                    validator: (v) => Validators().validatePhoneNumber(v),
+                  ),
+                  CustomInputField(
+                    fieldLabel: 'Password',
+                    hint: 'enter password',
+                    prefixIcon: AppAsset.lockIcon,
+                    controller: passwordController,
+                    password: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (v) => Validators().validatePassword(v),
+                  ),
+                  CustomInputField(
+                    fieldLabel: 'Confirm password',
+                    hint: 'enter password again',
+                    prefixIcon: AppAsset.lockIcon,
+                    controller: confirmPasswordController,
+                    password: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (v) => Validators()
+                        .validateConfirmPassword(v, passwordController!.text),
+                  ),
+                ],
               ),
             ),
           ),
@@ -150,7 +144,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           SizedBox(
             child: Consumer(
               builder: (context, ref, _) {
-                //? acessing auth provider
+                //? accessing auth provider
                 final provider = ref.read(authViewmodelProvider.notifier);
 
                 return Column(
@@ -162,10 +156,8 @@ class _SignUpFormState extends State<_SignUpForm> {
                       onPressed: () {
                         if (regFormKey.currentState!.validate()) {
                           provider.signUp(
-                            context,
                             email: emailController!.text.trim(),
                             password: passwordController!.text.trim(),
-                          
                           );
                         }
                       },

@@ -16,42 +16,46 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kPrimary,
-      body: SafeArea(
-        bottom: false,
-        child: Container(
-          height: fullHeight(context),
-          width: fullWidth(context),
-          padding: const EdgeInsets.only(top: 30),
-          child: Stack(
-            children: [
-              const Padding(
+      backgroundColor: AppColors.kBlack,
+      body: SizedBox(
+        height: fullHeight(context),
+        width: fullWidth(context),
+        child: Stack(
+          children: [
+            const Positioned(
+              bottom: 70,
+              child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: AuthTitlebar(
                   title: 'Login\n',
                   subTitle: 'Best way to discuss smart\nideas',
                 ),
               ),
-              Positioned(
-                bottom: 0,
+            ),
+            Positioned(
+              child: SingleChildScrollView(
                 child: Container(
                   height: fullHeight(context) / 1.4,
                   width: fullWidth(context),
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                  ),
                   decoration: const BoxDecoration(
                     color: AppColors.kWhite,
-                    borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(40),
-                      right: Radius.circular(40),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40),
                     ),
                   ),
-                  child: const _LoginForm(
-                    key: Key('login_form'),
+                  child: const SafeArea(
+                    child: _LoginForm(
+                      key: Key('login_form'),
+                    ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -80,11 +84,11 @@ class __LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          child: Form(
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Form(
             key: loginFormKey,
             child: Column(
               children: [
@@ -109,14 +113,11 @@ class __LoginFormState extends State<_LoginForm> {
               ],
             ),
           ),
-        ),
-        const Gap(25),
-        SizedBox(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Consumer(
+          Gap(fullHeight(context) / 1.4 * .24),
+          SizedBox(
+            child: Column(
+              children: [
+                Consumer(
                   builder: (context, ref, _) {
                     final provider = ref.read(authViewmodelProvider.notifier);
                     return DefaultButton(
@@ -124,7 +125,6 @@ class __LoginFormState extends State<_LoginForm> {
                       borderRadius: 100,
                       color: AppColors.kBlack,
                       onPressed: () {
-
                         /**
                          * if all field passes required validations
                          * then login can happen
@@ -140,14 +140,14 @@ class __LoginFormState extends State<_LoginForm> {
                     );
                   },
                 ),
-              ),
-              const Gap(10),
-              const _NotRegisteredWidget(),
-              const Gap(10),
-            ],
+                const Gap(10),
+                const _NotRegisteredWidget(),
+                const Gap(10),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,8 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:projects/common/src/components.dart';
+import 'package:projects/common/src/screens.dart';
+import 'package:projects/common/src/utils.dart';
+import 'package:projects/main.dart';
+import 'package:rive_animated_icon/rive_animated_icon.dart';
 
 class UtilFunctions {
   static String generateSignature(
@@ -10,7 +17,6 @@ class UtilFunctions {
     int timestamp,
     String publicId,
   ) {
-    
     final signatureString = '$timestamp:$apiSecret:$publicId';
     final bytes = utf8.encode(signatureString);
     final digest = sha1.convert(bytes);
@@ -42,5 +48,61 @@ class UtilFunctions {
       }
     }
     return pickedFile;
+  }
+
+  static void showVerifyEmailDialog() {
+    final cntx = rootNavigatorKey.currentContext!;
+
+    showAlertDialog(
+      cntx,
+      child: SizedBox(
+        width: fullWidth(cntx),
+        height: 250,
+        child: Column(
+          children: [
+            const Expanded(
+              flex: 3,
+              child: RiveAnimatedIcon(
+                height: 100,
+                width: 100,
+                loopAnimation: true,
+                riveIcon: RiveIcon.mail,
+                color: Colors.green,
+                strokeWidth: 3,
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'A link was sent to you via email, please verify and login',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(cntx)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: 14),
+                ),
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 60,
+                width: 150,
+                child: DefaultButton(
+                  text: 'Ok',
+                  onPressed: () {
+                    cntx
+                      ..pop()
+                      ..pushReplacementNamed(LoginScreen.loginPath);
+                  },
+                ),
+              ),
+            ),
+            const Gap(20),
+          ],
+        ),
+      ),
+    );
   }
 }

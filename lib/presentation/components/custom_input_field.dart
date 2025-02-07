@@ -164,7 +164,7 @@ class _PwsTextFieldState extends State<CustomInputField> {
                           child: SvgPicture.asset(
                             widget.prefixIcon!,
                             colorFilter: const ColorFilter.mode(
-                              AppColors.kBlack,
+                              AppColors.kGrey,
                               BlendMode.srcIn,
                             ),
                             width: 10,

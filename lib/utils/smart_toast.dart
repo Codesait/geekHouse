@@ -27,8 +27,7 @@ void showToast({
       horizontalOffset: 4,
       duration: const Duration(seconds: second),
       animationDuration: const Duration(milliseconds: animationMilliseconds),
-      animationReverseDuration:
-          const Duration(milliseconds: animationReverseMilliseconds),
+      animationReverseDuration: const Duration(milliseconds: animationReverseMilliseconds),
       preferDirection: preferDirection,
       onlyOne: onlyOne,
       attachedBuilder: (cancel) => Card(
@@ -139,8 +138,8 @@ void showToast({
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                getStatusColor().withValues(alpha:.5),
-                getStatusColor().withValues(alpha:.4),
+                getStatusColor().withValues(alpha: .5),
+                getStatusColor().withValues(alpha: .4),
                 AppColors.kWhite,
               ],
             ),
@@ -197,8 +196,7 @@ void showAttachedToast({
     target: target,
     duration: const Duration(seconds: second),
     animationDuration: const Duration(milliseconds: animationMilliseconds),
-    animationReverseDuration:
-        const Duration(milliseconds: animationReverseMilliseconds),
+    animationReverseDuration: const Duration(milliseconds: animationReverseMilliseconds),
     preferDirection: preferDirection,
     verticalOffset: 20,
     onlyOne: onlyOne,
@@ -315,25 +313,19 @@ void logOutAlertDialog(
   );
 }
 
-void alertSheet(
+void showAlertDialog(
   BuildContext context, {
   required Widget child,
 }) {
-  showModalBottomSheet<dynamic>(
+  showAdaptiveDialog<dynamic>(
     context: context,
-    builder: (ctx) => SizedBox(
-      height: fullHeight(context),
-      width: fullWidth(context),
-      child: StatefulBuilder(
-        builder: (context, setState) {
-          return Center(child: child);
-        },
+    builder: (ctx) => AlertDialog.adaptive(
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      content: Material(
+        color: Colors.transparent,
+        child: child,
       ),
     ),
-    backgroundColor: AppColors.kBlack.withValues(alpha:0.01),
-    elevation: 8,
-    isScrollControlled: true,
-    isDismissible: false,
-    enableDrag: false,
   );
 }
