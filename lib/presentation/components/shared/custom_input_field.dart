@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projects/common/src/components.dart';
 import 'package:projects/common/src/config.dart';
-import 'package:projects/presentation/components/obscure_btn.dart';
+import 'package:projects/presentation/components/shared/obscure_btn.dart';
 
 class CustomInputField extends StatefulWidget {
   const CustomInputField({

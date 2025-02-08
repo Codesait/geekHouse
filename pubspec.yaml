@@ -62,6 +62,10 @@ dependencies:
   package_info_plus: ^8.0.2
   crypto: ^3.0.5
 
+  logger: ^2.4.0
+  flutter_screenutil: ^5.9.3
+
+
   
 
 dev_dependencies:

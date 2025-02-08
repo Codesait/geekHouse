@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:async';
 import 'dart:developer';
 
@@ -79,7 +81,7 @@ class AuthViewmodel extends _$AuthViewmodel {
   }
 
   /**
- * ?
+ * ? Listen to auth changes
  */
 
   late StreamSubscription<AuthState> authSubscription;
@@ -169,24 +171,13 @@ class AuthRepo extends ChangeNotifier {
     required String password,
     Map<String, dynamic>? moreData,
   }) async {
-    return authService
-        .signUp(email, password, moreData)
-        .catchError((dynamic e) {
-      // ignore: avoid_dynamic_calls
-      showToast(msg: e['message'].toString(), isError: true);
-      throw Exception(e);
-    });
+    return authService.signUp(email, password, moreData);
   }
 
   Future<AuthResponse?> userSignIn({
     required String email,
     required String password,
   }) async {
-    return authService.signIn(email, password).catchError((dynamic e) {
-      log(e['message'].toString());
-      // ignore: avoid_dynamic_calls
-      showToast(msg: e['message'].toString(), isError: true);
-      throw Exception(e);
-    });
+    return authService.signIn(email, password);
   }
 }

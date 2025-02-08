@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projects/common/src/config.dart';
 
+enum Buttonstate {
+  idle,
+  loading,
+  disabled,
+}
 
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
@@ -18,6 +23,7 @@ class DefaultButton extends StatelessWidget {
     this.borderColor,
     this.loading = false,
     this.iconsAsset,
+    this.buttonstate = Buttonstate.idle,
   });
   final VoidCallback? onPressed;
   final String? text;
@@ -32,6 +38,7 @@ class DefaultButton extends StatelessWidget {
   final Color? borderColor;
   final bool loading;
   final String? iconsAsset;
+  final Buttonstate buttonstate;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +52,15 @@ class DefaultButton extends StatelessWidget {
         /// `AppColors.kDarkGrey`. Otherwise, it sets the color to the value of the `color` parameter,
         /// which is passed in when the function is called. If `color` is null, it sets the color to a
         /// default value of `const Color(0xFF09132D)`.
-        color:  color ?? AppColors.kPrimary,
-        border: Border.all(color: borderColor ?? Colors.transparent,width: .5),
+        color: (buttonstate == Buttonstate.disabled)
+            ? AppColors.kLightAsh
+            : color ?? AppColors.kPrimary,
+        border: Border.all(color: borderColor ?? Colors.transparent, width: .5),
         borderRadius: BorderRadius.circular(borderRadius ?? 10.0),
       ),
       child: ButtonTheme(
         child: TextButton(
-          onPressed: onPressed,
+          onPressed: (buttonstate == Buttonstate.disabled) ? null : onPressed,
           child: Center(
             /// This code is setting the child of the `TextButton` widget. It checks the value of the
             /// `buttonstate` parameter and if it is equal to `Buttonstate.loading`, it sets the child to

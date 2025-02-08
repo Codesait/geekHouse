@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projects/presentation/components/avatar.dart';
+import 'package:projects/presentation/components/shared/avatar.dart';
 
 class ListenerAvatar extends StatelessWidget {
   const ListenerAvatar({

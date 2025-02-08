@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projects/data/local/data.dart';
-import 'package:projects/presentation/components/avatar.dart';
-import 'package:projects/presentation/components/listeners_tile.dart';
+import 'package:projects/presentation/components/shared/avatar.dart';
+import 'package:projects/presentation/components/shared/listeners_tile.dart';
 
 class Space extends StatefulWidget {
   const Space({required this.title, super.key});

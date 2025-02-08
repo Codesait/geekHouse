@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:projects/common/src/components.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/common/src/providers.dart';
+import 'package:projects/common/src/screens.dart';
 import 'package:projects/common/src/utils.dart';
 
 class UserOnboarding extends ConsumerStatefulWidget {
@@ -51,7 +52,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 10),
                       child: PageViewIndicator(
-                        itemCount: 3,
+                        itemCount: 4,
                         currentPage: controller.page,
                       ),
                     ),
@@ -72,6 +73,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                         _AddProfilePhoto(
                           userName: controller.userName ?? '',
                         ),
+                        const InterestsScreen(),
                       ],
                     ),
                   ),
@@ -125,24 +127,26 @@ class _OnboardIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Column(
-        children: [
-          SvgPicture.asset(
-            'assets/images/onboarding.svg',
-            height: fullHeight(context) / 1.9,
-          ),
-          const TextView(
-            text: 'We Want to Know You More Geek',
-            fontSize: 35,
-            fontWeight: FontWeight.w500,
-            textAlign: TextAlign.center,
-          ),
-          const TextView(
-            text: 'Build your profile in three simple steps',
-            fontSize: 15,
-            textAlign: TextAlign.center,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SvgPicture.asset(
+              'assets/images/onboarding.svg',
+              height: fullHeight(context) / 2,
+            ),
+            const TextView(
+              text: 'We Want to Know You More Geek',
+              fontSize: 35,
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.center,
+            ),
+            const TextView(
+              text: 'Build your profile in three simple steps',
+              fontSize: 15,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

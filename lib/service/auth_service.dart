@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:projects/utils/exception_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
@@ -27,11 +28,15 @@ class AuthService {
     String password,
     Map<String, dynamic>? moreData,
   ) async {
-    final res = await supabase.auth.signUp(
-      email: email,
-      password: password,
-      data: moreData,
-    );
+    AuthResponse? res;
+
+    await SupabaseExceptionHandlerService.handleExceptions(() async {
+      res = await supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: moreData,
+      );
+    });
 
     return res;
   }
@@ -40,10 +45,14 @@ class AuthService {
     String email,
     String password,
   ) async {
-    final res = await supabase.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
+    AuthResponse? res;
+
+    await SupabaseExceptionHandlerService.handleExceptions(() async {
+      res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+    });
 
     return res;
   }

@@ -1,5 +1,6 @@
 export '../../utils/api_helper.dart';
 export '../../utils/constants.dart';
+export '../../utils/logger.dart';
 export '../../utils/mediaquery.dart';
 export '../../utils/modal.dart';
 export '../../utils/smart_toast.dart';

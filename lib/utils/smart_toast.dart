@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/main.dart';
-import 'package:projects/presentation/components/custom_text.dart';
-import 'package:projects/presentation/components/gap.dart';
+import 'package:projects/presentation/components/shared/custom_text.dart';
+import 'package:projects/presentation/components/shared/gap.dart';
 import 'package:projects/utils/mediaquery.dart';
 
 void showToast({
@@ -27,7 +27,8 @@ void showToast({
       horizontalOffset: 4,
       duration: const Duration(seconds: second),
       animationDuration: const Duration(milliseconds: animationMilliseconds),
-      animationReverseDuration: const Duration(milliseconds: animationReverseMilliseconds),
+      animationReverseDuration:
+          const Duration(milliseconds: animationReverseMilliseconds),
       preferDirection: preferDirection,
       onlyOne: onlyOne,
       attachedBuilder: (cancel) => Card(
@@ -129,7 +130,7 @@ void showToast({
           padding: const EdgeInsets.all(10),
           width: fullWidth(rootNavigatorKey.currentContext!),
           constraints: const BoxConstraints(
-            maxHeight: 90,
+            maxHeight: 80,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -138,8 +139,8 @@ void showToast({
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                getStatusColor().withValues(alpha: .5),
-                getStatusColor().withValues(alpha: .4),
+                getStatusColor().withValues(alpha: .9),
+                getStatusColor().withValues(alpha: .7),
                 AppColors.kWhite,
               ],
             ),
@@ -163,6 +164,7 @@ void showToast({
                       text: title ?? 'Alert',
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
+                      color: AppColors.kWhite,
                     ),
                     Flexible(
                       child: TextView(
@@ -170,6 +172,7 @@ void showToast({
                         textOverflow: TextOverflow.ellipsis,
                         fontSize: 16,
                         maxLines: 2,
+                        color: AppColors.kWhite,
                       ),
                     ),
                   ],
@@ -196,7 +199,8 @@ void showAttachedToast({
     target: target,
     duration: const Duration(seconds: second),
     animationDuration: const Duration(milliseconds: animationMilliseconds),
-    animationReverseDuration: const Duration(milliseconds: animationReverseMilliseconds),
+    animationReverseDuration:
+        const Duration(milliseconds: animationReverseMilliseconds),
     preferDirection: preferDirection,
     verticalOffset: 20,
     onlyOne: onlyOne,
