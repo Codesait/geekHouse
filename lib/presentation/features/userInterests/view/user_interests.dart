@@ -52,6 +52,7 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
     } else {
       // Perform a switch-case on the result to handle loading/error states
       return Scaffold(
+        backgroundColor: Colors.transparent,
         body: provider.interestList == null
             ? ErrorPlaceholder(
                 onRetryPress: provider.getInterests,
@@ -60,6 +61,7 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
                 child: Column(
                   children: [
                     Expanded(
+                      flex: 8,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: SingleChildScrollView(
@@ -67,8 +69,6 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
                             onRefresh: provider.getInterests,
                             child: Column(
                               children: [
-                                _Header(key: UniqueKey()),
-
                                 /**
                                  *? list
                                 */
@@ -118,13 +118,13 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
 
                     /**
                      ** Save user interest
-                     */
+                    */
                     SizedBox(
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 40,
-                          vertical: 30,
+                          vertical: 10,
                         ),
                         child: DefaultButton(
                           text: 'Continue',
@@ -146,56 +146,6 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
               ),
       );
     }
-  }
-}
-
-class _Header extends StatelessWidget {
-  const _Header({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: TextButton(
-            onPressed: () {
-              //context.pushReplacementNamed(MainScreen.mainPath);
-            },
-            child: TextView(
-              text: 'Skip',
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w500,
-              color: AppColors.kPrimary,
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Column(
-            children: [
-              TextView(
-                text: 'Interests',
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-              ),
-              TextView(
-                text: "Pick things you'd like to see in your home feed",
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 5,
-          width: fullWidth(context),
-          child: const Divider(
-            color: AppColors.kLightAsh,
-          ),
-        ),
-      ],
-    );
   }
 }
 

@@ -41,42 +41,44 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
       backgroundColor: AppColors.kPrimary.withValues(alpha: .2),
       body: StatefulBuilder(
         builder: (context, state) {
-          return SafeArea(
-            child: Container(
-              width: fullWidth(context),
-              height: fullHeight(context),
-              padding: const EdgeInsets.fromLTRB(25, 55, 25, 15),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 10),
-                      child: PageViewIndicator(
-                        itemCount: 4,
-                        currentPage: controller.page,
+          return Container(
+            width: fullWidth(context),
+            height: fullHeight(context),
+            padding: const EdgeInsets.fromLTRB(25, 55, 25, 15),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: PageViewIndicator(
+                      itemCount: 4,
+                      currentPage: controller.page,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 7,
+                  child: CustomPageView(
+                    pageController: _pageController,
+                    onPageChange: controller.setPage,
+                    height: fullHeight(context) / 1.5,
+                    pageSnapping: false,
+                    pages: [
+                      const _OnboardIntro(),
+                      Form(
+                        key: formKey,
+                        child: const _ChooseUserName(),
                       ),
-                    ),
+                      const InterestsScreen(),
+                      _AddProfilePhoto(
+                        userName: controller.userName ?? '',
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 7,
-                    child: CustomPageView(
-                      pageController: _pageController,
-                      onPageChange: controller.setPage,
-                      height: fullHeight(context) / 1.5,
-                      pageSnapping: false,
-                      pages: [
-                        const _OnboardIntro(),
-                        Form(
-                          key: formKey,
-                          child: const _ChooseUserName(),
-                        ),
-                        _AddProfilePhoto(
-                          userName: controller.userName ?? '',
-                        ),
-                        const InterestsScreen(),
-                      ],
-                    ),
-                  ),
+                ),
+                if (controller.page == 2)
+                  const SizedBox.shrink()
+                else
                   Expanded(
                     child: Align(
                       alignment: Alignment.bottomCenter,
@@ -111,8 +113,7 @@ class UserOnboardingState extends ConsumerState<UserOnboarding> {
                       ),
                     ),
                   ),
-                ],
-              ),
+              ],
             ),
           );
         },
