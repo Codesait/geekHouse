@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:projects/common/src/components.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/common/src/providers.dart';
@@ -24,9 +22,15 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
 
   @override
   void initState() {
-    Future.microtask(() {
-      ref.read(interestViewmodelProvider.notifier).getInterests();
-    });
+    Future.microtask(
+      () {
+        ref.read(interestViewmodelProvider.notifier).getInterests(
+          //? this is just an introduction to what we expect you to do on this 
+          //? oboard flw
+              callback: UtilFunctions.showChooseInterestDialog,
+            );
+      },
+    );
     super.initState();
   }
 
@@ -63,7 +67,7 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
                     Expanded(
                       flex: 8,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: SingleChildScrollView(
                           child: RefreshIndicator.adaptive(
                             onRefresh: provider.getInterests,
@@ -119,25 +123,28 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
                     /**
                      ** Save user interest
                     */
-                    SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 10,
-                        ),
-                        child: DefaultButton(
-                          text: 'Continue',
-                          height: 50,
-                          width: fullWidth(context),
-                          buttonstate: selectedInterest.isEmpty
-                              ? Buttonstate.disabled
-                              : Buttonstate.idle,
-                          onPressed: () async {
-                            await provider.saveUserInterests(
-                              userInterest: selectedInterest,
-                            );
-                          },
+                    Visibility(
+                      visible: selectedInterest.isNotEmpty,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 10,
+                          ),
+                          child: DefaultButton(
+                            text: 'Continue',
+                            height: 50,
+                            width: fullWidth(context),
+                            buttonstate: selectedInterest.isEmpty
+                                ? Buttonstate.disabled
+                                : Buttonstate.idle,
+                            onPressed: () async {
+                              await provider.saveUserInterests(
+                                userInterest: selectedInterest,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

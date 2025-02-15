@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:projects/common/src/components.dart';
+import 'package:projects/common/src/config.dart';
 import 'package:projects/common/src/screens.dart';
 import 'package:projects/common/src/utils.dart';
 import 'package:projects/main.dart';
@@ -96,6 +97,58 @@ class UtilFunctions {
                       ..pop()
                       ..pushReplacementNamed(LoginScreen.loginPath);
                   },
+                ),
+              ),
+            ),
+            const Gap(20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static void showChooseInterestDialog() {
+    final cntx = rootNavigatorKey.currentContext!;
+
+    showAlertDialog(
+      cntx,
+      child: SizedBox(
+        width: fullWidth(cntx),
+        height: 250,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 3,
+              child: RiveAnimatedIcon(
+                height: 100,
+                width: 100,
+                loopAnimation: true,
+                riveIcon: RiveIcon.like,
+                color: AppColors.kPrimary,
+                strokeWidth: 3,
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Tell Us what you want to see more as a !Geek member',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(cntx)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: 14),
+                ),
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 60,
+                width: 150,
+                child: DefaultButton(
+                  text: 'Ok',
+                  onPressed: cntx.pop,
                 ),
               ),
             ),

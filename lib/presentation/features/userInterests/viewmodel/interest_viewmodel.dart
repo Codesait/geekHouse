@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:projects/common/src/services.dart';
-import 'package:projects/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'interest_viewmodel.g.dart';
@@ -21,16 +19,21 @@ class InterestViewmodel extends _$InterestViewmodel {
   List<dynamic>? _interestList = [];
   List<dynamic>? get interestList => _interestList;
 
-  Future<void> getInterests({bool reloading = false}) async {
+  Future<void> getInterests({void Function()? callback}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => interestRepo.fetchInterestsData().then((data) async {
         if (data != null) {
+
+          //? 
+          if(callback != null) {
+            callback();
+          }
+
           /**
             ** Map the response data to list
           */
           _interestList = data;
-
           log('INTEREST DATA $data');
         } else {
           debugPrint('No interest data found.');
@@ -40,8 +43,6 @@ class InterestViewmodel extends _$InterestViewmodel {
       }),
     );
   }
-
-
 
   Future<void> saveUserInterests({required List<int> userInterest}) async {
     state = const AsyncLoading();
