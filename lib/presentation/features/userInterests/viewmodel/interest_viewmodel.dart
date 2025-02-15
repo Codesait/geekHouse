@@ -24,9 +24,8 @@ class InterestViewmodel extends _$InterestViewmodel {
     state = await AsyncValue.guard(
       () => interestRepo.fetchInterestsData().then((data) async {
         if (data != null) {
-
-          //? 
-          if(callback != null) {
+          //?
+          if (callback != null) {
             callback();
           }
 
@@ -44,15 +43,19 @@ class InterestViewmodel extends _$InterestViewmodel {
     );
   }
 
-  Future<void> saveUserInterests({required List<int> userInterest}) async {
+  Future<void> saveUserInterests({
+    required List<int> userInterest,
+    void Function()? callback,
+  }) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => interestRepo.insertUserInterests(userInterest).then((data) {
         if (data != null) {
           log(data.toString());
 
-          // rootNavigatorKey.currentContext!
-          //     .pushReplacementNamed(JoinCommunities.joinCommunityPath);
+          if (callback != null) {
+            callback();
+          }
         }
       }),
     );

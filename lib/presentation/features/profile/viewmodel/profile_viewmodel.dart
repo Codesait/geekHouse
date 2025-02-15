@@ -86,6 +86,7 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     BuildContext context, {
     String? userName,
     String? imageUrl,
+    
   }) async {
     if (userName != null && imageUrl != null) {
       final user = supabaseClient.auth.currentSession!.user;
@@ -108,6 +109,7 @@ class ProfileViewmodel extends _$ProfileViewmodel {
         await supabaseClient.from('profile').insert(updates).then((v) {
           if (v != null) {
             log('Update data: $v');
+            //canProceedToNextFlow(stat: true);
           }
         }).whenComplete(() {
           /**

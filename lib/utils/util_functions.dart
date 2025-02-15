@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -155,7 +156,7 @@ class UtilFunctions {
             const Gap(20),
           ],
         ),
-      ),
+      ).animate().scale(),
     );
   }
 }

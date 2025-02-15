@@ -9,7 +9,13 @@ import 'package:projects/common/src/utils.dart';
 import 'package:projects/presentation/features/userInterests/widget/interest_chip.dart';
 
 class InterestsScreen extends ConsumerStatefulWidget {
-  const InterestsScreen({super.key});
+  const InterestsScreen({
+    super.key,
+    this.forOnboard = false,
+    this.goToNextAction,
+  });
+  final bool forOnboard;
+  final VoidCallback? goToNextAction;
 
   static String interestPath = 'interestScreen';
 
@@ -25,8 +31,8 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
     Future.microtask(
       () {
         ref.read(interestViewmodelProvider.notifier).getInterests(
-          //? this is just an introduction to what we expect you to do on this 
-          //? oboard flw
+              //? this is just an introduction to what we expect you to do on this
+              //? oboard flw
               callback: UtilFunctions.showChooseInterestDialog,
             );
       },
@@ -41,6 +47,7 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
 
     if (stateProvider.isLoading) {
       return Scaffold(
+        backgroundColor: Colors.transparent,
         body: Container(
           height: fullHeight(context),
           width: fullWidth(context),
@@ -129,7 +136,6 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
                         width: double.infinity,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
                             vertical: 10,
                           ),
                           child: DefaultButton(
@@ -140,9 +146,12 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
                                 ? Buttonstate.disabled
                                 : Buttonstate.idle,
                             onPressed: () async {
-                              await provider.saveUserInterests(
-                                userInterest: selectedInterest,
-                              );
+                              if (widget.forOnboard) {
+                                await provider.saveUserInterests(
+                                  userInterest: selectedInterest,
+                                  callback: widget.goToNextAction,
+                                );
+                              }
                             },
                           ),
                         ),
@@ -176,16 +185,16 @@ class _InterestGroup extends StatelessWidget {
       width: fullWidth(context),
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextView(
-            text: category,
+            text: category.toUpperCase(),
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
           const Gap(10),
           Wrap(
             spacing: 8,
+            alignment: WrapAlignment.center,
             children: interestList.map((dynamic interest) {
               final name = interest['name'] as String;
               final id = interest['id'] as int;
