@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:projects/common/src/components.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/common/src/screens.dart';
 import 'package:projects/presentation/components/smart/createMenu/controller.dart';
@@ -52,9 +51,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
           ),
           activeForegroundColor: Colors.blueAccent,
         ),
-        onPressed: (context) {
-          controllerProvider.toggleModalStatus();
-        },
+        onPressed: controllerProvider.toggleModalStatus,
       ),
       PersistentTabConfig(
         screen: SizedBox(
@@ -80,16 +77,11 @@ class MainScreenState extends ConsumerState<MainScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Stack(
-        children: [
-          PersistentTabView(
-            controller: _controller,
-            tabs: _tabs(),
-            navBarBuilder: (navBarConfig) => Style5BottomNavBar(
-              navBarConfig: navBarConfig,
-            ),
-          ),
-          const CreateMenuWidget(),
-        ],
+  Widget build(BuildContext context) => PersistentTabView(
+        controller: _controller,
+        tabs: _tabs(),
+        navBarBuilder: (navBarConfig) => Style5BottomNavBar(
+          navBarConfig: navBarConfig,
+        ),
       );
 }

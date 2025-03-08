@@ -20,7 +20,9 @@ class InterestServices {
     List<dynamic>? res;
 
     await SupabaseExceptionHandlerService.handleExceptions(() async {
-      res = await supabase.rpc('get_communities_sorted_by_category',);
+      res = await supabase.rpc(
+        'get_communities_sorted_by_category',
+      );
     });
 
     return res;
@@ -37,11 +39,9 @@ class InterestServices {
 
     dynamic res;
     await SupabaseExceptionHandlerService.handleExceptions(() async {
-      res = await supabase.rpc<dynamic>('add_user_interests', params: data);
+      res = await supabase.rpc<dynamic>('save_user_interests', params: data);
     });
 
     return res;
   }
-
-  
 }

@@ -29,110 +29,100 @@ class CreateMenuWidgetState extends ConsumerState<CreateMenuWidget>
   Widget build(BuildContext context) {
     final controllerProvider = ref.watch(createMenuController);
 
-    return controllerProvider.hideMenu
-        ? const SizedBox.shrink()
-        : AnimatedBuilder(
-            animation: controllerProvider.animationController,
-            builder: (context, _) {
-              return Positioned(
-                bottom: controllerProvider.bgBottomPosition(),
-                right: 0,
-                left: 0,
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: controllerProvider.toggleModalStatus,
-                      child: Container(
-                        width: fullWidth(context),
-                        height: fullHeight(context),
-                        color: AppColors.kBlack.withValues(alpha: 0.1),
+    return AnimatedBuilder(
+      animation: controllerProvider.animationController,
+      builder: (context, _) {
+        return Stack(
+          children: [
+            GestureDetector(
+              onTap: () => controllerProvider.toggleModalStatus(context),
+              child: Container(
+                width: fullWidth(context),
+                height: fullHeight(context),
+                color: AppColors.kBlack.withValues(alpha: 0.1),
+              ),
+            ),
+            Positioned(
+              bottom: controllerProvider.bottomPosition(),
+              left: controllerProvider.horizontalPosition(),
+              right: controllerProvider.horizontalPosition(),
+              child: Column(
+                spacing: 20,
+                children: [
+                  //* Expanded state close button
+                  Visibility(
+                    visible: !controllerProvider.isModalCollapsed,
+                    child: Container(
+                      height: 50,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: AppColors.kGrey,
+                        borderRadius: BorderRadius.circular(
+                          100,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: controllerProvider.bottomPosition(),
-                      left: controllerProvider.horizontalPosition(),
-                      right: controllerProvider.horizontalPosition(),
-                      child: Column(
-                        spacing: 20,
-                        children: [
-                          //* Expanded state close button
-                          Visibility(
-                            visible: !controllerProvider.isModalCollapsed,
-                            child: Container(
-                              height: 50,
-                              width: 100,
-                              
-                              decoration: BoxDecoration(
-                                color: AppColors.kGrey,
-                                borderRadius: BorderRadius.circular(
-                                  100,
-                                ),
-                              ),
-                              child: IconButton(
-                                onPressed:
-                                    controllerProvider.fullyCollapseModal,
-                                icon: const Icon(Icons.clear),
-                                color: AppColors.kWhite,
-                              ),
-                            ).animate().scale(duration: 200.ms),
-                          ),
+                      child: IconButton(
+                        onPressed: controllerProvider.fullyCollapseModal,
+                        icon: const Icon(Icons.clear),
+                        color: AppColors.kWhite,
+                      ),
+                    ).animate().scale(duration: 200.ms),
+                  ),
 
-                          //* Expanded state menu items
-                          Container(
-                            height: controllerProvider.modalHeight(),
-                            width: controllerProvider.modalWidth(),
-                            decoration: BoxDecoration(
-                              color: AppColors.kWhite,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.kBlack.withValues(alpha: .1),
-                                  blurRadius: 10,
-                                  spreadRadius: 5,
-                                ),
-                              ],
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(
-                                  controllerProvider.isModalCollapsed ? 10 : 25,
-                                ),
-                                topRight: Radius.circular(
-                                  controllerProvider.isModalCollapsed ? 10 : 25,
-                                ),
-                                bottomLeft: Radius.circular(
-                                  controllerProvider.isModalCollapsed ? 10 : 0,
-                                ),
-                                bottomRight: Radius.circular(
-                                  controllerProvider.isModalCollapsed ? 10 : 0,
-                                ),
-                              ),
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            child: Visibility(
-                              visible: controllerProvider.isModalCollapsed,
-                              replacement: controllerProvider.currentPage,
-                              child: _MenuList(
-                                getLoopAnimation:
-                                    controllerProvider.isModalCollapsed,
-                                key: UniqueKey(),
-                              ),
-                            ),
-                          )
-                              .animate(
-                                target: controllerProvider.isModalOpen ? 1 : 0,
-                              )
-                              .scale(
-                                duration: 300.ms,
-                                curve: controllerProvider.isModalOpen
-                                    ? Curves.bounceInOut
-                                    : null,
-                              ),
-                        ],
+                  //* Expanded state menu items
+                  Container(
+                    height: controllerProvider.modalHeight(),
+                    width: controllerProvider.modalWidth(),
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.kBlack.withValues(alpha: .1),
+                          blurRadius: 10,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(
+                          controllerProvider.isModalCollapsed ? 10 : 25,
+                        ),
+                        topRight: Radius.circular(
+                          controllerProvider.isModalCollapsed ? 10 : 25,
+                        ),
+                        bottomLeft: Radius.circular(
+                          controllerProvider.isModalCollapsed ? 10 : 0,
+                        ),
+                        bottomRight: Radius.circular(
+                          controllerProvider.isModalCollapsed ? 10 : 0,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          );
+                    padding: const EdgeInsets.all(10),
+                    child: Visibility(
+                      visible: controllerProvider.isModalCollapsed,
+                      replacement: controllerProvider.currentPage,
+                      child: _MenuList(
+                        getLoopAnimation: controllerProvider.isModalCollapsed,
+                        key: UniqueKey(),
+                      ),
+                    ),
+                  )
+                      .animate(
+                        target: controllerProvider.isModalOpen ? 1 : 0,
+                      )
+                      .scale(
+                        duration: 300.ms,
+                        curve: controllerProvider.isModalOpen
+                            ? Curves.bounceInOut
+                            : null,
+                      ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

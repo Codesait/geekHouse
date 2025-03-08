@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/config/router.dart';
+import 'package:toastification/toastification.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,13 +9,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Geek House',
-      builder: BotToastInit(),
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        title: 'Geek House',
+        builder: BotToastInit(),
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+        ),
+        routerConfig: AppRouterConfig.router,
       ),
-      routerConfig: AppRouterConfig.router,
     );
   }
 }

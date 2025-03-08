@@ -68,97 +68,89 @@ class InterestsScreenState extends ConsumerState<InterestsScreen> {
             ? ErrorPlaceholder(
                 onRetryPress: provider.getInterests,
               )
-            : SafeArea(
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: SingleChildScrollView(
-                          child: RefreshIndicator.adaptive(
-                            onRefresh: provider.getInterests,
-                            child: Column(
-                              children: [
-                                /**
-                                 *? list
-                                */
-                                Container(
-                                  constraints: BoxConstraints.expand(
-                                    height: 600,
-                                    width: fullWidth(context),
-                                  ),
-                                  child: ListView(
-                                    padding: const EdgeInsets.only(bottom: 200),
-                                    children: provider.interestList!.map((e) {
-                                      final groupName =
-                                          e['category']! as String;
-                                      final groupList =
-                                          e['interests']! as List<dynamic>;
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: SingleChildScrollView(
+                      child: RefreshIndicator.adaptive(
+                        onRefresh: provider.getInterests,
+                        child: Column(
+                          children: [
+                            /**
+                           *? list
+                          */
+                            Container(
+                              constraints: BoxConstraints.expand(
+                                height: 600,
+                                width: fullWidth(context),
+                              ),
+                              child: ListView(
+                                padding: const EdgeInsets.only(bottom: 200),
+                                children: provider.interestList!.map((e) {
+                                  final groupName = e['category']! as String;
+                                  final groupList =
+                                      e['interests']! as List<dynamic>;
 
-                                      return _InterestGroup(
-                                        key: Key(groupName),
-                                        category: groupName,
-                                        interestList: groupList,
-                                        selectedInterest: selectedInterest,
-                                        onSelected: (isSelected, id) {
-                                          setState(() {
-                                            if (isSelected) {
-                                              selectedInterest.add(id);
-                                              debugPrint(
-                                                selectedInterest.toString(),
-                                              );
-                                            } else {
-                                              selectedInterest.remove(id);
-                                              debugPrint(
-                                                selectedInterest.toString(),
-                                              );
-                                            }
-                                          });
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
+                                  return _InterestGroup(
+                                    key: Key(groupName),
+                                    category: groupName,
+                                    interestList: groupList,
+                                    selectedInterest: selectedInterest,
+                                    onSelected: (isSelected, id) {
+                                      setState(() {
+                                        if (isSelected) {
+                                          selectedInterest.add(id);
+                                          debugPrint(
+                                            selectedInterest.toString(),
+                                          );
+                                        } else {
+                                          selectedInterest.remove(id);
+                                          debugPrint(
+                                            selectedInterest.toString(),
+                                          );
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
+                  ),
 
-                    /**
-                     ** Save user interest
-                    */
-                    Visibility(
-                      visible: selectedInterest.isNotEmpty,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          child: DefaultButton(
-                            text: 'Continue',
-                            height: 50,
-                            width: fullWidth(context),
-                            buttonstate: selectedInterest.isEmpty
-                                ? Buttonstate.disabled
-                                : Buttonstate.idle,
-                            onPressed: () async {
-                              if (widget.forOnboard) {
-                                await provider.saveUserInterests(
-                                  userInterest: selectedInterest,
-                                  callback: widget.goToNextAction,
-                                );
-                              }
-                            },
-                          ),
+                  /**
+                 ** Save user interest
+                */
+                  Visibility(
+                    visible: selectedInterest.isNotEmpty,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        child: DefaultButton(
+                          text: 'Continue',
+                          height: 50,
+                          width: fullWidth(context),
+                          buttonstate: selectedInterest.isEmpty
+                              ? Buttonstate.disabled
+                              : Buttonstate.idle,
+                          onPressed: () async {
+                            await provider.saveUserInterests(
+                              userInterest: selectedInterest,
+                              callback: widget.goToNextAction,
+                            );
+                          },
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
       );
     }

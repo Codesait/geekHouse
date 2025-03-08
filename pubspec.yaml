@@ -64,6 +64,7 @@ dependencies:
 
   logger: ^2.4.0
   flutter_screenutil: ^5.9.3
+  toastification: ^3.0.1
 
 
   

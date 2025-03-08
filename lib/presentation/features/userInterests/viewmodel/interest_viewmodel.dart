@@ -50,12 +50,10 @@ class InterestViewmodel extends _$InterestViewmodel {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => interestRepo.insertUserInterests(userInterest).then((data) {
-        if (data != null) {
-          log(data.toString());
+        log(data.toString());
 
-          if (callback != null) {
-            callback();
-          }
+        if (callback != null) {
+          callback();
         }
       }),
     );

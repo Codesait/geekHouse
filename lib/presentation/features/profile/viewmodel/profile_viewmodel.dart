@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/common/src/data.dart';
@@ -86,61 +85,32 @@ class ProfileViewmodel extends _$ProfileViewmodel {
     BuildContext context, {
     String? userName,
     String? imageUrl,
-    
   }) async {
-    if (userName != null && imageUrl != null) {
-      final user = supabaseClient.auth.currentSession!.user;
+    final user = supabaseClient.auth.currentSession!.user;
 
-      state = const AsyncLoading();
-      state = await AsyncValue.guard(() async {
-        /**
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      /**
        * *START LOADER
       */
-        BotToast.showLoading();
+      BotToast.showLoading();
 
-        final updates = {
-          'id': user.id,
-          'display_name': userName,
-          'email': user.email,
-          'image_url': imageUrl,
-          'updated_at': DateTime.now().toIso8601String(),
-        };
+      final updates = {
+        'id': user.id,
+        'display_name': userName,
+        'email': user.email,
+        'image_url': imageUrl,
+        'updated_at': DateTime.now().toIso8601String(),
+      };
 
-        await supabaseClient.from('profile').insert(updates).then((v) {
-          if (v != null) {
-            log('Update data: $v');
-            //canProceedToNextFlow(stat: true);
-          }
-        }).whenComplete(() {
-          /**
-            *! stop loader
-          */
-          BotToast.closeAllLoading();
-
-          /**
-           *? Navigate use to entry
-          */
-          rootNavigatorKey.currentContext!.pushReplacementNamed(
-            MainScreen.homePath,
-          );
-          rootNavigatorKey.currentContext!.pop();
-        });
-      }).onError<PostgrestException>((e, s) {
-        throw PostgrestException(message: e.message, code: e.code);
-      });
-    } else if (imageUrl == null) {
-      showToast(
-        title: 'Missing Params',
-        msg: 'To proceed, please select \na profile photo ',
-        isWarningMessage: true,
-      );
-    } else {
-      showToast(
-        title: 'Missing Params',
-        msg: 'Unexpected Error',
-        isError: true,
-      );
-    }
+      await supabaseClient.from('profile').insert(updates).then((v) {
+        if (v != null) {
+          log('Update data: $v');
+        }
+      }).whenComplete(BotToast.closeAllLoading);
+    }).onError<PostgrestException>((e, s) {
+      throw PostgrestException(message: e.message, code: e.code);
+    });
   }
 
 /**

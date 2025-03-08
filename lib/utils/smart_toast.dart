@@ -1,189 +1,105 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projects/common/src/config.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentation/components/shared/custom_text.dart';
 import 'package:projects/presentation/components/shared/gap.dart';
-import 'package:projects/utils/mediaquery.dart';
+import 'package:toastification/toastification.dart';
 
 void showToast({
   required String msg,
   bool isError = false,
-  String? title,
+  String title = 'Alert',
   bool isWarningMessage = false,
 }) {
-  const second = 4;
-  const preferDirection = PreferDirection.topRight;
-  const onlyOne = true;
-  const animationMilliseconds = 200;
-  const animationReverseMilliseconds = 200;
+final theme = Theme.of(rootNavigatorKey.currentContext!);
 
-  if (kIsWeb) {
-    BotToast.showAttachedWidget(
-      target: const Offset(-16, -16),
-      verticalOffset: 10,
-      horizontalOffset: 4,
-      duration: const Duration(seconds: second),
-      animationDuration: const Duration(milliseconds: animationMilliseconds),
-      animationReverseDuration:
-          const Duration(milliseconds: animationReverseMilliseconds),
-      preferDirection: preferDirection,
-      onlyOne: onlyOne,
-      attachedBuilder: (cancel) => Card(
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          padding: const EdgeInsets.only(right: 8),
-          height: 100,
-          width: 330,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 8,
-                color: isError ? Colors.red : Colors.green,
-              ),
-              const Gap(7),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title ?? 'Alert',
-                    style: const TextStyle(
-                      color: AppColors.kBlack,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Gap(7),
-                  SizedBox(
-                    width: 250,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            msg,
-                            style: const TextStyle(
-                              color: AppColors.kBlack,
-                              fontSize: 13,
-                              overflow: TextOverflow.fade,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                width: 30,
-                alignment: Alignment.center,
-                child: IconButton(
-                  onPressed: cancel,
-                  splashRadius: 5,
-                  icon: const Icon(
-                    Icons.cancel,
-                    color: AppColors.kBlack,
-                  ),
-                ),
-              ),
-            ],
-          ),
+  /**
+    ** Status colors based on message type
+  */
+  Color getStatusColor() {
+    return isWarningMessage
+        ? Colors.orangeAccent.shade700
+        : isError
+            ? Colors.redAccent.shade700
+            : Colors.greenAccent.shade700;
+  }
+
+  toastification.show(
+    context: rootNavigatorKey.currentContext,
+    type: ToastificationType.success,
+    style: ToastificationStyle.flat,
+    autoCloseDuration: const Duration(seconds: 5),
+    title: TextView(
+      text: title,
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      decoration: TextDecoration.underline,
+    ),
+    description: RichText(
+      text: TextSpan(
+        text: msg,
+        style: theme.textTheme.titleSmall!.copyWith(
+          color: Colors.white,
         ),
       ),
-    );
-  } else {
-    BotToast.showCustomNotification(
-      // title: msg,
-      // borderRadius: 10.2,
-      duration: const Duration(seconds: 5),
-      // titleStyle: const TextStyle(color: Colors.white, fontSize: 12),
-      align: Alignment.topRight,
-      crossPage: false,
-      toastBuilder: (cancelFunc) {
-        /**
-         ** Status colors based on message type
-         */
-        Color getStatusColor() {
-          return isWarningMessage
-              ? Colors.orangeAccent.shade700
-              : isError
-                  ? Colors.redAccent.shade700
-                  : Colors.greenAccent.shade700;
-        }
-
-        /**
-         ** Icon status data based on message type
-         */
-        IconData getStatusIcon() {
-          return isWarningMessage
+    ),
+    alignment: Alignment.topRight,
+    direction: TextDirection.ltr,
+    animationDuration: const Duration(milliseconds: 300),
+    animationBuilder: (context, animation, alignment, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+    icon: Icon(
+      isError
+          ? Icons.error_rounded
+          : isWarningMessage
               ? Icons.warning_rounded
-              : isError
-                  ? Icons.error
-                  : Icons.check_circle;
-        }
-
-        return Container(
-          margin: const EdgeInsets.all(10),
-          padding: const EdgeInsets.all(10),
-          width: fullWidth(rootNavigatorKey.currentContext!),
-          constraints: const BoxConstraints(
-            maxHeight: 80,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.kWhite, width: 1.5),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                getStatusColor().withValues(alpha: .9),
-                getStatusColor().withValues(alpha: .7),
-                AppColors.kWhite,
-              ],
-            ),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                backgroundColor: const Color.fromARGB(255, 239, 233, 233),
-                child: Icon(
-                  getStatusIcon(),
-                  color: getStatusColor(),
-                ),
-              ),
-              const Gap(10),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextView(
-                      text: title ?? 'Alert',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: AppColors.kWhite,
-                    ),
-                    Flexible(
-                      child: TextView(
-                        text: msg,
-                        textOverflow: TextOverflow.ellipsis,
-                        fontSize: 16,
-                        maxLines: 2,
-                        color: AppColors.kWhite,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+              : Icons.check,
+    ),
+    showIcon: true, // show or hide the icon
+    primaryColor: Colors.white,
+    backgroundColor: getStatusColor(),
+    foregroundColor: Colors.black,
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: const [
+      BoxShadow(
+        color: Color(0x07000000),
+        blurRadius: 16,
+        offset: Offset(0, 16),
+      ),
+    ],
+    showProgressBar: true,
+    closeButton: ToastCloseButton(
+      showType: CloseButtonShowType.onHover,
+      buttonBuilder: (context, onClose) {
+        return OutlinedButton.icon(
+          onPressed: onClose,
+          icon: const Icon(Icons.close, size: 20),
+          label: const Text('Close'),
         );
       },
-    );
-  }
+    ),
+    closeOnClick: false,
+    pauseOnHover: true,
+    dragToClose: true,
+    applyBlurEffect: true,
+    // callbacks: ToastificationCallbacks(
+    //   onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
+    //   onCloseButtonTap: (toastItem) =>
+    //       print('Toast ${toastItem.id} close button tapped'),
+    //   onAutoCompleteCompleted: (toastItem) =>
+    //       print('Toast ${toastItem.id} auto complete completed'),
+    //   onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
+    // ),
+  );
 }
 
 void showAttachedToast({

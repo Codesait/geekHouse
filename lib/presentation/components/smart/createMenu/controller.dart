@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:projects/common/src/components.dart';
 import 'package:projects/common/src/utils.dart';
 import 'package:projects/main.dart';
 import 'package:projects/presentation/features/creative/live/start_live.dart';
@@ -72,28 +73,44 @@ class CreateMenuController extends ChangeNotifier {
   /// Returns `true` if the modal is open, otherwise `false`.
   bool get isModalOpen => _isModalOpen;
 
-  /// Indicates whether the menu should be hidden.
-  bool _hideMenu = false;
-
-  /// Returns `true` if the menu is hidden, otherwise `false`.
-  bool get hideMenu => _hideMenu;
+  OverlayEntry? _overlayEntry;
 
   /// Toggles the modal's open status and updates the menu visibility accordingly.
   ///
-  /// If the modal is closed, the menu will be hidden after a delay.
-  Future<void> toggleModalStatus() async {
+  Future<void> toggleModalStatus(BuildContext context) async {
     _isModalOpen = !_isModalOpen;
 
-    if (!_isModalOpen) {
+    if (_isModalOpen) {
+      _showOverlay(context);
+    } else {
       Future.delayed(const Duration(milliseconds: 500), () {
-        _hideMenu = true;
         animationController.reset();
         notifyListeners();
       });
-    } else {
-      _hideMenu = false;
+      _hideOverlay();
     }
     notifyListeners();
+  }
+
+  void _showOverlay(BuildContext context) {
+    if (_overlayEntry != null) return;
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => const Positioned(
+        bottom: 100,
+        child: Material(
+          color: Colors.transparent,
+          child: CreateMenuWidget(),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _hideOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
   }
 
   /// Returns `true` if the modal is fully collapsed, otherwise `false`.
